@@ -12,6 +12,7 @@ class Event:
     event_id: str
     google_group_link: str
     participants: list[Participant]
+    # slack_members: list[str]  # For updating participants in Slack
 
 
 
