@@ -1,15 +1,19 @@
+"""
+Timer module that runs a function at a given interval.
+"""
+
 import time
+from typing import Callable
 
 
-def hi():
-    print("Hi!")
+def run_with_interval(function: Callable, interval: float):
+    """
+    Timer that runs a function in a given interval.
 
-
-# maybe the simplest timer that runs given function at given intervals
-def run_with_interval(function: callable, interval: float):
+    Args:
+        function (Callable): Function to run in a given interval.
+        interval (float): Interval in minutes to execute the function.
+    """
     while True:
         function()
         time.sleep(interval)
-
-
-run_with_interval(hi, 5)
