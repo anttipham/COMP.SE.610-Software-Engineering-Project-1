@@ -16,4 +16,4 @@ def run_with_interval(function: Callable, interval: float):
     """
     while True:
         function()
-        time.sleep(interval)
+        time.sleep(interval * 60)
