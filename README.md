@@ -2,6 +2,15 @@
 
 ## Setup
 
-```python3
-pip install --upgrade requests slack_sdk google-api-python-client google-auth-httplib2 google-auth-oauthlib pytest
+```bash
+pip install google-api-python-client google-auth-httplib2 google-auth-oauthlib \
+pytest requests slack_sdk
+```
+
+## Testing
+
+Tests use PyTest. Start tests with the following command:
+
+```bash
+pytest
 ```
