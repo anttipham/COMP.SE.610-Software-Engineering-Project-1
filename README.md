@@ -3,5 +3,5 @@
 ## Setup
 
 ```python3
-pip install --upgrade requests slack_sdk google-api-python-client google-auth-httplib2 google-auth-oauthlib
+pip install --upgrade requests slack_sdk google-api-python-client google-auth-httplib2 google-auth-oauthlib pytest
 ```
