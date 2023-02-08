@@ -12,8 +12,6 @@ import time
 # import requests
 
 API_ROOT = os.environ['LYYTI_ROOT_URL']
-PUBLIC_KEY = os.environ['LYYTI_PUBLIC_KEY']
-PRIVATE_KEY = os.environ['LYYTI_PRIVATE_KEY']
 
 
 def generate_headers(call_string: str) -> dict[str, str]:
@@ -32,18 +30,20 @@ def generate_headers(call_string: str) -> dict[str, str]:
     Returns:
         dict[str, str]: Returns the authorization header.
     """
+    public_key = os.environ['LYYTI_PUBLIC_KEY']
+    private_key = os.environ['LYYTI_PRIVATE_KEY']
     timestamp = str(int(time.time()))
-    msg = ','.join([PUBLIC_KEY, timestamp, call_string])
+    msg = ','.join([public_key, timestamp, call_string])
 
     signature = hmac.new(
-        PRIVATE_KEY.encode('utf-8'),
+        private_key.encode('utf-8'),
         msg=base64.b64encode(msg.encode('utf-8')),
         digestmod=hashlib.sha256
     ).hexdigest()
 
     headers = {
         'Accept': 'application/json; charset=utf-8',
-        'Authorization': f'LYYTI-API-V2 public_key={PUBLIC_KEY}, ' +
+        'Authorization': f'LYYTI-API-V2 public_key={public_key}, ' +
                          f'timestamp={timestamp}, ' +
                          f'signature={signature}',
     }
