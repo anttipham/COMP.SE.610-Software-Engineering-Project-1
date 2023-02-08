@@ -3,7 +3,6 @@ Sets variables to environment variables for testing purposes.
 """
 import os
 
-
 if 'TIMEOUT_DURATION' not in os.environ:
     os.environ['TIMEOUT_DURATION'] = '10'
 
@@ -11,7 +10,8 @@ if 'LYYTI_EVENTS_URL' not in os.environ:
     os.environ['LYYTI_EVENTS_URL'] = 'https://api.lyyti.com/v2/events/'
 
 if 'LYYTI_PARTICIPANTS_URL' not in os.environ:
-    os.environ['LYYTI_PARTICIPANTS_URL'] = 'https://api.lyyti.com/v2/participants/{}'
+    os.environ['LYYTI_PARTICIPANTS_URL'] = \
+      'https://api.lyyti.com/v2/participants/{}'
 
 if 'LYYTI_EVENTS_RESPONSE' not in os.environ:
     os.environ['LYYTI_EVENTS_RESPONSE'] = '''
