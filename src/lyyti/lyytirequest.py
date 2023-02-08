@@ -11,6 +11,7 @@ import time
 
 # import requests
 
+import environ  # Set environment variables
 API_ROOT = os.environ['LYYTI_ROOT_URL']
 
 
