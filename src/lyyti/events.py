@@ -26,12 +26,12 @@ def load_events() -> list[Event]:
     """
     json_object = get_events()
 
-    return [Event(event_id=event,
+    return [Event(event_id=data['eid'],
                   google_group_link='WIP',
-                  participants=load_participants(event))
-            for event, data in json_object['results'].items()]
+                  participants=load_participants(data['eid']))
+            for data in json_object['results'].values()]
 
 
 if __name__ == '__main__':
     import environ
-    load_events()
+    print(load_events())

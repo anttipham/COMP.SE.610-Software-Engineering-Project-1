@@ -23,6 +23,7 @@ def load_participants(event_id: str) -> list[Participant]:
         Participant: Participants' data in a list
     """
     json_object = get_participants(event_id)
-    # return [Participant(email='43242')]
-    return [Participant(email=data['email'])
-            for data in json_object['results']['55845-715819602']['participants']]
+    participant_data = map(lambda x: x['participants'][0],
+                           json_object['results'].values())
+
+    return [Participant(email=data['email']) for data in participant_data]
