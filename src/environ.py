@@ -6,12 +6,20 @@ import os
 if 'TIMEOUT_DURATION' not in os.environ:
     os.environ['TIMEOUT_DURATION'] = '10'
 
-if 'LYYTI_EVENTS_URL' not in os.environ:
-    os.environ['LYYTI_EVENTS_URL'] = 'https://api.lyyti.com/v2/events/'
+if 'LYYTI_PRIVATE_KEY' not in os.environ:
+    os.environ['LYYTI_PRIVATE_KEY'] = '<very private>'
 
-if 'LYYTI_PARTICIPANTS_URL' not in os.environ:
-    os.environ['LYYTI_PARTICIPANTS_URL'] = \
-      'https://api.lyyti.com/v2/participants/{}'
+if 'LYYTI_PUBLIC_KEY' not in os.environ:
+    os.environ['LYYTI_PUBLIC_KEY'] = '<very public>'
+
+if 'LYYTI_ROOT_URL' not in os.environ:
+    os.environ['LYYTI_ROOT_URL'] = 'https://api.lyyti.com/v2/'
+
+if 'LYYTI_EVENTS_CALLSTRING' not in os.environ:
+    os.environ['LYYTI_EVENTS_CALLSTRING'] = 'events/'
+
+if 'LYYTI_PARTICIPANTS_CALLSTRING' not in os.environ:
+    os.environ['LYYTI_PARTICIPANTS_CALLSTRING'] = 'participants/{}'
 
 if 'LYYTI_EVENTS_RESPONSE' not in os.environ:
     os.environ['LYYTI_EVENTS_RESPONSE'] = '''

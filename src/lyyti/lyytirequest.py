@@ -1,10 +1,53 @@
 """
 Handles HTTP requests to Lyyti API.
 """
+
+import base64
+import hashlib
+import hmac
 import json
 import os
+import time
 
 # import requests
+
+API_ROOT = os.environ['LYYTI_ROOT_URL']
+PUBLIC_KEY = os.environ['LYYTI_PUBLIC_KEY']
+PRIVATE_KEY = os.environ['LYYTI_PRIVATE_KEY']
+
+
+def generate_headers(call_string: str) -> dict[str, str]:
+    """
+    Generates Lyyti API headers from the given call_string.
+    The headers contain 'Accept' and 'Authorization' fields.
+
+    A call string is anything that comes after the Lyyti API root.
+    So, 'https://api.lyyti.com/v2/' + call_string is the whole URL path.
+    The call string should also contain URL query parameters if they are used.
+
+    Args:
+        call_string (str): The part of the URL that comes after the Lyyti API
+                           root 'https://api.lyyti.com/v2/'
+
+    Returns:
+        dict[str, str]: Returns the authorization header.
+    """
+    timestamp = str(int(time.time()))
+    msg = ','.join([PUBLIC_KEY, timestamp, call_string])
+
+    signature = hmac.new(
+        PRIVATE_KEY.encode('utf-8'),
+        msg=base64.b64encode(msg.encode('utf-8')),
+        digestmod=hashlib.sha256
+    ).hexdigest()
+
+    headers = {
+        'Accept': 'application/json; charset=utf-8',
+        'Authorization': f'LYYTI-API-V2 public_key={PUBLIC_KEY}, ' +
+                         f'timestamp={timestamp}, ' +
+                         f'signature={signature}',
+    }
+    return headers
 
 
 def get_events() -> dict:
@@ -15,15 +58,10 @@ def get_events() -> dict:
     Returns:
         dict: JSON data in dictionaries and lists.
     """
-    # url = os.environ['LYYTI_EVENTS_URL']
-    # headers = {
-    #     'accept': 'application/json',
-    #     'public_key': 'apitesti',
-    #     'signature': 'apitesti',
-    #     'timestamp': '1234567890',
-    # }
+    # call_string = os.environ['LYYTI_EVENTS_CALLSTRING']
+    # url = API_ROOT + call_string
     # response = requests.get(url,
-    #                         headers=headers,
+    #                         headers=generate_headers(call_string),
     #                         timeout=float(os.environ['TIMEOUT_DURATION']))
     # return response.json()
     return json.loads(os.environ['LYYTI_EVENTS_RESPONSE'])
@@ -38,15 +76,10 @@ def get_participants(event_id: str) -> dict:
     Returns:
         dict: JSON data in dictionaries and lists.
     """
-    # url = os.environ['LYYTI_PARTICIPANTS_URL'].format(event_id)
-    # headers = {
-    #     "accept": "application/json",
-    #     "public_key": "apitesti",
-    #     "signature": "apitesti",
-    #     "timestamp": "1234567890"
-    # }
+    # call_string = os.environ['LYYTI_PARTICIPANTS_CALLSTRING'].format(event_id)
+    # url = API_ROOT + call_string
     # response = requests.get(url,
-    #                         headers=headers,
+    #                         headers=generate_headers(call_string),
     #                         timeout=float(os.environ['TIMEOUT_DURATION']))
     # return response.json()
     return json.loads(os.environ['LYYTI_PARTICIPANTS_RESPONSE'])
