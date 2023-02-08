@@ -14,13 +14,13 @@ class Participant:
 
 def load_participants(event_id: str) -> list[Participant]:
     """
-    Gets the participants from Lyyti API.
+    Returns event participants' data from Lyyti API.
 
     Args:
-        event_id (str): _description_
+        event_id (str): The event ID that the participant data is gathered from
 
     Returns:
-        Participant: _description_
+        Participant: Participants' data in a list
     """
     json_object = get_participants(event_id)
     # return [Participant(email='43242')]
