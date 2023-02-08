@@ -4,6 +4,7 @@ Handles the events of the Lyyti API.
 
 from dataclasses import dataclass
 from .participants import Participant, get_participants
+from .lyytirequest import get_events
 
 
 @dataclass
@@ -16,18 +17,21 @@ class Event:
 
 
 
-def get_events() -> list[Event]:
+def load_events() -> list[Event]:
     """
-    Gets the events from Lyyti API.
+    Returns event information from Lyyti API.
 
     Returns:
         list[Event]: List of events
     """
-    return [
-        Event(event_id='email@tuni.fi',
-              google_group_link='link',
-              participants=[]),
-        Event(event_id='email2@tuni.fi',
-              google_group_link='link',
-              participants=get_participants('a')),
-    ]
+    json_object = get_events()
+
+    return [Event(event_id=event,
+                  google_group_link='WIP',
+                  participants=get_participants(event))
+            for event, data in json_object['results'].items()]
+
+
+if __name__ == '__main__':
+    import environ
+    load_events()
