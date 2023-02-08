@@ -29,7 +29,7 @@ def get_events() -> dict:
     return json.loads(os.environ['LYYTI_EVENTS_RESPONSE'])
 
 
-def get_participants(eventid: str) -> dict:
+def get_participants(event_id: str) -> dict:
     """
     Gets participants from an event by its event ID from Lyyti API using
     requests package and returns the json data in dictionaries and lists using
@@ -38,7 +38,7 @@ def get_participants(eventid: str) -> dict:
     Returns:
         dict: JSON data in dictionaries and lists.
     """
-    # url = os.environ['LYYTI_PARTICIPANTS_URL'].format(eventid)
+    # url = os.environ['LYYTI_PARTICIPANTS_URL'].format(event_id)
     # headers = {
     #     "accept": "application/json",
     #     "public_key": "apitesti",
