@@ -3,7 +3,7 @@ Handles the events of the Lyyti API.
 """
 
 from dataclasses import dataclass
-from .participants import Participant, get_participants
+from .participants import Participant, load_participants
 from .lyytirequest import get_events
 
 
@@ -28,7 +28,7 @@ def load_events() -> list[Event]:
 
     return [Event(event_id=event,
                   google_group_link='WIP',
-                  participants=get_participants(event))
+                  participants=load_participants(event))
             for event, data in json_object['results'].items()]
 
 

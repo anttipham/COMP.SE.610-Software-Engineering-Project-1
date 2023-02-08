@@ -7,11 +7,14 @@ import os
 if 'TIMEOUT_DURATION' not in os.environ:
     os.environ['TIMEOUT_DURATION'] = '10'
 
-if 'LYYTI_API_URL' not in os.environ:
-    os.environ['LYYTI_API_URL'] = 'https://api.lyyti.com/v2/events/'
+if 'LYYTI_EVENTS_URL' not in os.environ:
+    os.environ['LYYTI_EVENTS_URL'] = 'https://api.lyyti.com/v2/events/'
 
-if 'LYYTI_API_RESPONSE' not in os.environ:
-    os.environ['LYYTI_API_RESPONSE'] = '''
+if 'LYYTI_PARTICIPANTS_URL' not in os.environ:
+    os.environ['LYYTI_PARTICIPANTS_URL'] = 'https://api.lyyti.com/v2/participants/{}'
+
+if 'LYYTI_EVENTS_RESPONSE' not in os.environ:
+    os.environ['LYYTI_EVENTS_RESPONSE'] = '''
 {
   "method": "GET",
   "call": "events",
@@ -124,5 +127,62 @@ if 'LYYTI_API_RESPONSE' not in os.environ:
   "results_count": 1,
   "parent": "https://api.lyyti.com/v2",
   "url": "https://api.lyyti.com/v2/events"
+}
+'''
+
+if 'LYYTI_PARTICIPANTS_RESPONSE' not in os.environ:
+    os.environ['LYYTI_PARTICIPANTS_RESPONSE'] = '''
+{
+  "results": {
+    "55845-715819602": {
+      "id": 715819602,
+      "group": null,
+      "participants": [
+        {
+          "id": 715819602,
+          "uid": "55845-715819602",
+          "group_id": null,
+          "is_contact_person": 0,
+          "email": "care@lyyti.fi",
+          "email_blocked": 0,
+          "firstname": "Test",
+          "lastname": "Participant",
+          "lang": "fi",
+          "status": "reactedyes",
+          "participant_type": 0,
+          "is_avec": 0,
+          "has_avec": 0,
+          "phone": "",
+          "phone_countrycode": 358,
+          "timestamp_added": 1397634328,
+          "timestamp_enrolled": 1397634410,
+          "timestamp_modified": 1397634398,
+          "info1": null,
+          "info2": null,
+          "organiser_info": null,
+          "answers": {
+            "782878": {
+              "649445": 8,
+              "649446": 16,
+              "649447": 17,
+              "649448": 5
+            },
+            "782895": "Linnankatu 13 Aa 18",
+            "782896": 20100,
+            "782897": "Turku"
+          },
+          "payments": {
+            "payment_method": "invoice",
+            "payments_open": 40.4,
+            "payments_paid": 0,
+            "payments_total": 40.4
+          }
+        }
+      ]
+    }
+  },
+  "results_count": 1,
+  "parent": "https://www.lyyti.fi/api/v2/participants",
+  "url": "https://www.lyyti.fi/api/v2/participants/55845"
 }
 '''
