@@ -47,6 +47,7 @@ def generate_headers(call_string: str) -> dict[str, str]:
                          f'timestamp={timestamp}, ' +
                          f'signature={signature}',
     }
+
     return headers
 
 
@@ -76,7 +77,7 @@ def get_participants(event_id: str) -> dict:
     Returns:
         dict: JSON data in dictionaries and lists.
     """
-    # call_string = os.environ['LYYTI_PARTICIPANTS_CALLSTRING'].format(event_id)
+    #call_string = os.environ['LYYTI_PARTICIPANTS_CALLSTRING'].format(event_id)
     # url = API_ROOT + call_string
     # response = requests.get(url,
     #                         headers=generate_headers(call_string),
