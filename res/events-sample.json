@@ -1,0 +1,121 @@
+{
+  "results": {
+    "ea1b0920b7b0ec6a1bb2e": {
+      "eid": 1240375,
+      "id": "ea1b0920b7b0ec6a1bb2e",
+      "event_id": 1240375,
+      "event_code": "ea1b0920b7b0ec6a1bb2e",
+      "company_id": 7219,
+      "owner_id": 50422,
+      "owner": "owner.name@vincit.fi",
+      "owner_name": "owner name",
+      "relationship": "company",
+      "start_time_utc": 1677621600,
+      "end_time_utc": 1680210000,
+      "enrollment_open_utc": 1675893600,
+      "enrollment_deadline_utc": 1677362400,
+      "canceling_deadline_utc": null,
+      "editing_deadline_utc": null,
+      "timezone": "Europe/Helsinki",
+      "start_time": 1677628800,
+      "end_time": 1680220800,
+      "enrollment_open": 1675900800,
+      "enrollment_deadline": 1677369600,
+      "canceling_deadline": null,
+      "editing_deadline": null,
+      "created_utc": 1675949662,
+      "modified_utc": 1675956956,
+      "archived": 0,
+      "payable": 0,
+      "queue": {
+        "count": 0
+      },
+      "enrollment_type": "single",
+      "open_code": "Kurssi_3948",
+      "enrollment_url": "https://www.lyyti.in/Kurssi_3948",
+      "eventsite_url": null,
+      "layout_id": 270691,
+      "map_link": "",
+      "participant_capacity": 10,
+      "participant_count": 0,
+      "participant_counts": {
+        "show": 0,
+        "noshow": 0,
+        "reactedyes": 0,
+        "reactedno": 0,
+        "notreacted": 0
+      },
+      "unconfirmed_count": 0,
+      "group_capacity": null,
+      "group_count": null,
+      "participant_types": null,
+      "location_type": "in_person",
+      "online_event_link": null,
+      "reservation_time_limit": 20,
+      "show_timezone_to_participant": 0,
+      "shared_rights": null,
+      "language": [
+        "fi"
+      ],
+      "name": {
+        "fi": "Kurssi"
+      },
+      "location": {
+        "fi": "Meill\u00e4"
+      },
+      "address": {
+        "fi": ""
+      },
+      "homepage": {
+        "fi": ""
+      },
+      "homepage_title": {
+        "fi": ""
+      },
+      "participant_type_heading": {
+        "fi": "Osallistujatyyppi"
+      },
+      "online_event_link_title": {
+        "fi": ""
+      },
+      "contact_person": {
+        "fi": {
+          "name": "contact person",
+          "email": "contact.peson@vincit.fi",
+          "reply_to_name": "Contact Person",
+          "reply_to_email": "contact.person@vincit.fi"
+        }
+      },
+      "has_participants": 0,
+      "category": {
+        "1": {
+          "id": 19117,
+          "title": "Testitapahtumat"
+        }
+      },
+      "custom": {
+        "3112": {
+          "id": 3112,
+          "title": "Mainosteksti",
+          "type": "textarea",
+          "answer": "<p>Tosi kovaa setti\u00e4!</p>"
+        },
+        "3448": {
+          "id": 3448,
+          "title": "Google Group link",
+          "type": "text",
+          "answer": "https://groups.google.com/a/vincit.fi/g/testiryhma-lyytikayttoon/"
+        }
+      },
+      "participants": "https://api.lyyti.com/v2/events/1240375/participants",
+      "questions": "https://api.lyyti.com/v2/events/1240375/questions",
+      "url": "https://api.lyyti.com/v2/events/1240375"
+    }
+  },
+  "method": "GET",
+  "call": "events",
+  "parameters": [],
+  "results_count": 15,
+  "parent": "https://api.lyyti.com/v2/",
+  "url": "https://api.lyyti.com/v2/events"
+}

@@ -1,0 +1,84 @@
+{
+  "results": {
+    "1240375-2098245787": {
+      "id": 2098245787,
+      "group": null,
+      "participants": [
+        {
+          "id": 2098245787,
+          "uid": "1240375-2098245787",
+          "group_id": null,
+          "is_contact_person": 0,
+          "email": "simon.gotz@vincit.fi",
+          "email_blocked": 0,
+          "firstname": "Simon",
+          "lastname": "G\u00f6tz",
+          "lang": "fi",
+          "status": "reactedyes",
+          "queue_status": null,
+          "queue_enter_time": null,
+          "queue_position": null,
+          "participant_type": null,
+          "is_active": 1,
+          "is_avec": 0,
+          "has_avec": 0,
+          "phone": null,
+          "phone_countrycode": null,
+          "online_event_link": null,
+          "timestamp_added": 1676018148,
+          "timestamp_enrolled": 1676018330,
+          "timestamp_modified": 1676018330,
+          "info1": null,
+          "info2": null,
+          "organiser_info": null,
+          "matches": 1,
+          "answers": [],
+          "payments": null
+        }
+      ]
+    },
+    "1240375-144545903": {
+      "id": 144545903,
+      "group": null,
+      "participants": [
+        {
+          "id": 144545903,
+          "uid": "1240375-144545903",
+          "group_id": null,
+          "is_contact_person": 0,
+          "email": "simon.gotz+not-participating@vincit.fi",
+          "email_blocked": 0,
+          "firstname": "S",
+          "lastname": "G",
+          "lang": "fi",
+          "status": "reactedno",
+          "queue_status": null,
+          "queue_enter_time": null,
+          "queue_position": null,
+          "participant_type": null,
+          "is_active": 0,
+          "is_avec": 0,
+          "has_avec": 0,
+          "phone": null,
+          "phone_countrycode": null,
+          "online_event_link": null,
+          "timestamp_added": 1676019798,
+          "timestamp_enrolled": 0,
+          "timestamp_modified": 1676019848,
+          "info1": null,
+          "info2": null,
+          "organiser_info": null,
+          "matches": 1,
+          "answers": [],
+          "payments": null
+        }
+      ]
+    }
+  },
+  "method": "GET",
+  "call": "participants/1240375",
+  "parameters": [],
+  "results_count": 2,
+  "parent": "https://api.lyyti.com/v2/participants",
+  "url": "https://api.lyyti.com/v2/participants/1240375"
+}
