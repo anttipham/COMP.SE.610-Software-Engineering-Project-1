@@ -27,7 +27,7 @@ def load_events() -> list[Event]:
     json_object = get_events()
 
     return [Event(event_id=data['eid'],
-                  google_group_link='WIP',
+                  google_group_link=data['custom']['3448']['answer'],
                   participants=load_participants(data['eid']))
             for data in json_object['results'].values()]
 
