@@ -26,4 +26,8 @@ def load_participants(event_id: str) -> list[Participant]:
     participant_data = (link['participants'][0]
                         for link in json_object['results'].values())
 
-    return [Participant(email=data['email']) for data in participant_data]
+    participants: list[Participant] = []
+    for data in participant_data:
+        if data['status'] == 'reactedyes':
+            participants.append(Participant(email=data['email']))
+    return participants

@@ -28,11 +28,15 @@ def find_google_group_link(custom: dict[str, dict[str, Any]]) -> str:
     Returns:
         str: Google Group link if found, otherwise empty string.
     """
+    if not custom:
+        return ''
+
     custom_contents = custom['custom'].values()
     for content in custom_contents:
         if content['title'] == 'Google Group link':
             google_group_link = content['answer']
             return google_group_link
+
     # Couldn't find Google Group link
     return ''
 

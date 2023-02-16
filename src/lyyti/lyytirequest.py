@@ -5,13 +5,13 @@ Handles HTTP requests to Lyyti API.
 import base64
 import hashlib
 import hmac
-import json
 import os
 import time
 
-# import requests
+import requests
 
 import environ  # Set environment variables
+
 API_ROOT = os.environ['LYYTI_ROOT_URL']
 
 
@@ -60,13 +60,12 @@ def get_events() -> dict:
     Returns:
         dict: JSON data in dictionaries and lists.
     """
-    # call_string = os.environ['LYYTI_EVENTS_CALLSTRING']
-    # url = API_ROOT + call_string
-    # response = requests.get(url,
-    #                         headers=generate_headers(call_string),
-    #                         timeout=float(os.environ['TIMEOUT_DURATION']))
-    # return response.json()
-    return json.loads(os.environ['LYYTI_EVENTS_RESPONSE'])
+    call_string = os.environ['LYYTI_EVENTS_CALLSTRING']
+    url = API_ROOT + call_string
+    response = requests.get(url,
+                            headers=generate_headers(call_string),
+                            timeout=float(os.environ['TIMEOUT_DURATION']))
+    return response.json()
 
 
 def get_participants(event_id: str) -> dict:
@@ -78,10 +77,9 @@ def get_participants(event_id: str) -> dict:
     Returns:
         dict: JSON data in dictionaries and lists.
     """
-    #call_string = os.environ['LYYTI_PARTICIPANTS_CALLSTRING'].format(event_id)
-    # url = API_ROOT + call_string
-    # response = requests.get(url,
-    #                         headers=generate_headers(call_string),
-    #                         timeout=float(os.environ['TIMEOUT_DURATION']))
-    # return response.json()
-    return json.loads(os.environ['LYYTI_PARTICIPANTS_RESPONSE'])
+    call_string = os.environ['LYYTI_PARTICIPANTS_CALLSTRING'].format(event_id)
+    url = API_ROOT + call_string
+    response = requests.get(url,
+                            headers=generate_headers(call_string),
+                            timeout=float(os.environ['TIMEOUT_DURATION']))
+    return response.json()
