@@ -2,6 +2,8 @@
 
 ## Setup
 
+Copy the content of `src/environ.example.py`, paste it into `src/environ.py` and add the API keys into it.
+
 ```bash
 pip install -r requirements.txt
 ```
