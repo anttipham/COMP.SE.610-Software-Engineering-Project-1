@@ -19,7 +19,7 @@ class Custom(TypedDict):
 
 
 @dataclass
-class Event(Custom):
+class Event:
     """
     Contains the information of an event.
 
@@ -37,7 +37,7 @@ def parse_custom_field(custom: dict[str, dict[str, str]]) -> Custom:
     """
     From the given custom field in JSON response, return the Google Group link
     and Google Calendar link.
-    
+
     If there's no Google Group link or Google Calendar link, returns Custom
     with the corresponding field as an empty string.
 
