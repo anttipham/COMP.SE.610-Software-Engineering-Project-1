@@ -6,9 +6,13 @@ from dataclasses import dataclass
 from .lyytirequest import get_participants
 
 
-@dataclass
+@dataclass(frozen=True)
 class Participant:
-    """Contains information of a participant"""
+    """
+    Contains information of a participant.
+    
+    The participant data is immutable.
+    """
     email: str
 
 

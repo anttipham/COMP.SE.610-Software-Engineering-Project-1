@@ -18,13 +18,15 @@ class Custom(TypedDict):
     google_calendar_link: str
 
 
-@dataclass
+@dataclass(frozen=True)
 class Event:
     """
     Contains the information of an event.
 
     google_group_link and google_calendar_link are optional fields and they can
     be an empty string.
+
+    The event data is immutable.
     """
     event_id: str
     participants: list[Participant]
