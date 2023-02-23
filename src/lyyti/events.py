@@ -67,7 +67,7 @@ def parse_custom_field(custom: dict[str, dict[str, str]]) -> Custom:
 
 def load_events() -> list[Event]:
     """
-    Returns event information from Lyyti API.
+    It loads events from Lyyti API and returns them as a list of Event objects
 
     Returns:
         list[Event]: List of events
