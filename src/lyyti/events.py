@@ -4,8 +4,9 @@ Handles the events of the Lyyti API.
 
 from dataclasses import dataclass
 from typing import TypedDict
-from .participants import Participant, load_participants
+
 from .lyytirequest import get_events
+from .participants import Participant, load_participants
 
 
 class Custom(TypedDict):
@@ -14,6 +15,7 @@ class Custom(TypedDict):
 
     The fields are optional and can be an empty string.
     """
+
     google_group_link: str
     google_calendar_link: str
 
@@ -28,6 +30,7 @@ class Event:
 
     The event data is immutable.
     """
+
     event_id: str
     participants: list[Participant]
     google_group_link: str
@@ -52,16 +55,16 @@ def parse_custom_field(custom: dict[str, dict[str, str]]) -> Custom:
     Returns:
         Custom: Fields are empty strings if not found from args.
     """
-    custom_fields = Custom(google_group_link='', google_calendar_link='')
+    custom_fields = Custom(google_group_link="", google_calendar_link="")
 
     if not isinstance(custom, dict):
         return custom_fields
 
     for content in custom.values():
-        if content.get('title', '') == 'Google Group link':
-            custom_fields['google_group_link'] = content.get('answer', '')
-        if content.get('title', '') == 'Google Calendar link':
-            custom_fields['google_calendar_link'] = content.get('answer', '')
+        if content.get("title", "") == "Google Group link":
+            custom_fields["google_group_link"] = content.get("answer", "")
+        if content.get("title", "") == "Google Calendar link":
+            custom_fields["google_calendar_link"] = content.get("answer", "")
     return custom_fields
 
 
@@ -70,20 +73,30 @@ def load_events() -> list[Event]:
     It loads events from Lyyti API and returns them as a list of Event objects
 
     Returns:
-        list[Event]: List of events
+        list[Event]: List of events or empty list
+        if http request doesn't succeed
     """
-    json_object = get_events()
-    # print(json.dumps(json_object, indent=2))
+    status_code, json_object = get_events().status_code, get_events().json()
 
+    # print(json.dumps(json_object, indent=2))
     events: list[Event] = []
-    for data in json_object['results'].values():
-        custom_field = parse_custom_field(data['custom'])
-        events.append(Event(event_id=data['eid'],
-                            participants=load_participants(data['eid']),
-                            **custom_field))
+
+    if status_code != 200:
+        return events
+
+    for data in json_object["results"].values():
+        custom_field = parse_custom_field(data["custom"])
+        events.append(
+            Event(
+                event_id=data["eid"],
+                participants=load_participants(data["eid"]),
+                **custom_field
+            )
+        )
     return events
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     import environ
+
     print(load_events())

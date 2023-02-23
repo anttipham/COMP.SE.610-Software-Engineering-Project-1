@@ -10,9 +10,10 @@ from .lyytirequest import get_participants
 class Participant:
     """
     Contains information of a participant.
-    
+
     The participant data is immutable.
     """
+
     email: str
 
 
@@ -24,14 +25,23 @@ def load_participants(event_id: str) -> list[Participant]:
         event_id (str): The event ID that the participant data is gathered from
 
     Returns:
-        Participant: Participants' data in a list
+        Participant: Participants' data in a list or
+        an empty list if http request doesn't succeed
     """
-    json_object = get_participants(event_id)
-    participant_data = (link['participants'][0]
-                        for link in json_object['results'].values())
+    response = get_participants(event_id)
+    status_code = response.status_code
+    json_object = response.json()
 
     participants: list[Participant] = []
+
+    if status_code != 200:
+        return participants
+
+    participant_data = (
+        link["participants"][0] for link in json_object["results"].values()
+    )
+
     for data in participant_data:
-        if data['status'] == 'reactedyes':
-            participants.append(Participant(email=data['email']))
+        if data["status"] == "reactedyes":
+            participants.append(Participant(email=data["email"]))
     return participants
