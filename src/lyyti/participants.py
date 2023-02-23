@@ -28,19 +28,19 @@ def load_participants(event_id: str) -> list[Participant]:
         Participant: Participants' data in a list or
         an empty list if http request doesn't succeed
     """
+    response = get_participants(event_id)
+    status_code, json_object = response.status_code, response.json()
 
     participants: list[Participant] = []
 
-    status_code, json_object = (
-        get_participants(event_id).status_code,
-        get_participants(event_id).json(),
-    )
-    if status_code == 200:
-        participant_data = (
-            link["participants"][0] for link in json_object["results"].values()
-        )
+    if status_code != 200:
+        participants
 
-        for data in participant_data:
-            if data["status"] == "reactedyes":
-                participants.append(Participant(email=data["email"]))
+    participant_data = (
+        link["participants"][0] for link in json_object["results"].values()
+    )
+
+    for data in participant_data:
+        if data["status"] == "reactedyes":
+            participants.append(Participant(email=data["email"]))
     return participants

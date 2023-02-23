@@ -80,16 +80,19 @@ def load_events() -> list[Event]:
 
     # print(json.dumps(json_object, indent=2))
     events: list[Event] = []
-    if status_code == 200:
-        for data in json_object["results"].values():
-            custom_field = parse_custom_field(data["custom"])
-            events.append(
-                Event(
-                    event_id=data["eid"],
-                    participants=load_participants(data["eid"]),
-                    **custom_field
-                )
+
+    if status_code != 200:
+        return events
+
+    for data in json_object["results"].values():
+        custom_field = parse_custom_field(data["custom"])
+        events.append(
+            Event(
+                event_id=data["eid"],
+                participants=load_participants(data["eid"]),
+                **custom_field
             )
+        )
     return events
 
 
