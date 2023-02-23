@@ -1,14 +1,17 @@
 """
 Univincity-throw-in-bot
 """
-import timer
+import lyyti
 
 
 def main():
     """
     Main function
     """
-    timer.run_with_interval(lambda: print('Hello World!'), 1)
+    events = lyyti.load_events()
+    for event in events:
+        # Handle events
+        pass
 
 
 if __name__ == '__main__':
