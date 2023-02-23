@@ -29,12 +29,13 @@ def load_participants(event_id: str) -> list[Participant]:
         an empty list if http request doesn't succeed
     """
     response = get_participants(event_id)
-    status_code, json_object = response.status_code, response.json()
+    status_code = response.status_code
+    json_object = response.json()
 
     participants: list[Participant] = []
 
     if status_code != 200:
-        participants
+        return participants
 
     participant_data = (
         link["participants"][0] for link in json_object["results"].values()
