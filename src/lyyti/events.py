@@ -76,7 +76,9 @@ def load_events() -> list[Event]:
         list[Event]: List of events or empty list
         if http request doesn't succeed
     """
-    status_code, json_object = get_events().status_code, get_events().json()
+    response = get_events()
+    status_code = response.status_code
+    json_object = response.json()
 
     # print(json.dumps(json_object, indent=2))
     events: list[Event] = []
