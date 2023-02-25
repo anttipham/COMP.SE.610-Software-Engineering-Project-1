@@ -1,3 +1,0 @@
-"""
-Handles Google Group stuff.
-"""
