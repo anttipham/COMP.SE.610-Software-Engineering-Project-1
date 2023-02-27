@@ -3,7 +3,7 @@ Handles the events of the Lyyti API.
 """
 
 from dataclasses import dataclass
-from typing import TypedDict
+from typing import Sequence, TypedDict
 
 from .lyytirequest import get_events
 from .participants import Participant, load_participants
@@ -25,14 +25,17 @@ class Event:
     """
     Contains the information of an event.
 
-    google_group_link and google_calendar_link are optional fields and they can
-    be an empty string.
+    - event_id (str): The id of the event
+    - participant (Sequence[Participant]): Tuple of the participants of the
+    event
+    - google_group_link (str): The google group link or empty string
+    - google_calendar_link (str): The google calendar link or empty string
 
     The event data is immutable.
     """
 
     event_id: str
-    participants: list[Participant]
+    participants: Sequence[Participant]
     google_group_link: str
     google_calendar_link: str
     # slack_members: list[str]  # For updating participants in Slack
