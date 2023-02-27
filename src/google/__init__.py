@@ -1,3 +1,0 @@
-"""
-Handles Google related things.
-"""

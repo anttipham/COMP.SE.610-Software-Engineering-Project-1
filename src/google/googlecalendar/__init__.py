@@ -1,3 +1,0 @@
-"""
-Handles Google Calendar things
-"""

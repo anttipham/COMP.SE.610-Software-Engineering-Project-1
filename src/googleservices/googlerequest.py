@@ -3,13 +3,11 @@ from google.auth.transport.requests import AuthorizedSession
 import os
 
 
-def sendHttpGetRequest(url: str) -> google.auth.transport.requests.Response:
+def send_http_get_request(url: str) -> google.auth.transport.requests._Response:
     """
     Sends get request and returns the response.
-
     Args:
             url (str): Contains request url.
-
     Returns:
             google.auth.transport.requests.Response: Contains information from the server.
     """
@@ -37,7 +35,7 @@ def sendHttpGetRequest(url: str) -> google.auth.transport.requests.Response:
         return response
 
     # Handle credential errors.
-    except DefaultCredentialsError:
+    except google.auth.exceptions.DefaultCredentialsError:
         print(
             "Not implemented! Happened because google credentials are missing or invalid."
         )
@@ -47,7 +45,9 @@ def sendHttpGetRequest(url: str) -> google.auth.transport.requests.Response:
         print("Not implemented! Handles all other errors.")
 
 
-def sendHttpPutRequest(url: str, updated: str):
+def send_http_put_request(
+    url: str, updated: str
+) -> google.auth.transport.requests._Response:
     """
     Sends put http request to update already existing item.
 
@@ -80,7 +80,7 @@ def sendHttpPutRequest(url: str, updated: str):
         return response
 
     # Handle credential errors.
-    except DefaultCredentialsError:
+    except google.auth.exceptions.DefaultCredentialsError:
         print(
             "Not implemented! Happened because google credentials are missing or invalid."
         )
