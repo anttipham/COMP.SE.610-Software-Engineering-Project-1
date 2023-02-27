@@ -18,18 +18,10 @@ if "LYYTI_ROOT_URL" not in os.environ:
 if "LYYTI_EVENTS_CALLSTRING" not in os.environ:
     os.environ["LYYTI_EVENTS_CALLSTRING"] = "events/"
 
-if "LYYTI_PARTICIPANTS_CALLSTRING" not in os.environ:
-    os.environ["LYYTI_PARTICIPANTS_CALLSTRING"] = "participants/{}"
-
-if "LYYTI_EVENTS_RESPONSE" not in os.environ:
-    with open("../res/events-sample.json", "r", encoding="utf-8") as f:
-        os.environ["LYYTI_EVENTS_RESPONSE"] = f.read()
-
-if "LYYTI_PARTICIPANTS_RESPONSE" not in os.environ:
-    with open("../res/participants-sample.json", "r", encoding="utf-8") as f:
-        os.environ["LYYTI_PARTICIPANTS_RESPONSE"] = f.read()
-
 if "GOOGLE_APPLICATION_CREDENTIALS" not in os.environ:
     os.environ[
         "GOOGLE_APPLICATION_CREDENTIALS"
     ] = "link\\to\\your\\serviceaccountcredentials"
+
+if "LYYTI_PARTICIPANTS_CALLSTRING" not in os.environ:
+    os.environ["LYYTI_PARTICIPANTS_CALLSTRING"] = "participants/{}"
