@@ -20,11 +20,3 @@ if 'LYYTI_EVENTS_CALLSTRING' not in os.environ:
 
 if 'LYYTI_PARTICIPANTS_CALLSTRING' not in os.environ:
     os.environ['LYYTI_PARTICIPANTS_CALLSTRING'] = 'participants/{}'
-
-if 'LYYTI_EVENTS_RESPONSE' not in os.environ:
-    with open('../res/events-sample.json', 'r', encoding='utf-8') as f:
-        os.environ['LYYTI_EVENTS_RESPONSE'] = f.read()
-
-if 'LYYTI_PARTICIPANTS_RESPONSE' not in os.environ:
-    with open('../res/participants-sample.json', 'r', encoding='utf-8') as f:
-        os.environ['LYYTI_PARTICIPANTS_RESPONSE'] = f.read()
