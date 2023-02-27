@@ -1,0 +1,16 @@
+[project]
+name = "Univincity-throw-in-bot"
+description = "Univincity-throw-in-bot"
+version = "0.2.0"
+dependencies = [
+    "requests",
+    "slack_sdk",
+    "google-api-python-client",
+    "google-auth-httplib2",
+    "google-auth-oauthlib"
+]
+
+[tool.pytest.ini_options]
+pythonpath = [
+  "src"
+]
