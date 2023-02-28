@@ -1,59 +1,57 @@
+import json
+from unittest.mock import patch
+
+from lyyti.events import Custom, Event, load_events, parse_custom_field
+
 """
 Tests for the functions in src/events.py
 """
 
-from pytest import MonkeyPatch
 
-from lyyti.events import *
-from lyyti.participants import Participant
-
-# def test_custom_class() -> None:
-#     """Test that class Custom works like it should"""
-#     example_custom = Custom(
-#         google_group_link="example_group_link",
-#         google_calendar_link="example_calendar_link",
-#     )
-#     assert example_custom["google_group_link"] == "example_group_link"
-#     assert example_custom["google_calendar_link"] == "example_calendar_link"
-
-
-# def test_event_class() -> None:
-#     """Test that dataclass Event works like it should"""
-
-#     example_participants = list[
-#         Participant(email="example1@test.com"), Participant(email="example2@test.com")
-#     ]
-
-#     example_event = Event(
-#         event_id="123",
-#         participants=example_participants,
-#         google_group_link="example_group_link",
-#         google_calendar_link="example_calendar_link",
-#     )
-#     assert (
-#         example_event.event_id == "123"
-#         and example_event.participants == example_participants
-#         and example_event.google_group_link == "example_group_link"
-#         and example_event.google_calendar_link == "example_calendar_link"
-#     )
+def test_Custom() -> None:
+    """Test that class Custom works as predicted"""
+    example_custom = Custom(
+        google_group_link="example_group_link",
+        google_calendar_link="example_calendar_link",
+    )
+    assert example_custom["google_group_link"] == "example_group_link"
+    assert example_custom["google_calendar_link"] == "example_calendar_link"
 
 
 def test_parse_custom_field() -> None:
-    """Test the parse_custom_fields function in src/events.py"""
+    """Test that parse_custom_field works with example data"""
     example_field = {
         "3448": {
             "id": 3448,
             "title": "Google Group link",
-            "type": "text",
-            "answer": "example_group_link",
-        }
+            "answer": "https://groups.google.com/g/example_group_link",
+        },
+        "3449": {
+            "id": 3449,
+            "title": "Google Calendar link",
+            "answer": "https://calendar.google.com/calendar/u/0/r/eventedit/example_calendar_link",
+        },
     }
-
     assert parse_custom_field(example_field) == Custom(
-        google_group_link="example_group_link", google_calendar_link=""
+        google_group_link="https://groups.google.com/g/example_group_link",
+        google_calendar_link="https://calendar.google.com/calendar/u/0/r/eventedit/example_calendar_link",
     )
 
 
-def test_load_events(monkeypatch: MonkeyPatch) -> None:
-    """Test the load_events function in src/events.py"""
-    assert type(load_events()) == list
+def test_parse_custom_field_empty() -> None:
+    """Test that parse_custom_field works with empty data"""
+    example_field = {}
+    assert parse_custom_field(example_field) == Custom(
+        google_group_link="", google_calendar_link=""
+    )
+
+
+def test_load_events() -> None:
+    """Test that load_events returns a list of Event objects"""
+    with patch("lyyti.events.load_events") as mock_get:
+        with open("res/events-sample.json", "r") as file:
+            data = json.load(file)
+            mock_get.return_value.json.return_value = data
+    assert isinstance(load_events(), list)
+    assert isinstance(load_events()[0], Event)
+    assert isinstance(load_events()[0].event_id, int)
