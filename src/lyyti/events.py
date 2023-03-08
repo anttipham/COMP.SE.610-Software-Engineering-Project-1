@@ -5,6 +5,8 @@ Handles the events of the Lyyti API.
 from dataclasses import dataclass
 from typing import Sequence, TypedDict
 
+from errorhandler.httprequesterrorhandler import log_exception
+
 from .lyytirequest import get_events
 from .participants import Participant, load_participants
 
@@ -71,6 +73,7 @@ def parse_custom_field(custom: dict[str, dict[str, str]]) -> Custom:
     return custom_fields
 
 
+@log_exception
 def load_events() -> list[Event]:
     """
     It loads events from Lyyti API and returns them as a list of Event objects
@@ -86,7 +89,10 @@ def load_events() -> list[Event]:
     # print(json.dumps(json_object, indent=2))
     events: list[Event] = []
 
-    if status_code != 200:
+    if status_code not in range(200, 300):
+        # raise Exception(
+        #     f"Request failed with status code {status_code} and response {json_object}"
+        # )
         return events
 
     for data in json_object["results"].values():
@@ -95,7 +101,7 @@ def load_events() -> list[Event]:
             Event(
                 event_id=data["eid"],
                 participants=load_participants(data["eid"]),
-                **custom_field
+                **custom_field,
             )
         )
     return events
