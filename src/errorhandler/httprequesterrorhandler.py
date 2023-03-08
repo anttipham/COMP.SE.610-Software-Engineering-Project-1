@@ -3,7 +3,7 @@ import logging
 
 """Configure logging. Change the level to see more logs. (DEBUG, INFO, WARNING, ERROR, CRITICAL))"""
 logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
 )
 logger = logging.getLogger(__name__)
 
@@ -19,7 +19,7 @@ def log_exception(function):
         try:
             return function(*args, **kwargs)
         except Exception as e:
-            logger.exception(f"There was an exeption in {function.__name__}")
+            logger.exception(f"There was an exception in {function.__name__}: {e}")
             raise e
 
     return wrapper
