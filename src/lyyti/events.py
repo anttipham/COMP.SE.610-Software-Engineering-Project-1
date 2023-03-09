@@ -3,6 +3,7 @@ Handles the events of the Lyyti API.
 """
 
 from dataclasses import dataclass
+from datetime import datetime
 from typing import Sequence, TypedDict
 
 from .lyytirequest import get_events
@@ -71,9 +72,29 @@ def parse_custom_field(custom: dict[str, dict[str, str]]) -> Custom:
     return custom_fields
 
 
+def is_future(unix_time: int) -> bool:
+    """
+    Checks whether the given Unix UTC timestamp is in the future or not,
+    relative to the start of the current day (12:00 am UTC).
+
+    Args:
+        unix_time (int): Unix timestamp to check
+
+    Returns:
+        bool: True if the timestamp is in the future, False otherwise
+    """
+    start_of_day_utc = datetime.utcnow().replace(
+        hour=0, minute=0, second=0, microsecond=0
+    )
+    start_of_day_unix = int(start_of_day_utc.timestamp())
+    return unix_time > start_of_day_unix
+
+
 def load_events() -> list[Event]:
     """
-    It loads events from Lyyti API and returns them as a list of Event objects
+    It loads events from Lyyti API and returns them as a list of Event objects.
+
+    Events that have ended are not included in the returned list.
 
     Returns:
         list[Event]: List of events or empty list
@@ -83,6 +104,7 @@ def load_events() -> list[Event]:
     status_code = response.status_code
     json_object = response.json()
 
+    # import json
     # print(json.dumps(json_object, indent=2))
     events: list[Event] = []
 
@@ -90,6 +112,9 @@ def load_events() -> list[Event]:
         return events
 
     for data in json_object["results"].values():
+        if not is_future(int(data.get("end_time_utc", "0"))):
+            continue
+
         custom_field = parse_custom_field(data["custom"])
         events.append(
             Event(
