@@ -20,4 +20,5 @@ def build_google_service(api_name: str, api_version: str) -> Resource:
     )[0]
 
     # Get session.
-    return build(api_name, api_version, credentials=cred)
+    with build(api_name, api_version, credentials=cred) as service:
+        return service
