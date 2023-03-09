@@ -1,4 +1,4 @@
-from ..googlerequest import send_http_get_request, send_http_put_request
+from .googlerequest import send_http_get_request, send_http_put_request
 
 
 def get_calendar_event_participants(calendar_id: str, event_id: str) -> list:
