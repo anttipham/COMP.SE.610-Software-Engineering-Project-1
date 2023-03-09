@@ -21,8 +21,7 @@ def build_google_service(api_Name: str, api_version: str) -> object:
         )[0]
 
         # Get session.
-        with build(api_Name, api_version, credentials=cred) as service:
-            return service
+        return build(api_Name, api_version, credentials=cred)
 
     # Handle other errors.
     except:
