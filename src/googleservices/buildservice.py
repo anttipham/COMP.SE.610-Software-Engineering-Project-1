@@ -1,9 +1,9 @@
 import google.auth
-from googleapiclient.discovery import build
+from googleapiclient.discovery import build, Resource
 import environ
 
 
-def build_google_service(api_Name: str, api_version: str) -> object:
+def build_google_service(api_name: str, api_version: str) -> Resource:
     """
     Sends get request and returns the response.
 
