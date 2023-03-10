@@ -1,11 +1,19 @@
 """
-Handles calendar events in Google Groups
+Contains functions that affect Google Groups
 """
 from .buildservice import build_google_service
 
 
-def update_groups(group_id: str, emails: list):
-    """Updates google group members"""
+def add_emails_to_group(group_id: str, emails: list[str]) -> None:
+    """
+    This function takes a Google Group ID and a list of emails and adds the emails to
+    the group.
+
+    Args:
+        group_id (str): The Google Group ID of the group to add members to
+        emails (list): List of emails to add to the group
+    """
+
     service = build_google_service("groupssettings", "v1")
     for email in emails:
         response = (

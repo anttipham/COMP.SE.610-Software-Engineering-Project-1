@@ -1,14 +1,20 @@
+"""
+Handles the authentication of Google API and the use of google-api-python-client.
+"""
 import google.auth
 from googleapiclient.discovery import build, Resource
-import environ
 
 
 def build_google_service(api_name: str, api_version: str) -> Resource:
     """
-    Sends get request and returns the response.
+    It builds a Google service object that can be used to make API calls
+
+    Args:
+        api_name (str): The name of the API to use
+        api_version (str): The version of the API to use
 
     Returns:
-            object: The google api service build.
+        Resource: A Resource object that from googleapiclient.discovery
     """
     # Get credentials.
     cred = google.auth.default(
