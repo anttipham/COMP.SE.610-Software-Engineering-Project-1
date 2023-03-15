@@ -3,6 +3,11 @@ Sets variables to environment variables for testing purposes.
 """
 import os
 
+if "GOOGLE_APPLICATION_CREDENTIALS" not in os.environ:
+    os.environ[
+        "GOOGLE_APPLICATION_CREDENTIALS"
+    ] = "univincity-throw-in-bot-018d57429b27.json"
+
 if "LYYTI_PRIVATE_KEY" not in os.environ:
     os.environ["LYYTI_PRIVATE_KEY"] = "<PRIVATE KEY HERE>"
 
@@ -17,11 +22,6 @@ if "LYYTI_ROOT_URL" not in os.environ:
 
 if "LYYTI_EVENTS_CALLSTRING" not in os.environ:
     os.environ["LYYTI_EVENTS_CALLSTRING"] = "events/"
-
-if "GOOGLE_APPLICATION_CREDENTIALS" not in os.environ:
-    os.environ[
-        "GOOGLE_APPLICATION_CREDENTIALS"
-    ] = "link\\to\\your\\serviceaccountcredentials"
 
 if "LYYTI_PARTICIPANTS_CALLSTRING" not in os.environ:
     os.environ["LYYTI_PARTICIPANTS_CALLSTRING"] = "participants/{}"
