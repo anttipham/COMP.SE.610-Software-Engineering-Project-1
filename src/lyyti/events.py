@@ -72,10 +72,12 @@ def parse_custom_field(custom: dict[str, dict[str, str]]) -> Custom:
     return custom_fields
 
 
-def has_ended(unix_time_utc: int) -> bool:
+def is_in_the_past(unix_time_utc: int) -> bool:
     """
     Checks whether the given Unix UTC timestamp is in the past,
-    relative to the start of the current day (12:00 am UTC), exclusive.
+    relative to the start of the current day (12:00 am UTC).
+
+    If the given time is precisely 12:00 am, it will be interpreted as in the past.
 
     Args:
         unix_time (int): Unix timestamp to check
@@ -87,7 +89,7 @@ def has_ended(unix_time_utc: int) -> bool:
         hour=0, minute=0, second=0, microsecond=0
     )
     start_of_day_unix = int(start_of_day_utc.timestamp())
-    return unix_time_utc > start_of_day_unix
+    return start_of_day_unix >= unix_time_utc
 
 
 def load_events() -> list[Event]:
@@ -112,7 +114,7 @@ def load_events() -> list[Event]:
         return events
 
     for data in json_object["results"].values():
-        if has_ended(int(data.get("end_time_utc", "0"))):
+        if is_in_the_past(int(data.get("end_time_utc", "0"))):
             continue
 
         custom_field = parse_custom_field(data["custom"])
