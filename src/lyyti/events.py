@@ -124,9 +124,3 @@ def load_events() -> list[Event]:
             )
         )
     return events
-
-
-if __name__ == "__main__":
-    import environ
-
-    print(load_events())
