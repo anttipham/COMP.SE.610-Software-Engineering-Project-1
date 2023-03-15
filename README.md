@@ -2,10 +2,16 @@
 
 ## Setup
 
-Copy the content of `src/environ.example.py`, paste it into `src/environ.py` and add the API keys into it.
+1. Place `univincity-throw-in-bot-018d57429b27.json` to the root of the project
+2. Create an empty file `src/environ.py`
+3. Copy the content of `src/environ.example.py` and paste it into `src/environ.py`
+4. Fill the API keys into `src/environ.py`
+5. Run the following command `pip install .`
+
+## Running
 
 ```bash
-pip install .
+python src/main.py
 ```
 
 ## Testing
