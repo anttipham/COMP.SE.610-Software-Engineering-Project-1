@@ -21,7 +21,7 @@ def build_google_service(api_name: str, api_version: str) -> Resource:
         scopes=[
             "https://www.googleapis.com/auth/calendar",
             "https://www.googleapis.com/auth/calendar.events",
-            "https://www.googleapis.com/auth/apps.groups.settings",
+            "https://www.googleapis.com/auth/admin.directory.group.member"
         ]
     )[0]
 
