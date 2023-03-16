@@ -1,6 +1,9 @@
 # Ignore environment variables
 src/environ.py
 
+# Ignore service account credentials
+univincity-throw-in-bot-018d57429b27.json
+
 # .gitignore template from:
 # https://gist.github.com/GhostofGoes/94580e76cd251972b15b4821c8a06f59
 # - Antti Pham

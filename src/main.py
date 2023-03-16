@@ -4,13 +4,15 @@ Univincity-throw-in-bot
 import dataclasses
 import json
 
+from environ import set_environ
 import lyyti
-
 
 def main():
     """
     Main function
     """
+    set_environ()
+
     events = lyyti.load_events()
     # Printing the events in a nice format.
     print("Events:\n")
