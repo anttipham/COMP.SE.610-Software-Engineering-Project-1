@@ -2,6 +2,7 @@
 Contains functions that affect Google Groups
 """
 from .buildservice import build_google_service
+from .utils import compare_lists
 
 
 def add_emails_to_group(group_id: str, emails: list[str]) -> None:
@@ -19,7 +20,7 @@ def add_emails_to_group(group_id: str, emails: list[str]) -> None:
 
     service = build_google_service("admin", "directory_v1")
     for email in emails:
-        member = {'email': email, 'role': 'MEMBER'}
+        member = {"email": email, "role": "MEMBER"}
         service.members().insert(groupKey=group_id, body=member).execute()
 
 
@@ -35,7 +36,43 @@ def remove_emails_from_group(group_id: str, emails: list[str]) -> None:
     Raises:
         googleapiclient.errors.HttpError: If the function fails.
     """
-    service = build_google_service('admin', 'directory_v1')
+    service = build_google_service("admin", "directory_v1")
 
     for email in emails:
         service.members().delete(groupKey=group_id, memberKey=email).execute()
+
+
+def get_group_members(group_id: str) -> list[str]:
+    """
+    This function retrieves all group members
+
+    Args:
+        group_id (str): The Google Group ID.
+
+    Returns:
+        list[str]: Returns list of members' emails.
+    """
+    emails = []
+    service = build_google_service("admin", "directory_v1")
+
+    request = service.members().list(groupKey=group_id)
+
+    while request:
+        response = request.execute()
+        emails += [member["email"] for member in response["members"]]
+        request = service.members().list_next(request, response)
+    return emails
+
+
+def update_group_members(group_id: str, new: list[str]) -> None:
+    """
+    Updates group members.
+
+    Args:
+        new (list[str]): The list that contains member's emails.
+    """
+    old = get_group_members(group_id)
+    to_be_added, to_be_removed = compare_lists(new, old)
+
+    add_emails_to_group(group_id, to_be_added)
+    remove_emails_from_group(group_id, to_be_removed)

@@ -47,10 +47,30 @@ def extract_calendar_id(calendar_url: str) -> str:
     query_params = parse_qs(parsed_url.query)
 
     # Extract the calendar ID from the 'src' parameter
-    src_param = query_params.get('src', [])
+    src_param = query_params.get("src", [])
 
     if not src_param:
         return ""
 
     calendar_id = src_param[0]
     return calendar_id
+
+
+def compare_lists(new: list[str], old: list[str]) -> Tuple[list[str], list[str]]:
+    """
+    Compares two lists and
+    returns list of member's that should be removed
+    and list of member's that should be added.
+
+    Args:
+        new (list[str]): Contains list of emails of members. Contains the new information.
+        old (list[str]): Contains list of emails of members. Contains the old information.
+
+    Returns:
+        Tuple[list[str], list[str]]: Returns two lists. First list contains
+        emails of members that are missing from the second list. Second list contains list of
+        emails of members that are missing from the first list.
+    """
+    to_be_added = set(old) - set(new)
+    to_be_removed = set(new) - set(old)
+    return list(to_be_added), list(to_be_removed)
