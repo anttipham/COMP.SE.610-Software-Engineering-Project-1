@@ -60,6 +60,7 @@ def get_group_members(group_id: str) -> list[str]:
 
     request = service.members().list(groupKey=group_id)
 
+    # Google forces pagination, so fetch members as long as there are members
     while request:
         response = request.execute()
         emails += [member["email"] for member in response["members"]]
