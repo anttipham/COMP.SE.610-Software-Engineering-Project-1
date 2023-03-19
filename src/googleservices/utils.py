@@ -74,6 +74,6 @@ def list_differences(old: list[T], new: list[T]) -> tuple[list[T], list[T]]:
         that should be added to `old` to get `new` and (2) list elements that should
         be removed from `old` to get `new`.
     """
-    to_be_added = set(old) - set(new)
-    to_be_removed = set(new) - set(old)
+    to_be_added = set(new) - set(old)
+    to_be_removed = set(old) - set(new)
     return list(to_be_added), list(to_be_removed)
