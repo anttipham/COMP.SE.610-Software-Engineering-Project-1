@@ -1,7 +1,10 @@
 """
 Utility and helper functions for googleservices package
 """
+from typing import TypeVar
 from urllib.parse import urlparse, parse_qs
+
+T = TypeVar("T")
 
 
 def extract_group_id(url: str) -> str:
@@ -47,10 +50,30 @@ def extract_calendar_id(calendar_url: str) -> str:
     query_params = parse_qs(parsed_url.query)
 
     # Extract the calendar ID from the 'src' parameter
-    src_param = query_params.get('src', [])
+    src_param = query_params.get("src", [])
 
     if not src_param:
         return ""
 
     calendar_id = src_param[0]
     return calendar_id
+
+
+def list_differences(old: list[T], new: list[T]) -> tuple[list[T], list[T]]:
+    """
+    Compares two lists and returns a tuple that contains
+    1. list elements that should be added to `old` to get `new`
+    2. list elements that should be removed from `old` to get `new`
+
+    Args:
+        old (list[T]): Old list whose differences will be returned
+        new (list[T]): New list that the differences will lead to
+
+    Returns:
+        Tuple[list[T], list[T]]: Returns a tuple of two lists: (1) list elements
+        that should be added to `old` to get `new` and (2) list elements that should
+        be removed from `old` to get `new`.
+    """
+    to_be_added = set(new) - set(old)
+    to_be_removed = set(old) - set(new)
+    return list(to_be_added), list(to_be_removed)
