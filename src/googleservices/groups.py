@@ -51,6 +51,9 @@ def get_group_members(group_id: str) -> list[str]:
 
     Returns:
         list[str]: Returns list of members' emails.
+
+    Raises:
+        googleapiclient.errors.HttpError: If the function fails.
     """
     emails = []
     service = build_google_service("admin", "directory_v1")
@@ -70,6 +73,9 @@ def update_group_members(group_id: str, new: list[str]) -> None:
 
     Args:
         new (list[str]): The list that contains member's emails.
+
+    Raises:
+        googleapiclient.errors.HttpError: If the function fails.
     """
     old = get_group_members(group_id)
     to_be_added, to_be_removed = list_differences(old, new)
