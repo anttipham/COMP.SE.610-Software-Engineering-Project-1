@@ -2,7 +2,7 @@
 Contains functions that affect Google Groups
 """
 from .buildservice import build_google_service
-from .utils import compare_lists
+from .utils import list_differences
 
 
 def add_emails_to_group(group_id: str, emails: list[str]) -> None:
@@ -72,7 +72,7 @@ def update_group_members(group_id: str, new: list[str]) -> None:
         new (list[str]): The list that contains member's emails.
     """
     old = get_group_members(group_id)
-    to_be_added, to_be_removed = compare_lists(new, old)
+    to_be_added, to_be_removed = list_differences(old, new)
 
     add_emails_to_group(group_id, to_be_added)
     remove_emails_from_group(group_id, to_be_removed)

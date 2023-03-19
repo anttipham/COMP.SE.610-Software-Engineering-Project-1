@@ -1,7 +1,10 @@
 """
 Utility and helper functions for googleservices package
 """
+from typing import TypeVar
 from urllib.parse import urlparse, parse_qs
+
+T = TypeVar("T")
 
 
 def extract_group_id(url: str) -> str:
@@ -56,20 +59,20 @@ def extract_calendar_id(calendar_url: str) -> str:
     return calendar_id
 
 
-def compare_lists(new: list[str], old: list[str]) -> Tuple[list[str], list[str]]:
+def list_differences(old: list[T], new: list[T]) -> tuple[list[T], list[T]]:
     """
-    Compares two lists and
-    returns list of member's that should be removed
-    and list of member's that should be added.
+    Compares two lists and returns a tuple that contains
+    1. list elements that should be added to `old` to get `new`
+    2. list elements that should be removed from `old` to get `new`
 
     Args:
-        new (list[str]): Contains list of emails of members. Contains the new information.
-        old (list[str]): Contains list of emails of members. Contains the old information.
+        old (list[T]): Old list whose differences will be returned
+        new (list[T]): New list that the differences will lead to
 
     Returns:
-        Tuple[list[str], list[str]]: Returns two lists. First list contains
-        emails of members that are missing from the second list. Second list contains list of
-        emails of members that are missing from the first list.
+        Tuple[list[T], list[T]]: Returns a tuple of two lists: (1) list elements
+        that should be added to `old` to get `new` and (2) list elements that should
+        be removed from `old` to get `new`.
     """
     to_be_added = set(old) - set(new)
     to_be_removed = set(new) - set(old)
