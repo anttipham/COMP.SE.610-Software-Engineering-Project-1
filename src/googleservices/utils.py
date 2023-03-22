@@ -2,7 +2,7 @@
 Utility and helper functions for googleservices package
 """
 from typing import TypeVar
-from urllib.parse import urlparse, parse_qs
+from urllib.parse import parse_qs, urlparse
 
 T = TypeVar("T")
 
@@ -26,7 +26,7 @@ def extract_group_id(url: str) -> str:
 
     # If the URL ends with a '/', remove it.
     if url.endswith("/"):
-        url = url.removeprefix("/")
+        url = url.removesuffix("/")
 
     # Split the URL by '/' and get the last item.
     url_parts = url.split("/")
