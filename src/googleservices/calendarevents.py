@@ -28,17 +28,12 @@ def get_calendar_events(calendar_id: str) -> list[CalendarEvent]:
     service = build_google_service("calendar", "v3")
 
     events_result = (
-        service.events()
-        .list(
-            calendarId=calendar_id,
-            singleEvents=False,
-            orderBy="startTime",
-        )
-        .execute()
+        service.events().list(calendarId=calendar_id, singleEvents=False).execute()
     )
     event_items = events_result.get("items", [])
     events = [
-        CalendarEvent(id=item["id"], name=item["summary"]) for item in event_items
+        CalendarEvent(id=item["id"], name=item.get("summary", ""))
+        for item in event_items
     ]
     return events
 
@@ -65,6 +60,6 @@ def update_calendar_event_participants(
     service.events().patch(
         calendarId=calendar_id,
         eventId=event_id,
-        body={"attendees": [participants_body]},
+        body={"attendees": participants_body},
         sendUpdates="all",
     ).execute()
