@@ -27,6 +27,9 @@ class Event:
     Contains the information of an event.
 
     - event_id (str): The id of the event
+    - name (str): The name of the event. By default in English.
+    - start_time (str): The start time of the event.
+    - end_time (str): The end time of the event.
     - participant (Sequence[Participant]): Tuple of the participants of the
     event
     - google_group_link (str): The google group link or empty string
@@ -36,6 +39,9 @@ class Event:
     """
 
     event_id: str
+    name: str
+    start_time: str
+    end_time: str
     participants: Sequence[Participant]
     google_group_link: str
     google_calendar_link: str
@@ -92,6 +98,34 @@ def is_in_the_past(unix_time_utc: int) -> bool:
     return start_of_day_unix >= unix_time_utc
 
 
+def convert_unixtime_to_datetimestring(unix_time_utc: int) -> str:
+    """
+    Converts the UNIX time that it receives to date string.
+    For example, the function would convert a unix time like 1235851100 to '2009-02-28 21:58:20', 1680296400 to '2023-04-01 00:00:00' etc.
+
+    Args:
+        unix_time_utc (int): UNIX time (in UTC format) to convert to date time string.
+    Returns:
+        str: The converted UNIX time in string.
+    """
+    unix_datetime = datetime.fromtimestamp(unix_time_utc)
+    date_str = unix_datetime.strftime("%Y-%m-%d %H:%M:%S")
+    return date_str
+
+
+def get_language_field(language_field: dict[str, str]) -> str:
+    """ 
+    Retrieves the language of the event from several languages. eg. "en", "fi", "sv", "de". "en" is default.
+
+    Args: language_field (dict[str, str]): The language field from which event language will be retrieved.
+    Returns: 
+        str: the language of the desired field (in this case, name)
+    """
+    if "en" in language_field:
+        return language_field["en"]
+    return next(iter(language_field.values()), "")
+
+
 def load_events() -> list[Event]:
     """
     It loads events from Lyyti API and returns them as a list of Event objects.
@@ -121,6 +155,9 @@ def load_events() -> list[Event]:
         events.append(
             Event(
                 event_id=data["eid"],
+                start_time=convert_unixtime_to_datetimestring(data["start_time_utc"]),
+                end_time=convert_unixtime_to_datetimestring(data["end_time_utc"]),
+                name=get_language_field(data["name"]),
                 participants=load_participants(data["eid"]),
                 **custom_field
             )

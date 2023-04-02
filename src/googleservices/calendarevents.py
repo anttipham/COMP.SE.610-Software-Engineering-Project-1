@@ -8,10 +8,19 @@ from .buildservice import build_google_service
 
 @dataclass
 class CalendarEvent:
-    """Represents a calendar event."""
+    """Represents a calendar event.
+
+    - id (str): The id of the calendar event
+    - name (str): The name of the caledar event. By default in English.
+    - start_time (str): The start time of the calendar event. Recurring calendar events have the original start time.
+    - end_time (str): The end time of the calendar event. Recurring calendar events have the original end time.
+
+    """
 
     name: str
     id: str
+    start_time: str
+    end_time: str
 
 
 def get_calendar_events(calendar_id: str) -> list[CalendarEvent]:
@@ -31,10 +40,17 @@ def get_calendar_events(calendar_id: str) -> list[CalendarEvent]:
         service.events().list(calendarId=calendar_id, singleEvents=False).execute()
     )
     event_items = events_result.get("items", [])
-    events = [
-        CalendarEvent(id=item["id"], name=item.get("summary", ""))
-        for item in event_items
-    ]
+    events: list[CalendarEvent] = []
+    for item in event_items:
+        events.append(
+            CalendarEvent(
+                id=item["id"],
+                name=item.get("summary", ""),
+                start_time=item["start"]["dateTime"],
+                end_time=item["end"]["dateTime"],
+            )
+        )
+
     return events
 
 
