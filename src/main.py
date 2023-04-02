@@ -8,40 +8,65 @@ from environ import set_environ
 import lyyti
 import googleservices
 import utils
+from lyyti import Event
 
 
-def update_google_services(event_list: list[Event]) -> None:
+def get_participant_email_list(lyyti_event: Event) -> list[str]:
+    # Get emails of lyyti event participants.
+    lyyti_event_participants_email_list = [
+        participant.email for participant in lyyti_event.participants
+    ]
+    return lyyti_event_participants_email_list
+
+
+def update_calendar_event_participants(lyyti_event: Event) -> None:
     """
-    Updates google group member and google group calendar events participants.
+    Updates google calendar event participants for a single event
 
     Args:
-        event_list (list[Event]): The lyyti events that contains link to a google group and google calendar.
+        lyyti_event (Event): Lyyti event containing information of the participants and corresponding google event link
+
+    Raises:
+        googleapiclient.errors.HttpError: If the updating event participants fails
+        ValueError: if the event doesn't contain google_calendar_id
     """
-    ## For each event in events from lyyti.
-    for lyyti_event in lyyti_event_list:
+    lyyti_event_participants_email_list = get_participant_email_list(lyyti_event)
+    google_calendar_id = utils.extract_calendar_id(lyyti_event.google_calendar_link)
 
-        ## Get emails of lyyti event participants.
-        lyyti_event_participants_email_list = [
-            participant.email for participant in lyyti_event.participants
-        ]
+    if not google_calendar_id:
+        raise ValueError(f"Missing google_calendar_id from event: {lyyti_event}")
 
-        ## Get google group id and google calendar id.
-        google_group_id = utils.extract_group_id(lyyti_event.google_group_link)
-        google_calendar_id = utils.extract_calendar_id(lyyti_event.google_calendar_link)
+    # Get all calendar events from google calendar.
+    google_calendar_events = googleservices.get_calendar_events(google_calendar_id)
 
-        ## Get all calendar events from google calendar.
-        google_calendar_events = googleservices.get_calendar_events(google_calendar_id)
-
-        ## Update google calendar events' participants.
-        for google_event in google_calendar_events:
-            googleservices.update_calendar_event_participants(
-                google_calendar_id, google_event.id, lyyti_event_participants_email_list
-            )
-
-        ## Update google group members.
-        googleservices.update_group_members(
-            google_group_id, lyyti_event_participants_email_list
+    # Update google calendar events' participants.
+    for google_event in google_calendar_events:
+        googleservices.update_calendar_event_participants(
+            google_calendar_id, google_event.id, lyyti_event_participants_email_list
         )
+
+
+def update_google_group_mebmers(lyyti_event: Event) -> None:
+    """
+    Updates group members for a single event
+
+    Args:
+        lyyti_event (Event): Lyyti event containing information of the participants and corresponding google group link
+
+    Raises:
+        googleapiclient.errors.HttpError: If the updating group members fails.
+        ValueError: if the event doesn't contain google_group_id
+    """
+    lyyti_event_participants_email_list = get_participant_email_list(lyyti_event)
+    google_group_id = utils.extract_group_id(lyyti_event.google_group_link)
+
+    if not google_group_id:
+        raise ValueError(f"Missing google_group_id from event: {lyyti_event}")
+
+    # Update google group members.
+    googleservices.update_group_members(
+        google_group_id, lyyti_event_participants_email_list
+    )
 
 
 def main():
@@ -49,9 +74,12 @@ def main():
     Main function
     """
 
-    ## Get all events from lyyti.
+    # Get all events from lyyti. And call update functions.
     lyyti_event_list = lyyti.load_events()
-    update_google_services(lyyti_event_list)
+    for lyyti_event in lyyti_event_list:
+
+        update_calendar_event_participants(lyyti_event)
+        update_google_group_mebmers(lyyti_event)
 
 
 if __name__ == "__main__":
