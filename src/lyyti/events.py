@@ -101,7 +101,8 @@ def is_in_the_past(unix_time_utc: int) -> bool:
 def convert_unixtime_to_datetimestring(unix_time_utc: int) -> str:
     """
     Converts the UNIX time that it receives to date string.
-    For example, the function would convert a unix time like 1235851100 to '2009-02-28 21:58:20', 1680296400 to '2023-04-01 00:00:00' etc.
+    For example, the function would convert a unix time like 1235851100 to
+    '2009-02-28 21:58:20', 1680296400 to '2023-04-01 00:00:00' etc.
 
     Args:
         unix_time_utc (int): UNIX time (in UTC format) to convert to date time string.
@@ -113,13 +114,27 @@ def convert_unixtime_to_datetimestring(unix_time_utc: int) -> str:
     return date_str
 
 
-def get_language_field(language_field: dict[str, str]) -> str:
-    """ 
-    Retrieves the language of the event from several languages. eg. "en", "fi", "sv", "de". "en" is default.
+def get_from_language_field(language_field: dict[str, str]) -> str:
+    """
+    Retrieves some language value of the language field, eg. "en", "fi", "sv".
+    Returns English ("en") by default.
 
-    Args: language_field (dict[str, str]): The language field from which event language will be retrieved.
-    Returns: 
-        str: the language of the desired field (in this case, name)
+    A language field is a dictionary with language codes as keys and the corresponding
+    strings as its values. For example, "English text" is returned from the following
+    argument:
+    {
+        "en": "English text",
+        "fi": "Finnish text"
+    }
+
+    If the language field is empty, returns an empty string.
+
+    Args:
+        language_field (dict[str, str]): Language field (defined above).
+    Returns:
+        str: Some language value of the corresponding language in language field.
+             Defaults to english. Returns an empty string if the language field is
+             empty.
     """
     if "en" in language_field:
         return language_field["en"]
@@ -157,7 +172,7 @@ def load_events() -> list[Event]:
                 event_id=data["eid"],
                 start_time=convert_unixtime_to_datetimestring(data["start_time_utc"]),
                 end_time=convert_unixtime_to_datetimestring(data["end_time_utc"]),
-                name=get_language_field(data["name"]),
+                name=get_from_language_field(data["name"]),
                 participants=load_participants(data["eid"]),
                 **custom_field
             )

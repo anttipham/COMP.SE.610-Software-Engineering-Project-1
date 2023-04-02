@@ -11,9 +11,12 @@ class CalendarEvent:
     """Represents a calendar event.
 
     - id (str): The id of the calendar event
-    - name (str): The name of the caledar event. By default in English.
-    - start_time (str): The start time of the calendar event. Recurring calendar events have the original start time.
-    - end_time (str): The end time of the calendar event. Recurring calendar events have the original end time.
+    - name (str): The name of the caledar event, or empty string if the event has no
+                  name.
+    - start_time (str): The start time of the calendar event. Recurring calendar events
+                        have the start time of the original calendar event.
+    - end_time (str): The end time of the calendar event. Recurring calendar events
+                      have the end time of the original calendar event.
 
     """
 
