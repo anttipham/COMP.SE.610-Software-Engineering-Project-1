@@ -164,8 +164,8 @@ def load_events() -> list[Event]:
 
     for data in json_object["results"].values():
 
-        # if is_in_the_past(int(data.get("end_time_utc", "0"))):
-            # continue
+        if is_in_the_past(int(data.get("end_time_utc", "0"))):
+            continue
         custom_field = parse_custom_field(data["custom"])
 
         events.append(
