@@ -8,10 +8,22 @@ from environ import set_environ
 import lyyti
 import googleservices
 import utils
+import traceback
 from lyyti import Event
+from botlog import botlog
+from googleapiclient.errors import HttpError
 
 
 def get_participant_email_list(lyyti_event: Event) -> list[str]:
+    """
+    Fetches participant emails from a single lyyti event and returns them in a list
+
+    Args:
+        lyyti_event (Event): Lyyti event containing information of the participants
+
+    Returns:
+        list[str]: List containing participant emails as strings
+    """
     # Get emails of lyyti event participants.
     lyyti_event_participants_email_list = [
         participant.email for participant in lyyti_event.participants
@@ -77,9 +89,25 @@ def main():
     # Get all events from lyyti. And call update functions.
     lyyti_event_list = lyyti.load_events()
     for lyyti_event in lyyti_event_list:
+        if lyyti_event.google_calendar_link:
+            try:
+                update_calendar_event_participants(lyyti_event)
+            except ValueError as error:
+                botlog(error)
+                botlog(traceback.format_exc())
+            except HttpError as error:
+                botlog(error)
+                botlog(traceback.format_exc())
 
-        update_calendar_event_participants(lyyti_event)
-        update_google_group_mebmers(lyyti_event)
+        if lyyti_event.google_group_link:
+            try:
+                update_google_group_mebmers(lyyti_event)
+            except ValueError as error:
+                botlog(error)
+                botlog(traceback.format_exc())
+            except HttpError as error:
+                botlog(error)
+                botlog(traceback.format_exc())
 
 
 if __name__ == "__main__":
