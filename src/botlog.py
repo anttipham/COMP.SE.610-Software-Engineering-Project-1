@@ -5,14 +5,21 @@ Handles logging of the bot.
 from datetime import datetime
 
 
-def botlog(msg: str) -> None:
+def botlog(*args, **kwargs) -> None:
     """
-    Logs the message argument in the format, wanted by the customer.
+    A wrapper for the print function.
 
-    Adds date and time string to the front of the message argument and
-    prints it to stdout.
+    The function prints first date and time string before printing the content of the
+    argument. Then it prints a newline character.
 
-    An example of the date and time string is "2023-03-09 10:06:36.763348".
+    Keyword arguments are passed to the print function and they do not affect the
+    date and time string.
+
+    Example:
+        botlog("Hello World!")
+        > 2023-03-09 10:06:36.763348  # Date and time string
+        > Hello World!  # The argument
+        >   # Newline character
 
     Args:
         msg (str): Message to be logged. Newlines in the message argument
@@ -20,4 +27,6 @@ def botlog(msg: str) -> None:
     """
     now = datetime.now()
     date_str = now.strftime("%Y-%m-%d %H:%M:%S.%f")
-    print(f"{date_str} {msg}")
+    print(f"{date_str}")
+    print(*args, **kwargs)
+    print()
