@@ -5,7 +5,32 @@ Tests for the functions in src/lyytirequest.py
 import json
 from unittest.mock import patch
 
+import requests
+
 from lyyti.lyytirequest import generate_headers, get_events, get_participants
+
+
+def json_to_Response(json_file: str, status_code: int) -> requests.Response:
+    """
+    Helper function to convert json file to a requests.Response object
+    """
+    with open(json_file, "rb") as file:
+        data = file.read()
+
+    example_response = requests.Response()
+
+    # print(data)
+
+    example_response._content = data
+    example_response.status_code = status_code
+
+    print(example_response.json())
+
+
+json_to_Response(
+    "C:/Users/Milo Brown/Desktop/School/3.vuosi/periodi3/SEP1/COMP.SE.610-Software-Engineering-Project-1/res/events-sample.json",
+    200,
+)
 
 
 def test_generate_headers() -> None:
