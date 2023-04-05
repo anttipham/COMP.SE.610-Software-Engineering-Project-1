@@ -11,6 +11,14 @@ def extract_group_id(url: str) -> str:
     """
     Extracts the ID from a Google Groups URL.
     Group ID is defined as the group's email address.
+    The domain is optional and is only included if the group is
+    a Google Workspace group.
+
+    Example:
+        >>> extract_group_id("https://groups.google.com/a/oispahuone.com/g/univincity-throw-in-bot-test-group")
+        "univincity-throw-in-bot-test-group@oispahuone.com"
+        >>> extract_group_id("https://groups.google.com/g/univincity-throw-in-bot-test-group")
+        "univincity-throw-in-bot-test-group"
 
     Args:
         url (str): A Google Groups URL.
@@ -24,15 +32,19 @@ def extract_group_id(url: str) -> str:
     if not url:
         raise ValueError("URL cannot be empty")
 
-    # If the URL ends with a '/', remove it.
-    if url.endswith("/"):
-        url = url.removeprefix("/")
+    # Get the domain name from the URL if it exists
+    domain = ""
+    if "/a/" in url:
+        # Get the part of the URL after "/a/" and before the next "/"
+        domain = url.split("/a/")[1].split("/")[0]
 
-    # Split the URL by '/' and get the last item.
-    url_parts = url.split("/")
-    group_id = url_parts[-1]
+    # Get the group name from the URL
+    group_name = url.split("/g/")[1].split("/")[0]
 
-    return group_id
+    email = f"{group_name}"
+    if domain:
+        email += f"@{domain}"
+    return email
 
 
 def extract_calendar_id(calendar_url: str) -> str:

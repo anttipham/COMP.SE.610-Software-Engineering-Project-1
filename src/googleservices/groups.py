@@ -2,7 +2,9 @@
 Contains functions that affect Google Groups
 """
 from .buildservice import build_google_service
-from .utils import list_differences
+from typing import TypeVar
+
+T = TypeVar("T")
 
 
 def add_emails_to_group(group_id: str, emails: list[str]) -> None:
