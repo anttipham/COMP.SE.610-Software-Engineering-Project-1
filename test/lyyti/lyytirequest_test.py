@@ -5,32 +5,14 @@ Tests for the functions in src/lyytirequest.py
 import json
 from unittest.mock import patch
 
-import requests
-
 from lyyti.lyytirequest import generate_headers, get_events, get_participants
+from utils import json_to_Response
 
+""" Get the sample data from res """
 
-def json_to_Response(json_file: str, status_code: int) -> requests.Response:
-    """
-    Helper function to convert json file to a requests.Response object
-    """
-    with open(json_file, "rb") as file:
-        data = file.read()
-
-    example_response = requests.Response()
-
-    # print(data)
-
-    example_response._content = data
-    example_response.status_code = status_code
-
-    print(example_response.json())
-
-
-json_to_Response(
-    "C:/Users/Milo Brown/Desktop/School/3.vuosi/periodi3/SEP1/COMP.SE.610-Software-Engineering-Project-1/res/events-sample.json",
-    200,
-)
+events_string_ok = "res/events-sample.json"
+empty_json_string = "res/empty-sample.json"
+participants_string = "res/participants-sample.json"
 
 
 def test_generate_headers() -> None:
@@ -59,60 +41,33 @@ class TestGetEvents:
     def test_get_events_succeeds(self) -> None:
         """
         Test if get_events call to API endpoint succeeds
-        Creates a mock get request to avoid actual calls to the API
+        Uses a mock response to avoid actual calls to the API
         """
+
+        mock_response = json_to_Response(events_string_ok, 200)
         with patch("lyyti.lyytirequest.requests.get") as mock_get:
-            mock_get.return_value.ok = True
+            mock_get.return_value = mock_response
 
             response = get_events()
             assert response.ok
+            assert response.status_code == 200
+            assert response.json() == json.load(open(events_string_ok, "r"))
 
     def test_get_events_fails(self) -> None:
         """
-        Test if get_events call to API endpoint fails
-        Creates a mock get request to avoid actual calls to the API
+        Test if the get_events call to API endpoint fails
+        Uses a mock response to avoid actual calls to the API
         """
+
+        # This json file is just an empty dict
+        mock_response = json_to_Response(empty_json_string, 400)
         with patch("lyyti.lyytirequest.requests.get") as mock_get:
-            mock_get.return_value.ok = False
+            mock_get.return_value = mock_response
 
             response = get_events()
             assert response.ok == False
-
-    def test_get_events_json(self) -> None:
-        """
-        Test if get_events call to API endpoint returns json
-        Creates a mock get request to avoid actual calls to the API
-        """
-        with patch("lyyti.lyytirequest.requests.get") as mock_get:
-            # use sample data from res/events-sample.json
-            with open("res/events-sample.json", "r") as file:
-                data = json.load(file)
-                mock_get.return_value.json.return_value = data
-
-            response = get_events()
-            assert response.json() == data
-
-    def test_get_events_status_code(self) -> None:
-        """
-        Test if get_events call to API endpoint returns status code
-        Creates a mock get request to avoid actual calls to the API
-        """
-        with patch("lyyti.lyytirequest.requests.get") as mock_get:
-            mock_get.return_value.status_code = 200
-
-            response = get_events()
-            assert response.status_code == 200
-
-    def test_get_events_url(self) -> None:
-        """
-        Test if get_events call to API endpoint returns correct url
-        Creates a mock get request to avoid actual calls to the API
-        """
-        with patch("lyyti.lyytirequest.requests.get") as mock_get:
-            mock_get.return_value.url = "https://api.lyyti.fi/v1/events"
-
-            response = get_events()
-            assert response.url == "https://api.lyyti.fi/v1/events"
+            assert response.status_code == 400
+            assert response.json() == {}
 
 
 class TestGetParticipants:
@@ -121,61 +76,29 @@ class TestGetParticipants:
     def test_get_participants_succeeds(self) -> None:
         """
         Test if get_participants call to API endpoint succeeds
-        Creates a mock get request to avoid actual calls to the API
+        Uses a mock response to avoid actual calls to the API
         """
-        with patch("lyyti.lyytirequest.requests.get") as mock_get:
-            mock_get.return_value.ok = True
 
-            response = get_participants("event_id")
+        mock_response = json_to_Response(participants_string, 200)
+        with patch("lyyti.lyytirequest.requests.get") as mock_get:
+            mock_get.return_value = mock_response
+
+            response = get_participants(1240375)
             assert response.ok
+            assert response.status_code == 200
+            assert response.json() == json.load(open(participants_string, "r"))
 
     def test_get_participants_fails(self) -> None:
         """
         Test if get_participants call to API endpoint fails
-        Creates a mock get request to avoid actual calls to the API
+        Uses a mock response to avoid actual calls to the API
         """
-        with patch("lyyti.lyytirequest.requests.get") as mock_get:
-            mock_get.return_value.ok = False
 
-            response = get_participants("event_id")
+        mock_response = json_to_Response(empty_json_string, 400)
+        with patch("lyyti.lyytirequest.requests.get") as mock_get:
+            mock_get.return_value = mock_response
+
+            response = get_participants(1240375)
             assert response.ok == False
-
-    def test_get_participants_json(self) -> None:
-        """
-        Test if get_participants call to API endpoint has json in payload
-        Creates a mock get request to avoid actual calls to the API
-        """
-        with patch("lyyti.lyytirequest.requests.get") as mock_get:
-            # use sample data from res/participants-sample.json
-            with open("res/participants-sample.json", "r") as file:
-                data = json.load(file)
-                mock_get.return_value.json.return_value = data
-
-            response = get_participants("event_id")
-            assert response.json() == data
-
-    def test_get_participants_status_code(self) -> None:
-        """
-        Test if get_participants call to API endpoint returns status code
-        Creates a mock get request to avoid actual calls to the API
-        """
-        with patch("lyyti.lyytirequest.requests.get") as mock_get:
-            mock_get.return_value.status_code = 200
-
-            response = get_participants("event_id")
-            assert response.status_code == 200
-
-    def test_get_participants_url(self) -> None:
-        """
-        Test if get_participants call to API endpoint returns correct url
-        Creates a mock get request to avoid actual calls to the API
-        """
-        with patch("lyyti.lyytirequest.requests.get") as mock_get:
-            mock_get.return_value.url = (
-                "https://api.lyyti.fi/v1/events/event_id/participants"
-            )
-
-            response = get_participants("event_id")
-            assert (
-                response.url == "https://api.lyyti.fi/v1/events/event_id/participants"
-            )
+            assert response.status_code == 400
+            assert response.json() == {}
