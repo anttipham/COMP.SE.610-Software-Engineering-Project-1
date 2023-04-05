@@ -16,10 +16,10 @@ def botlog(*args, **kwargs) -> None:
     date and time string.
 
     Example:
-        botlog("Hello World!")
-        > 2023-03-09 10:06:36.763348  # Date and time string
-        > Hello World!  # The argument
-        >   # Newline character
+        >>> botlog("Hello World!")
+        2023-03-09 10:06:36.763348  # Date and time string
+        Hello World!  # The argument
+          # Newline character
 
     Args:
         msg (str): Message to be logged. Newlines in the message argument
