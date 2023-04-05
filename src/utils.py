@@ -27,12 +27,17 @@ def extract_group_id(url: str) -> str:
     # If the URL ends with a '/', remove it.
     if url.endswith("/"):
         url = url.removeprefix("/")
+    # Split the link into its component parts
+    parts = url.split("/")
+    # Extract the group name from the link
+    group_name = parts[-1]
+    # Extract the domain from the link
+    domain = parts[-3]
+    # Construct the email address using the group name and domain
+    email = f"{group_name}@{domain}"
 
-    # Split the URL by '/' and get the last item.
-    url_parts = url.split("/")
-    group_id = url_parts[-1]
+    return email
 
-    return group_id
 
 
 def extract_calendar_id(calendar_url: str) -> str:
