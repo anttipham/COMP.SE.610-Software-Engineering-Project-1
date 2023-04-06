@@ -156,6 +156,9 @@ def load_events() -> list[Event]:
     Returns:
         list[Event]: List of events or empty list
         if http request doesn't succeed
+
+    Raises:
+        RuntimeError: If the HTTP request wasn't successful
     """
     response = get_events()
     status_code = response.status_code
@@ -166,7 +169,11 @@ def load_events() -> list[Event]:
     events: list[Event] = []
 
     if status_code != 200:
-        return events
+        raise RuntimeError(
+            "Lyyti response status code wasn't 200 for events. "
+            f"It was {status_code}. "
+            "Check your API keys."
+        )
 
     for data in json_object["results"].values():
 
@@ -181,7 +188,7 @@ def load_events() -> list[Event]:
                 end_time=convert_unixtime_to_datetimestring(data["end_time_utc"]),
                 name=get_from_language_field(data["name"]),
                 participants=load_participants(data["eid"]),
-                **custom_field
+                **custom_field,
             )
         )
 
