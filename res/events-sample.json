@@ -11,7 +11,7 @@
       "owner_name": "owner name",
       "relationship": "company",
       "start_time_utc": 1677621600,
-      "end_time_utc": 1680210000,
+      "end_time_utc": 10421945855,
       "enrollment_open_utc": 1675893600,
       "enrollment_deadline_utc": 1677362400,
       "canceling_deadline_utc": null,
@@ -54,9 +54,7 @@
       "reservation_time_limit": 20,
       "show_timezone_to_participant": 0,
       "shared_rights": null,
-      "language": [
-        "fi"
-      ],
+      "language": ["fi"],
       "name": {
         "fi": "Kurssi"
       },
@@ -105,8 +103,21 @@
           "title": "Google Group link",
           "type": "text",
           "answer": "https://groups.google.com/a/vincit.fi/g/testiryhma-lyytikayttoon/"
+        },
+        "3449": {
+          "id": 3449,
+          "title": "Google Calendar link",
+          "type": "text",
+          "answer": "https://calendar.google.com/calendar_example/"
+        },
+        "3450": {
+          "id": 3450,
+          "title": "slack channel name",
+          "type": "text",
+          "answer": "testchannel"
         }
       },
+
       "participants": "https://api.lyyti.com/v2/events/1240375/participants",
       "questions": "https://api.lyyti.com/v2/events/1240375/questions",
       "url": "https://api.lyyti.com/v2/events/1240375"
