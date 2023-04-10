@@ -13,6 +13,8 @@
 ```bash
 python src/main.py
 ```
+## Python Version
+V3.9 or newer
 
 ## Testing
 
