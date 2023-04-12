@@ -12,6 +12,8 @@ from lyyti.participants import Participant
 from utils import json_to_Response
 
 EVENTS_JSON = "test/res/events-sample.json"
+EMPTY_EVENTS_JSON = "test/res/empty-sample.json"
+PAST_EVENTS_JSON = "test/res/past-events-sample.json"
 PARTICIPANTS_JSON = "test/res/participants-sample.json"
 
 
@@ -117,6 +119,13 @@ class TestParseCustomField:
             google_group_link="", google_calendar_link="", slack_channel=""
         )
 
+    def test_parse_custom_field_custom_field_not_dict(self) -> None:
+        """Test that parse_custom_field works with empty data"""
+        example_field = "not a dict"
+        assert parse_custom_field(example_field) == Custom(
+            google_group_link="", google_calendar_link="", slack_channel=""
+        )
+
 
 class TestIsInThePast:
     def test_is_in_the_past(self) -> None:
@@ -152,6 +161,11 @@ class TestGetFromLanguageField:
         example_field = {}
         assert get_from_language_field(example_field) == ""
 
+    def test_get_from_language_field_default(self) -> None:
+        """Test that get_from_language_field returns the default value from ["en"] if it exists"""
+        example_field = {"fi": "testi", "en": "test"}
+        assert get_from_language_field(example_field) == "test"
+
 
 class TestLoadEvents:
     def test_load_events(self) -> None:
@@ -181,3 +195,20 @@ class TestLoadEvents:
             mock_get_events.return_value = json_to_Response(EVENTS_JSON, 400)
             with pytest.raises(RuntimeError):
                 load_events()
+
+    def test_load_events_with_past_events(self) -> None:
+        """
+        Test that load_events function works as predicted with past events
+        Uses mock get_events function in load_events to prevent unnecessary API calls
+        """
+
+        with patch("lyyti.events.get_events") as mock_get_events:
+            # this is the same as EVENTS_JSON but with past events
+            mock_get_events.return_value = json_to_Response(PAST_EVENTS_JSON, 200)
+            with patch("lyyti.participants.get_participants") as mock_get_participants:
+
+                mock_get_participants.return_value = json_to_Response(
+                    PARTICIPANTS_JSON, 200
+                )
+                events = load_events()
+                assert len(events) == 0
