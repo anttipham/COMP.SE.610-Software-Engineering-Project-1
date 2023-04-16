@@ -10,9 +10,9 @@ from utils import json_to_Response
 
 """ Get the sample data from res """
 
-events_string_ok = "res/events-sample.json"
-empty_json_string = "res/empty-sample.json"
-participants_string = "res/participants-sample.json"
+EVENTS_JSON = "test/res/events-sample.json"
+EMPTY_JSON = "test/res/empty-sample.json"
+PARTICIPANTS_JSON = "test/res/participants-sample.json"
 
 
 def test_generate_headers() -> None:
@@ -44,14 +44,14 @@ class TestGetEvents:
         Uses a mock response to avoid actual calls to the API
         """
 
-        mock_response = json_to_Response(events_string_ok, 200)
+        mock_response = json_to_Response(EVENTS_JSON, 200)
         with patch("lyyti.lyytirequest.requests.get") as mock_get:
             mock_get.return_value = mock_response
 
             response = get_events()
             assert response.ok
             assert response.status_code == 200
-            assert response.json() == json.load(open(events_string_ok, "r"))
+            assert response.json() == json.load(open(EVENTS_JSON, "r"))
 
     def test_get_events_fails(self) -> None:
         """
@@ -60,7 +60,7 @@ class TestGetEvents:
         """
 
         # This json file is just an empty dict
-        mock_response = json_to_Response(empty_json_string, 400)
+        mock_response = json_to_Response(EMPTY_JSON, 400)
         with patch("lyyti.lyytirequest.requests.get") as mock_get:
             mock_get.return_value = mock_response
 
@@ -79,14 +79,14 @@ class TestGetParticipants:
         Uses a mock response to avoid actual calls to the API
         """
 
-        mock_response = json_to_Response(participants_string, 200)
+        mock_response = json_to_Response(PARTICIPANTS_JSON, 200)
         with patch("lyyti.lyytirequest.requests.get") as mock_get:
             mock_get.return_value = mock_response
 
             response = get_participants(1240375)
             assert response.ok
             assert response.status_code == 200
-            assert response.json() == json.load(open(participants_string, "r"))
+            assert response.json() == json.load(open(PARTICIPANTS_JSON, "r"))
 
     def test_get_participants_fails(self) -> None:
         """
@@ -94,7 +94,7 @@ class TestGetParticipants:
         Uses a mock response to avoid actual calls to the API
         """
 
-        mock_response = json_to_Response(empty_json_string, 400)
+        mock_response = json_to_Response(EMPTY_JSON, 400)
         with patch("lyyti.lyytirequest.requests.get") as mock_get:
             mock_get.return_value = mock_response
 

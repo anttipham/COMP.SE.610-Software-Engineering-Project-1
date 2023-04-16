@@ -28,6 +28,9 @@ def load_participants(event_id: str) -> Sequence[Participant]:
     Returns:
         Participant: Participants' data in a tuple or
         an empty tuple if http request doesn't succeed
+
+    Raises:
+        RuntimeError: If the HTTP request wasn't successful
     """
     response = get_participants(event_id)
     status_code = response.status_code
@@ -36,7 +39,11 @@ def load_participants(event_id: str) -> Sequence[Participant]:
     participants: list[Participant] = []
 
     if status_code != 200:
-        return participants
+        raise RuntimeError(
+            "Lyyti response status code wasn't 200 for participants. "
+            f"It was {status_code}. "
+            "Check your API keys."
+        )
 
     participant_data = (
         link["participants"][0] for link in json_object["results"].values()

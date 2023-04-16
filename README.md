@@ -24,3 +24,9 @@ Tests use PyTest. Start tests with the following command:
 ```bash
 pytest
 ```
+
+To see coverage of tests use the following command:
+
+```bash
+pytest --cov-report term-missing --cov
+```
