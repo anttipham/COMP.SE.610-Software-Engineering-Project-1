@@ -8,6 +8,9 @@
 4. Fill the API keys into `src/environ.py`
 5. Run the following command `pip install .`
 
+## prerequisite
+Python Version V3.9 or newer
+
 ## Running
 
 ```bash
