@@ -2,7 +2,9 @@
 Contains functions that affect Google Groups
 """
 from .buildservice import build_google_service
-from .utils import list_differences
+from typing import TypeVar
+
+T = TypeVar("T")
 
 
 def add_emails_to_group(group_id: str, emails: list[str]) -> None:
@@ -66,6 +68,26 @@ def get_group_members(group_id: str) -> list[str]:
         emails += [member["email"] for member in response["members"]]
         request = service.members().list_next(request, response)
     return emails
+
+
+def list_differences(old: list[T], new: list[T]) -> tuple[list[T], list[T]]:
+    """
+    Compares two lists and returns a tuple that contains
+    1. list elements that should be added to `old` to get `new`
+    2. list elements that should be removed from `old` to get `new`
+
+    Args:
+        old (list[T]): Old list whose differences will be returned
+        new (list[T]): New list that the differences will lead to
+
+    Returns:
+        Tuple[list[T], list[T]]: Returns a tuple of two lists: (1) list elements
+        that should be added to `old` to get `new` and (2) list elements that should
+        be removed from `old` to get `new`.
+    """
+    to_be_added = set(new) - set(old)
+    to_be_removed = set(old) - set(new)
+    return list(to_be_added), list(to_be_removed)
 
 
 def update_group_members(group_id: str, new: list[str]) -> None:

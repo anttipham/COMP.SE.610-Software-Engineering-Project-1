@@ -8,6 +8,9 @@
 4. Fill the API keys into `src/environ.py`
 5. Run the following command `pip install .`
 
+## prerequisite
+Python Version V3.9 or newer
+
 ## Running
 
 ```bash
@@ -20,4 +23,10 @@ Tests use PyTest. Start tests with the following command:
 
 ```bash
 pytest
+```
+
+To see coverage of tests use the following command:
+
+```bash
+pytest --cov-report term-missing --cov
 ```
