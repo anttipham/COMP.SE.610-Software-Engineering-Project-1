@@ -48,31 +48,6 @@ def extract_group_id(url: str) -> str:
         email += f"@{domain}"
     return email
 
-
-def extract_calendar_id(calendar_url: str) -> str:
-    """
-    It takes a Google Calendar URL and returns the calendar ID.
-
-    Args:
-        calendar_url (str): The URL of the calendar to embed.
-
-    Returns:
-        str: The calendar ID
-    """
-    # Parse the URL to extract the query parameters
-    parsed_url = urlparse(calendar_url)
-    query_params = parse_qs(parsed_url.query)
-
-    # Extract the calendar ID from the 'src' parameter
-    src_param = query_params.get("src", [])
-
-    if not src_param:
-        return ""
-
-    calendar_id = src_param[0]
-    return calendar_id
-
-
 def json_to_Response(json_file: str, status_code: int) -> requests.Response:
     """
     Helper function to convert json file to a requests.Response object
