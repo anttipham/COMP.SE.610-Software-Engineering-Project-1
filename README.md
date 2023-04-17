@@ -34,7 +34,7 @@ pytest --cov-report term-missing --cov
 ## Running in Cloud Run Locally
 
 This instructions apply for visual studio code. 
-1. Install Google Cloud Code visual studio code extension.
+1. Install Google Cloud Code extension.
 2. Create .vscode/launch.json file. Example file content is illustrated below.
 ```bash
 {
@@ -66,11 +66,11 @@ This instructions apply for visual studio code.
     ]
 }
 ```
-3. Generate requirements.txt file using following command:
+3. Generate requirements.txt file using following command.
 ```bash
 pip freeze > requirements.txt
 ```
-4. From visual studio code navbar select view -> Command Palette or shortly press Ctrl+Shift+P.
-5. Type Cloud Code: Run on Cloud Run Emulator
+4. From visual studio code navbar select view -> Command Palette or press Ctrl+Shift+P.
+5. Type "Cloud Code: Run on Cloud Run Emulator"
 
 
