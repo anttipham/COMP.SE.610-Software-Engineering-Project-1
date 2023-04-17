@@ -22,10 +22,10 @@ class TestCustom:
         """Test that class Custom works as predicted"""
         example_custom = Custom(
             google_group_link="example_group_link",
-            google_calendar_link="example_calendar_link",
+            google_calendar_id="example_calendar_link",
         )
         assert example_custom["google_group_link"] == "example_group_link"
-        assert example_custom["google_calendar_link"] == "example_calendar_link"
+        assert example_custom["google_calendar_id"] == "example_calendar_link"
 
 
 class TestEvent:
@@ -38,7 +38,7 @@ class TestEvent:
             end_time="2021-01-02T00:00:00+00:00",
             participants=(Participant(email="example_email1"),),
             google_group_link="example_group_link",
-            google_calendar_link="example_calendar_link",
+            google_calendar_id="example_calendar_link",
             slack_channel="example_slack_channel",
         )
 
@@ -53,7 +53,7 @@ class TestEvent:
         assert isinstance(example_event.participants, tuple)
         assert isinstance(example_event.participants[0], Participant)
         assert isinstance(example_event.google_group_link, str)
-        assert isinstance(example_event.google_calendar_link, str)
+        assert isinstance(example_event.google_calendar_id, str)
         assert isinstance(example_event.slack_channel, str)
 
         # check that end time is later than start time
@@ -88,9 +88,9 @@ class TestEvent:
         with pytest.raises(FrozenInstanceError):
             example_event.google_group_link = ["please raise an error, pretty please"]
 
-    def test_immutable_event_google_calendar_link(self, example_event) -> None:
+    def test_immutable_event_google_calendar_id(self, example_event) -> None:
         with pytest.raises(FrozenInstanceError):
-            example_event.google_calendar_link = "please raise an error, pretty please"
+            example_event.google_calendar_id = "please raise an error, pretty please"
 
     def test_immutable_event_slack_channel(self, example_event) -> None:
         with pytest.raises(FrozenInstanceError):
@@ -108,7 +108,7 @@ class TestParseCustomField:
 
         assert parse_custom_field(example_field) == Custom(
             google_group_link="https://groups.google.com/a/vincit.fi/g/testiryhma-lyytikayttoon/",
-            google_calendar_link="https://calendar.google.com/calendar_example/",
+            google_calendar_id="https://calendar.google.com/calendar_example/",
             slack_channel="testchannel",
         )
 
@@ -116,14 +116,14 @@ class TestParseCustomField:
         """Test that parse_custom_field works with empty data"""
         example_field = {}
         assert parse_custom_field(example_field) == Custom(
-            google_group_link="", google_calendar_link="", slack_channel=""
+            google_group_link="", google_calendar_id="", slack_channel=""
         )
 
     def test_parse_custom_field_custom_field_not_dict(self) -> None:
         """Test that parse_custom_field works with empty data"""
         example_field = "not a dict"
         assert parse_custom_field(example_field) == Custom(
-            google_group_link="", google_calendar_link="", slack_channel=""
+            google_group_link="", google_calendar_id="", slack_channel=""
         )
 
 
