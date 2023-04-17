@@ -40,7 +40,7 @@ def update_calendar_event_participants(lyyti_event: Event) -> None:
         ValueError: if the event doesn't contain google_calendar_id
     """
     lyyti_event_participants_email_list = get_participant_email_list(lyyti_event)
-    google_calendar_id = utils.extract_calendar_id(lyyti_event.google_calendar_link)
+    google_calendar_id = lyyti_event.google_calendar_link
 
     if not google_calendar_id:
         raise ValueError(f"Missing google_calendar_id from event '{lyyti_event}'")
