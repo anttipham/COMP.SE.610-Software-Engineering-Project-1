@@ -30,3 +30,47 @@ To see coverage of tests use the following command:
 ```bash
 pytest --cov-report term-missing --cov
 ```
+
+## Running in Cloud Run Locally
+
+This instructions apply for visual studio code. 
+1. Install Google Cloud Code extension.
+2. Create .vscode/launch.json file. Example file content is illustrated below.
+```bash
+{
+    "configurations": [
+        {
+            "name": "Cloud Run: Run/Debug Locally",
+            "type": "cloudcode.cloudrun",
+            "request": "launch",
+            "build": {
+                "docker": {
+                    "path": "Dockerfile"
+                }
+            },
+            "image": "bottest",
+            "service": {
+                "name": "bottest",
+                "containerPort": 8080,
+                "resources": {
+                    "limits": {
+                        "memory": "256Mi"
+                    }
+                }
+            },
+            "target": {
+                "minikube": {}
+            },
+            "watch": true
+        }
+    ]
+}
+```
+3. Generate requirements.txt file using following command.
+```bash
+pip freeze > requirements.txt
+```
+4. From visual studio code navbar select view -> Command Palette or press Ctrl+Shift+P.
+5. Type "Cloud Code: Run on Cloud Run Emulator"
+
+
