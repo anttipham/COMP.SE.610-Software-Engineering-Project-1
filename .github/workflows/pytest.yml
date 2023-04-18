@@ -24,6 +24,11 @@ jobs:
           pip install --upgrade pip
           pip install .
           pip install pytest-md pytest-emoji
+      - name: Set environment variables
+        run: mv src/environ.example.py src/environ.py
+        env:
+          LYYTI_PRIVATE_KEY: ${{ secrets.LYYTI_PRIVATE_KEY }}
+          LYYTI_PUBLIC_KEY: ${{ secrets.LYYTI_PUBLIC_KEY }}
       - uses: pavelzw/pytest-action@v2
         with:
           emoji: false
