@@ -129,4 +129,8 @@ def main():
 
 
 if __name__ == "__main__":
+    # Set environment variables
+    import environ
+    environ.set_environ()
+
     main()
