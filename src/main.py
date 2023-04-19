@@ -109,7 +109,7 @@ def main():
             f"- Event name: {lyyti_event.name}",
             f"- Event start time: {lyyti_event.start_time}",
             f"- Event end time: {lyyti_event.end_time}",
-            f"- Event google calendar link: {lyyti_event.google_calendar_id}",
+            f"- Event google calendar id: {lyyti_event.google_calendar_id}",
             f"- Event google group link: {lyyti_event.google_group_link}",
             sep="\n",
         )
@@ -129,4 +129,8 @@ def main():
 
 
 if __name__ == "__main__":
+    # Set environment variables
+    import environ
+    environ.set_environ()
+
     main()

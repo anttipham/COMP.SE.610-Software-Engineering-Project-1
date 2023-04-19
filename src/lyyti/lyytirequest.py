@@ -10,12 +10,6 @@ import time
 
 import requests
 
-# Set environment variables
-import environ
-environ.set_environ()
-
-API_ROOT = os.environ["LYYTI_ROOT_URL"]
-
 
 def generate_headers(call_string: str) -> dict[str, str]:
     """
@@ -63,7 +57,7 @@ def get_events() -> requests.Response:
         requests.Response object: contains the response to HTTP request.
     """
     call_string = os.environ["LYYTI_EVENTS_CALLSTRING"]
-    url = API_ROOT + call_string
+    url = os.environ["LYYTI_ROOT_URL"] + call_string
     response = requests.get(
         url,
         headers=generate_headers(call_string),
@@ -81,7 +75,7 @@ def get_participants(event_id: str) -> requests.Response:
         requests.Response object: contains the response to HTTP request.
     """
     call_string = os.environ["LYYTI_PARTICIPANTS_CALLSTRING"].format(event_id)
-    url = API_ROOT + call_string
+    url = os.environ["LYYTI_ROOT_URL"] + call_string
     response = requests.get(
         url,
         headers=generate_headers(call_string),
