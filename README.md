@@ -30,3 +30,6 @@ To see coverage of tests use the following command:
 ```bash
 pytest --cov-report term-missing --cov
 ```
+
+## Slack Documentation
+Visit this [Slack.md](./src/slack/Slack.md) file to view documentation

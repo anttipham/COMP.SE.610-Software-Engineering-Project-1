@@ -1,29 +1,29 @@
 """
 Handles Slack channels
-"""
+
+
+ Below one is for demo purpose for inviting the users in channel. Once demo is done, it will be removed.
+ def add_member():
+     ""Adds member to a private Slack channel""
+     url = "https://slack.com/api/conversations.invite"
+
+      Hide the below token in env for safety purpose
+     auth_token = "xoxp-4651098541781-4653924740979-5138852421297-c007d7f41715a1f2156ecc1334c3d47b"
+     headers = {"Authorization": f"Bearer {auth_token}"}
+     data = {
+         "channel":"C053T5K85RA",
+         "users": [ "U053PU7AU7M", "U053HE5BKV4", "U053HE5BKV4", "U053SGL9LLC", "U0539FZMN5V"]
+     }
+
+     response = requests.post(url, headers=headers, data=data)
+     print(response.status_code)
+
 
 import requests
 from lyyti import get_participants
 
-# Below one is for demo purpose for inviting the users in channel. Once demo is done, it will be removed.
-# def add_member():
-#     """Adds member to a private Slack channel"""
-#     url = "https://slack.com/api/conversations.invite"
-
-#     # Hide the below token in env for safety purpose
-#     auth_token = "xoxp-4651098541781-4653924740979-5138852421297-c007d7f41715a1f2156ecc1334c3d47b"
-#     headers = {"Authorization": f"Bearer {auth_token}"}
-#     data = {
-#         "channel":"C053T5K85RA",
-#         "users": [ "U053PU7AU7M", "U053HE5BKV4", "U053HE5BKV4", "U053SGL9LLC", "U0539FZMN5V"]
-#     }
-
-#     response = requests.post(url, headers=headers, data=data)
-#     print(response.status_code)
-
-
 def get_user_ids_from_workSpace(workSpace):
-     """Get list of User Ids from the workSpace"""
+     ""Get list of User Ids from the workSpace""
      url = "https://slack.com/api/admin.users.list"
 
     # Hide the below token in env for safety purpose
@@ -41,7 +41,7 @@ def get_user_ids_from_workSpace(workSpace):
 
 
 def get_user_ids_from_channel(channelId):
-     """Get list of User Ids from the specific channel"""
+     ""Get list of User Ids from the specific channel""
      url = "https://slack.com/api/conversations.members"
 
     # Hide the below token in env for safety purpose
@@ -59,7 +59,7 @@ def get_user_ids_from_channel(channelId):
 
 
 def invite_users(emailList, channelId):
-     """Invite users to the specific channel"""
+     ""Invite users to the specific channel""
      url = "https://slack.com/api/conversations.invite"
 
      # This API EndPoint will fail if we try to invite the users which are already in the channel. So we need to filter the users who are not in channel.
@@ -85,7 +85,7 @@ def invite_users(emailList, channelId):
 
 
 def remove_user(email, channelId):
-     """remove user to the specific channel"""
+     ""remove user to the specific channel""
      url = "https://slack.com/api/conversations.kick"
 
      # This API EndPoint will fail if we try to remove the users which are not in the channel. So we need to filter the users who are in channel only.
@@ -115,5 +115,5 @@ def remove_user(email, channelId):
      print(response.status_code)
 
      return
-
+"""
 
