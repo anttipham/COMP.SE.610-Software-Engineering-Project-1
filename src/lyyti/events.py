@@ -18,7 +18,7 @@ class Custom(TypedDict):
     """
 
     google_group_link: str
-    google_calendar_link: str
+    google_calendar_id: str
     slack_channel: str
 
 
@@ -34,7 +34,7 @@ class Event:
     - participant (Sequence[Participant]): Tuple of the participants of the
     event
     - google_group_link (str): The google group link or empty string
-    - google_calendar_link (str): The google calendar link or empty string
+    - google_calendar_id (str): The google calendar id or empty string
     - slack_channel (str): The slack channel name or empty string
 
     The event data is immutable.
@@ -46,7 +46,7 @@ class Event:
     end_time: str
     participants: Sequence[Participant]
     google_group_link: str
-    google_calendar_link: str
+    google_calendar_id: str
     slack_channel: str
 
 
@@ -68,7 +68,7 @@ def parse_custom_field(custom: dict[str, dict[str, str]]) -> Custom:
         Custom: Fields are empty strings if not found from args.
     """
     custom_fields = Custom(
-        google_group_link="", google_calendar_link="", slack_channel=""
+        google_group_link="", google_calendar_id="", slack_channel=""
     )
 
     if not isinstance(custom, dict):
@@ -78,7 +78,7 @@ def parse_custom_field(custom: dict[str, dict[str, str]]) -> Custom:
         if content.get("title", "") == "Google Group link":
             custom_fields["google_group_link"] = content.get("answer", "")
         if content.get("title", "") == "Google Calendar link":
-            custom_fields["google_calendar_link"] = content.get("answer", "")
+            custom_fields["google_calendar_id"] = content.get("answer", "")
         if content.get("title", "") == "slack channel name":
             custom_fields["slack_channel"] = content.get("answer", "")
     return custom_fields
@@ -176,7 +176,6 @@ def load_events() -> list[Event]:
         )
 
     for data in json_object["results"].values():
-
         if is_in_the_past(int(data.get("end_time_utc", "0"))):
             continue
         custom_field = parse_custom_field(data["custom"])

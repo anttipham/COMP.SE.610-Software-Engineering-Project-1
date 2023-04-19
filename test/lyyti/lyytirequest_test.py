@@ -7,12 +7,14 @@ from unittest.mock import patch
 
 from lyyti.lyytirequest import generate_headers, get_events, get_participants
 from utils import json_to_Response
+import environ
 
 """ Get the sample data from res """
 
 EVENTS_JSON = "test/res/events-sample.json"
 EMPTY_JSON = "test/res/empty-sample.json"
 PARTICIPANTS_JSON = "test/res/participants-sample.json"
+environ.set_environ()
 
 
 def test_generate_headers() -> None:
