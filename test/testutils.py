@@ -5,7 +5,7 @@ Utility files for testing.
 import requests
 
 
-def json_to_Response(json_file: str, status_code: int) -> requests.Response:
+def json_to_response(json_file: str, status_code: int) -> requests.Response:
     """
     Helper function to convert json file to a requests.Response object
 
@@ -25,4 +25,3 @@ def json_to_Response(json_file: str, status_code: int) -> requests.Response:
     mock_response.status_code = status_code
 
     return mock_response
-
