@@ -5,8 +5,8 @@ Tests for the functions in src/lyytirequest.py
 import json
 from unittest.mock import patch
 
-from lyyti.lyytirequest import generate_headers, get_events, get_participants
 from testutils import json_to_response
+from lyyti.lyytirequest import generate_headers, get_events, get_participants
 import environ
 
 """ Get the sample data from res """

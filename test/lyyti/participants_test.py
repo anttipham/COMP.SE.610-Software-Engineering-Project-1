@@ -4,12 +4,10 @@ Tests for function in lyyti.participants.py
 import json
 from dataclasses import FrozenInstanceError
 from unittest.mock import patch
-
 import pytest
 
-from lyyti.events import Event, load_events
-from lyyti.participants import *
 from testutils import json_to_response
+from lyyti.participants import *
 
 with open("test/res/participants-sample.json", "r") as file:
     PARTICIPANT_JSON = json.load(file)

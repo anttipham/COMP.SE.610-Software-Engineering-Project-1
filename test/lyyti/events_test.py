@@ -30,7 +30,7 @@ class TestCustom:
 
 class TestEvent:
     @pytest.fixture()
-    def example_event(self) -> None:
+    def example_event(self) -> Event:
         return Event(
             event_id="1234",
             name="Example event",
@@ -131,10 +131,10 @@ class TestIsInThePast:
     def test_is_in_the_past(self) -> None:
         """Test that is_in_the_past works as predicted"""
         assert (
-            is_in_the_past(1680549351) == True
+            is_in_the_past(1680549351) is True
         )  # this is the timestamp for 03/04/2023
         assert (
-            is_in_the_past(32511784551) == False
+            is_in_the_past(32511784551) is False
         )  # this is the timestamp for 04/04/3000
 
 
