@@ -1,11 +1,11 @@
 """
 Univincity-throw-in-bot
 """
-import traceback
 
 import lyyti
 import googleservices
 import utils
+from utils import trycatchlog
 from lyyti import Event
 from botlog import botlog
 
@@ -101,7 +101,9 @@ def main():
     Main function
     """
     # Get all events from lyyti. And call update functions.
-    lyyti_event_list = lyyti.load_events()
+    with trycatchlog():
+        lyyti_event_list = lyyti.load_events()
+
     for lyyti_event in lyyti_event_list:
         botlog(
             "Handling the following Lyyti event:",
@@ -115,22 +117,19 @@ def main():
         )
 
         if lyyti_event.google_calendar_id:
-            try:
+            with trycatchlog():
                 update_calendar_event_participants(lyyti_event)
-            except Exception as error:
-                botlog(error, traceback.format_exc(), sep="\n")
 
         if lyyti_event.google_group_link:
             botlog("Updating google group members...")
-            try:
+            with trycatchlog():
                 update_google_group_mebmers(lyyti_event)
-            except Exception as error:
-                botlog(error, traceback.format_exc(), sep="\n")
 
 
 if __name__ == "__main__":
     # Set environment variables
     import environ
+
     environ.set_environ()
 
     main()

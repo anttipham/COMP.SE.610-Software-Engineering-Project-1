@@ -3,6 +3,12 @@ Utility and helper functions for googleservices package
 """
 
 
+import contextlib
+import traceback
+
+from botlog import botlog
+
+
 def extract_group_id(url: str) -> str:
     """
     Extracts the ID from a Google Groups URL.
@@ -42,3 +48,13 @@ def extract_group_id(url: str) -> str:
         email += f"@{domain}"
     return email
 
+
+@contextlib.contextmanager
+def trycatchlog():
+    """
+    A context manager that catches all exceptions and logs them.
+    """
+    try:
+        yield
+    except Exception as error:
+        botlog(error, traceback.format_exc(), sep="\n")
