@@ -9,7 +9,7 @@ import pytest
 
 from lyyti.events import Event, load_events
 from lyyti.participants import *
-from utils import json_to_Response
+from testutils import json_to_Response
 
 with open("test/res/participants-sample.json", "r") as file:
     PARTICIPANT_JSON = json.load(file)

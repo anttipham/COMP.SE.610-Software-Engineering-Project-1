@@ -9,7 +9,7 @@ import pytest
 
 from lyyti.events import *
 from lyyti.participants import Participant
-from utils import json_to_Response
+from testutils import json_to_Response
 
 EVENTS_JSON = "test/res/events-sample.json"
 EMPTY_EVENTS_JSON = "test/res/empty-sample.json"

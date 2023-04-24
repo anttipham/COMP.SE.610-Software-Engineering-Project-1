@@ -6,7 +6,7 @@ import json
 from unittest.mock import patch
 
 from lyyti.lyytirequest import generate_headers, get_events, get_participants
-from utils import json_to_Response
+from testutils import json_to_Response
 import environ
 
 """ Get the sample data from res """
