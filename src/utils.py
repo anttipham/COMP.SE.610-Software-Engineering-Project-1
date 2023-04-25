@@ -1,10 +1,11 @@
 """
-Utility and helper functions for googleservices package
+Utility and helper functions.
 """
 
 
 import contextlib
 import traceback
+from typing import Generator
 
 from botlog import botlog
 
@@ -50,7 +51,7 @@ def extract_group_id(url: str) -> str:
 
 
 @contextlib.contextmanager
-def tryexceptlog():
+def tryexceptlog() -> Generator[None, None, None]:
     """
     A context manager that catches all exceptions and logs them.
     The execution of the code continues after the with block if an exception was caught.
