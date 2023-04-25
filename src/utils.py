@@ -50,9 +50,16 @@ def extract_group_id(url: str) -> str:
 
 
 @contextlib.contextmanager
-def trycatchlog():
+def tryexceptlog():
     """
     A context manager that catches all exceptions and logs them.
+    The execution of the code continues after the with block if an exception was caught.
+
+    The context manager is used as follows:
+    ```
+    with tryexceptlog():
+        # Code that may raise an exception
+    ```
     """
     try:
         yield
