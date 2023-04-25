@@ -27,7 +27,7 @@ jobs:
       - name: Set environment variables
         run: |
           mv src/environ.example.py src/environ.py
-          echo "${{ secrets.UNIVINCITY_THROW_IN_BOT_JSON }}" > univincity-throw-in-bot-018d57429b27.json
+          echo '${{ secrets.UNIVINCITY_THROW_IN_BOT_JSON }}' > univincity-throw-in-bot-018d57429b27.json
         env:
           LYYTI_PRIVATE_KEY: ${{ secrets.LYYTI_PRIVATE_KEY }}
           LYYTI_PUBLIC_KEY: ${{ secrets.LYYTI_PUBLIC_KEY }}
