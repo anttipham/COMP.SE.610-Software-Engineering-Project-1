@@ -96,7 +96,7 @@ def update_google_group_mebmers(lyyti_event: Event) -> None:
     botlog("Google group members after update:", google_group_members_after)
 
 
-def main():
+def main() -> None:
     """
     Main function
     """
