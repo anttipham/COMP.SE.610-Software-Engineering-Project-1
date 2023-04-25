@@ -2,6 +2,9 @@
 Tests for the functions in utils module.
 """
 
+import traceback
+from unittest import mock
+
 import pytest
 
 from utils import extract_group_id, tryexceptlog
@@ -35,10 +38,6 @@ class TestExtractGroupId:
         url = ""
         with pytest.raises(ValueError):
             extract_group_id(url)
-
-
-import traceback
-from unittest import mock
 
 
 class TestTryExceptLog:
