@@ -60,3 +60,7 @@ Here are the steps to perform the action for the user invite in slack:
  1. We need to have this api endpoint with POST request: [API Endpoint](https://slack.com/api/conversations.kick)
  2. Remaining steps are exactly similar, like inviting the users mentioned above.
 
+# Slack Sample Code
+There is a file called:
+[slackBot.py](../slack//slackBot.py)
+Note: This code is just a sample and it may not work as we can not test it as we do not have the admin role in Slack account and neither we have enterprise account to test it.
