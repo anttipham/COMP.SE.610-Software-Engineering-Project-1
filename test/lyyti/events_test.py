@@ -9,7 +9,7 @@ import pytest
 
 from lyyti.events import *
 from lyyti.participants import Participant
-from utils import json_to_Response
+from testutils import json_to_response
 
 EVENTS_JSON = "test/res/events-sample.json"
 EMPTY_EVENTS_JSON = "test/res/empty-sample.json"
@@ -30,7 +30,7 @@ class TestCustom:
 
 class TestEvent:
     @pytest.fixture()
-    def example_event(self) -> None:
+    def example_event(self) -> Event:
         return Event(
             event_id="1234",
             name="Example event",
@@ -131,10 +131,10 @@ class TestIsInThePast:
     def test_is_in_the_past(self) -> None:
         """Test that is_in_the_past works as predicted"""
         assert (
-            is_in_the_past(1680549351) == True
+            is_in_the_past(1680549351) is True
         )  # this is the timestamp for 03/04/2023
         assert (
-            is_in_the_past(32511784551) == False
+            is_in_the_past(32511784551) is False
         )  # this is the timestamp for 04/04/3000
 
 
@@ -175,9 +175,9 @@ class TestLoadEvents:
         """
 
         with patch("lyyti.events.get_events") as mock_get_events:
-            mock_get_events.return_value = json_to_Response(EVENTS_JSON, 200)
+            mock_get_events.return_value = json_to_response(EVENTS_JSON, 200)
             with patch("lyyti.participants.get_participants") as mock_get_participants:
-                mock_get_participants.return_value = json_to_Response(
+                mock_get_participants.return_value = json_to_response(
                     PARTICIPANTS_JSON, 200
                 )
                 events = load_events()
@@ -192,7 +192,7 @@ class TestLoadEvents:
         """
 
         with patch("lyyti.events.get_events") as mock_get_events:
-            mock_get_events.return_value = json_to_Response(EVENTS_JSON, 400)
+            mock_get_events.return_value = json_to_response(EVENTS_JSON, 400)
             with pytest.raises(RuntimeError):
                 load_events()
 
@@ -204,10 +204,9 @@ class TestLoadEvents:
 
         with patch("lyyti.events.get_events") as mock_get_events:
             # this is the same as EVENTS_JSON but with past events
-            mock_get_events.return_value = json_to_Response(PAST_EVENTS_JSON, 200)
+            mock_get_events.return_value = json_to_response(PAST_EVENTS_JSON, 200)
             with patch("lyyti.participants.get_participants") as mock_get_participants:
-
-                mock_get_participants.return_value = json_to_Response(
+                mock_get_participants.return_value = json_to_response(
                     PARTICIPANTS_JSON, 200
                 )
                 events = load_events()

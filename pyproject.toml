@@ -4,6 +4,7 @@ description = "Univincity-throw-in-bot"
 version = "0.2.0"
 dependencies = [
     "requests",
+    "types-requests",
     "slack_sdk",
     "google-api-python-client",
     "google-auth-httplib2",
