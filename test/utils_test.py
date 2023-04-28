@@ -1,9 +1,12 @@
 """
 Tests for the functions in utils module.
 """
+import contextlib
+import io
+
 import pytest
 
-from utils import extract_group_id
+from utils import extract_group_id, tryexceptlog
 
 
 class TestExtractGroupId:
@@ -35,3 +38,44 @@ class TestExtractGroupId:
         with pytest.raises(ValueError):
             extract_group_id(url)
 
+
+class TestTryExceptLog:
+    """
+    Tests for the tryexceptlog function.
+
+    Redirects stdout to a StringIO object
+    to capture the output.
+    """
+
+    def test_tryexceptlog_no_exception(self):
+        """
+        Test that the function works
+        as expected with no exception.
+        """
+
+        def example_function():
+            print("Hello World!")
+
+        with io.StringIO() as buf, contextlib.redirect_stdout(buf):
+            with tryexceptlog():
+                example_function()
+
+            output = buf.getvalue().strip()
+            assert output == "Hello World!"
+
+    def test_tryexceptlog_with_exception(self):
+        """
+        Test that the function works
+        as expected with an exception.
+        """
+
+        def example_function():
+            1 / 0
+
+        with io.StringIO() as buf, contextlib.redirect_stdout(buf):
+            with tryexceptlog():
+                example_function()
+
+            output = buf.getvalue().strip()
+            assert "ZeroDivisionError" in output
+            assert "Traceback (most recent call last):" in output

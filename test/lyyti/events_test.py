@@ -6,10 +6,10 @@ from dataclasses import FrozenInstanceError
 from unittest.mock import patch
 
 import pytest
+from testutils import json_to_response
 
 from lyyti.events import *
 from lyyti.participants import Participant
-from testutils import json_to_response
 
 EVENTS_JSON = "test/res/events-sample.json"
 EMPTY_EVENTS_JSON = "test/res/empty-sample.json"
@@ -23,9 +23,11 @@ class TestCustom:
         example_custom = Custom(
             google_group_link="example_group_link",
             google_calendar_id="example_calendar_link",
+            slack_channel="example_slack_channel",
         )
         assert example_custom["google_group_link"] == "example_group_link"
         assert example_custom["google_calendar_id"] == "example_calendar_link"
+        assert example_custom["slack_channel"] == "example_slack_channel"
 
 
 class TestEvent:
