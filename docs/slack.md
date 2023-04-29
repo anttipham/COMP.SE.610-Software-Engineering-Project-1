@@ -38,7 +38,7 @@ Here is the link from slack official docs on how to make the call and add the pe
 Here are the steps to perform the action for the user invite in slack:
  1. We need to have this api endpoint with POST request: [API EndPoint](https://slack.com/api/conversations.invite)
  2. We need to add the above User OAuth Token as authentication token and in the body, we need to pass the team_id and users list to add for the specific channel. Like this:
-    ![Image of adding body and authorization token in CRUD operation](images/Screenshot%202023-04-19%20at%2019.11.16.png)
+    ![UserAuth Token](/docs/images/UserAuth.png)
  3. Before hitting the above url, we need to make sure that we have following OAuth Scope in the user token scopes:
     - Channels:write, 
     - Channels:read,
