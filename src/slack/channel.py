@@ -1,6 +1,12 @@
+"""
+Handles the authentication of Slack API and the use it for inviting and removing of the participants.
+"""
 import slack
+
 import os
+
 from pathlib import Path
+
 from dotenv import load_dotenv
 
 """

@@ -3,7 +3,7 @@
 Implementation of Slack integration can be done via using the Slack API method. I will try to briefly explain the code mechanism as well as the documentation for the Slack integration here. The reason that we can not implement the Slack integration for adding and removing the candidate is because of not having an enterprise Slack account. Let me show how the code will:
 
 ## Slack Authentication
-Firstly, we need to have the OAuth & Permissions in the slack api so that we can have the authentication for hitting the endpoint for performing any action that we need to have. To add the OAuth Tokens, we need to add User OAUTh Tokens so that we can perform different actions like adding/removing the user in the public and private channel of slack.
+Firstly, we need to have the OAuth & Permissions in the slack api so that we can have the authentication for hitting the slack method for performing any action that we need to have. To add the OAuth Tokens, we need to add User OAUTh Tokens so that we can perform different actions like adding/removing the user in the public and private channel of slack.
 
 ### Step to do this action are as follow:
 1. Navigate to the workspace and click on the managed apps.
@@ -11,24 +11,24 @@ Firstly, we need to have the OAuth & Permissions in the slack api so that we can
 3. After this, Add OAuth Tokens for the workspace.
 4. Once the token is created, we need to add User Token Scopes so that we can perform the specific actions.
 
-![](images/Screenshot%202023-04-19%20at%2018.56.52.png)
+![User Token Scopes](/docs/images/UserAuth_Scope.png)
 
 ## Get WorkSpace Users
 Here is the link from slack official docs on how to make the call and get the lists of people in the channel.
-[Get Users from WorkSpace](https://api.slack.com/methods/conversations.members)
+[Get Users from WorkSpace official docs](https://api.slack.com/methods/users.lookupByEmail)
 
 Here are the steps to perform the action for getting the list of the users from workSpace:
- 1. We need to have this api endpoint with GET request for all the userID list: [API EndPoint](https://slack.com/api/conversations.members).
- 2. We need to add the above User OAuth Token as authentication token and in the body, we need to pass the team_id and make the api call.
+ 1. We need to have this method to look for all the users list.
+ 2. We need to get the above User OAuth Token for authenticating the call and for the arguments, we need to pass the list of email address.
  3. To make this call, we need to make sure that we have admin.users:read user token Scopes
 
  ## Get Channel Users
  Here is the link from slack official docs on how to make the call and get the lists of people in the channel.
- [Get Users from Specific Channel](https://api.slack.com/methods/conversations.members)
+ [Get Users from Specific Channel official docs](https://api.slack.com/methods/conversations.members)
 
  Here are the steps to perform the action for getting the list of the users from workSpace:
- 1. We need to have this api endpoint with GET request for all the userID list: [API EndPoint](https://slack.com/api/conversations.members)
- 2. We need to add the above User OAuth Token as authentication token and in the body, we need to pass the channel id and make the api call.
+ 1. We need to call this method for  getting all the userID list present in the channel.
+ 2. We need to get the above User OAuth Token for authenticating the call and for the arguments, we need to pass the channel id.
  3. To make this call, we need to make sure that we have channels:read, groups:read, mpim:read, im:read user token Scopes
 
  ## Invite Users
@@ -36,10 +36,10 @@ Here is the link from slack official docs on how to make the call and add the pe
 [Invite Users](https://api.slack.com/methods/conversations.invite)
 
 Here are the steps to perform the action for the user invite in slack:
- 1. We need to have this api endpoint with POST request: [API EndPoint](https://slack.com/api/conversations.invite)
- 2. We need to add the above User OAuth Token as authentication token and in the body, we need to pass the team_id and users list to add for the specific channel. Like this:
+ 1. We need to have this method to invite users which method can be achieve from above official docs.
+ 2. We need to get the above User OAuth Token for authenticating the call and for the arguments, we need to pass the channel_id and users list to add for the specific channel. Like this:
     ![UserAuth Token](/docs/images/UserAuth.png)
- 3. Before hitting the above url, we need to make sure that we have following OAuth Scope in the user token scopes:
+ 3. Before hitting the above method, we need to make sure that we have following OAuth Scope in the user token scopes:
     - Channels:write, 
     - Channels:read,
     - groups:write,
@@ -49,18 +49,18 @@ Here are the steps to perform the action for the user invite in slack:
     - mpim:write, 
     - im:write, 
     - admin.users:read
- 4. Once we have that, we will be allowed to hit the above url and we can add the users in the channel. (Note: This is the reason that we are documenting this process as we are
+ 4. Once we have that, we will be allowed to hit the above method and we can add the users in the channel. (Note: This is the reason that we are documenting this process as we are
     not able to implement it as we do not have enterprise slack workspace with admin role. But one who has this access is able to perform this action.)
 
 ## Remove Users
 Here is the link from slack official docs on how to make the call and remove the people in the channel.
-[Remove Users](https://api.slack.com/methods/conversations.kick)
+[Remove Users official docs](https://api.slack.com/methods/conversations.kick)
 
 Here are the steps to perform the action for the user invite in slack:
- 1. We need to have this api endpoint with POST request: [API Endpoint](https://slack.com/api/conversations.kick)
+ 1. We need to have this method  which can be achieve from above official link.
  2. Remaining steps are exactly similar, like inviting the users mentioned above.
 
 # Slack Sample Code
 There is a file called:
-[slackBot.py](../slack//slackBot.py)
+[slackBot.py](../src/slack/channel.py)
 Note: This code is just a sample and it may not work as we can not test it as we do not have the admin role in Slack account and neither we have enterprise account to test it.
