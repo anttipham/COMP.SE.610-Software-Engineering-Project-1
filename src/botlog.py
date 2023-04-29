@@ -3,9 +3,10 @@ Handles logging of the bot.
 """
 
 from datetime import datetime
+from typing import Any
 
 
-def botlog(*args, **kwargs) -> None:
+def botlog(*args: Any, **kwargs: Any) -> None:
     """
     A wrapper for the print function.
 
