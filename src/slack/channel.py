@@ -1,75 +1,98 @@
+"""
+Handles the authentication of Slack API and the use of Slack features to add and remove the participants in the channel.
+"""
+
 import slack
 import os
 import pip._vendor.requests
 from pathlib import Path
 from dotenv import load_dotenv
 
-# needed User Token Scopes in slackbot:
-# channels:read
-# groups:read
-# groups:write
-# users:read
-# users:read.email
-# admin.conversations:write
+"""
+To communicate with the slack api and add or remove the participants from specific channel,
+we need to have following user token scope in the slackBot:
+1. channels:read
+2. groups:read
+3. groups:write
+4. users:read
+5. users:read.email
+6. admin.conversations:write
+"""
 
-
-env_path = Path('.') / '.env'
+# Get credentials.
+env_path = Path(".") / ".env"
 load_dotenv(dotenv_path=env_path)
-client = slack.WebClient(token=os.environ['USER_TOKEN'])
+client = slack.WebClient(token=os.environ["USER_TOKEN"])
+"""
+you can remove 3 rows above if you want to insert your slack token directly
+to the code and use the following row instead. Replace "your token" with your slack bot token
+client = slack.WebClient(token="your token") 
+"""
 
-# you can remove 3 rows abouve if you want to insert your slack token directly to the code
-# and use the following row instead. Replace "your token" with your slack bot token
-# client = slack.WebClient(token="your token")
 
+def get_all_user_IDs(email) -> list[str]:
+    """
+    Following method gets all the user Ids from the Workspace
+    that matches the email address from lyyti event participant list parameter emails is a list of email address
+    corresponding the member list in lyyti event Method return a list of IDs
 
+    Args:
+        email (str): The email to use
 
-# Following method gets all the user Ids from the Workspace that matches the email adresses from 
-# lyyti event participant list
-# parameter listt is a list of email adresses coresponding the memberlist in lyyti event
-# Method returs a list of IDs 
-def get_all_user_IDs(listt):
-    
+    Returns:
+        list[str]:  Gets all the user Ids from the Workspace
+    """
     id_list = []
     for email in list:
         response = client.users_lookupByEmail(email=email)
-        id_list.append(response['user']['id'])
-        
+        id_list.append(response["user"]["id"])
 
     return id_list
 
-# Following methdod gets all the users IDs from specific channel
-# parameter channelId is the channel id from lyyti event where participants 
-# needs to be added
-# method returns list of IDs of users that are already invited to the channel
-def get_user_ids_from_channel(channelId):
 
-    response = client.conversations_members(channel=channelId)
-    member_ids = response['members']
+def get_user_ids_from_channel(channel_id: str) -> list[str]:
+    """
+    This method gets all the users IDs from specific channel.
+
+    Args:
+        channelId (str): The Channel Id.
+
+    Returns:
+        list[str]:  Return lists of user Ids that are already invited to the channel
+    """
+    response = client.conversations_members(channel=channel_id)
+    member_ids = response["members"]
     return member_ids
 
-# Following method adds new users to the slack channel that have signed up in lyyti
-# and removes users from the slack channel that have removed their participation in lyyti
-# parameter emaiList is list of emails corresponding the list of users that signed up in lyyti
-# parameter ChannelId is the channel id for the channel that is  used in lyyti event
-def invite_members(emaiList, channelId):
-    allIdList = get_all_user_IDs(emaiList)
-    membersInChannel = get_user_ids_from_channel(channelId)
-    
-    # following loop removes "duplicant" users so users that are already invited to the channel aren't 
-    # invited again
-    for i in membersInChannel[:]:
-        if i in allIdList:
-            membersInChannel.remove(i)
-            allIdList.remove(i)
-    
-    for member in allIdList:
+
+def invite_members(emailList: list[str], channelId: str):
+    """
+    This method invite all the users with their email address to specific channel.
+
+    Args:
+        emailList list[str]: The list of the email address.
+        channelId (str): The Channel Id.
+
+    Returns:
+        list[str]:  Return lists of user Ids that are already invited to the channel
+    """
+    all_id_list = get_all_user_IDs(emailList)
+    members_in_channel = get_user_ids_from_channel(channelId)
+
+    for i in members_in_channel[:]:
+        if i in all_id_list:
+            members_in_channel.remove(i)
+            all_id_list.remove(i)
+
+    for member in all_id_list:
         client.admin_conversations_invite(channel=channelId, user=member)
-    
-    if membersInChannel:
-        for member in membersInChannel:
+
+    if members_in_channel:
+        for member in members_in_channel:
             client.conversations_kick(channel=channelId, user=member)
 
     return
+
 
 if __name__ == "__main__":
     invite_members()
