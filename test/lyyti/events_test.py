@@ -6,10 +6,10 @@ from dataclasses import FrozenInstanceError
 from unittest.mock import patch
 
 import pytest
+from testutils import json_to_response
 
 from lyyti.events import *
 from lyyti.participants import Participant
-from utils import json_to_Response
 
 EVENTS_JSON = "test/res/events-sample.json"
 EMPTY_EVENTS_JSON = "test/res/empty-sample.json"
@@ -22,12 +22,12 @@ class TestCustom:
         """Test that class Custom works as predicted"""
         example_custom = Custom(
             google_group_link="example_group_link",
-            google_calendar_link="example_calendar_link",
-            slack_channel="slack_channel",
+            google_calendar_id="example_calendar_link",
+            slack_channel="example_slack_channel",
         )
         assert example_custom["google_group_link"] == "example_group_link"
-        assert example_custom["google_calendar_link"] == "example_calendar_link"
-        assert example_custom["slack_channel"] == "slack_channel"
+        assert example_custom["google_calendar_id"] == "example_calendar_link"
+        assert example_custom["slack_channel"] == "example_slack_channel"
 
 
 class TestEvent:
@@ -40,7 +40,7 @@ class TestEvent:
             end_time="2021-01-02T00:00:00+00:00",
             participants=(Participant(email="example_email1"),),
             google_group_link="example_group_link",
-            google_calendar_link="example_calendar_link",
+            google_calendar_id="example_calendar_link",
             slack_channel="example_slack_channel",
         )
 
@@ -55,7 +55,7 @@ class TestEvent:
         assert isinstance(example_event.participants, tuple)
         assert isinstance(example_event.participants[0], Participant)
         assert isinstance(example_event.google_group_link, str)
-        assert isinstance(example_event.google_calendar_link, str)
+        assert isinstance(example_event.google_calendar_id, str)
         assert isinstance(example_event.slack_channel, str)
 
         # check that end time is later than start time
@@ -90,9 +90,9 @@ class TestEvent:
         with pytest.raises(FrozenInstanceError):
             example_event.google_group_link = ["please raise an error, pretty please"]
 
-    def test_immutable_event_google_calendar_link(self, example_event) -> None:
+    def test_immutable_event_google_calendar_id(self, example_event) -> None:
         with pytest.raises(FrozenInstanceError):
-            example_event.google_calendar_link = "please raise an error, pretty please"
+            example_event.google_calendar_id = "please raise an error, pretty please"
 
     def test_immutable_event_slack_channel(self, example_event) -> None:
         with pytest.raises(FrozenInstanceError):
@@ -110,7 +110,7 @@ class TestParseCustomField:
 
         assert parse_custom_field(example_field) == Custom(
             google_group_link="https://groups.google.com/a/vincit.fi/g/testiryhma-lyytikayttoon/",
-            google_calendar_link="https://calendar.google.com/calendar_example/",
+            google_calendar_id="https://calendar.google.com/calendar_example/",
             slack_channel="testchannel",
         )
 
@@ -118,14 +118,14 @@ class TestParseCustomField:
         """Test that parse_custom_field works with empty data"""
         example_field = {}  # type: ignore
         assert parse_custom_field(example_field) == Custom(
-            google_group_link="", google_calendar_link="", slack_channel=""
+            google_group_link="", google_calendar_id="", slack_channel=""
         )
 
     def test_parse_custom_field_custom_field_not_dict(self) -> None:
         """Test that parse_custom_field works with empty data"""
         example_field = "not a dict"
         assert parse_custom_field(example_field) == Custom(  # type: ignore
-            google_group_link="", google_calendar_link="", slack_channel=""
+            google_group_link="", google_calendar_id="", slack_channel=""
         )
 
 
@@ -133,10 +133,10 @@ class TestIsInThePast:
     def test_is_in_the_past(self) -> None:
         """Test that is_in_the_past works as predicted"""
         assert (
-            is_in_the_past(1680549351) == True
+            is_in_the_past(1680549351) is True
         )  # this is the timestamp for 03/04/2023
         assert (
-            is_in_the_past(32511784551) == False
+            is_in_the_past(32511784551) is False
         )  # this is the timestamp for 04/04/3000
 
 
@@ -177,9 +177,9 @@ class TestLoadEvents:
         """
 
         with patch("lyyti.events.get_events") as mock_get_events:
-            mock_get_events.return_value = json_to_Response(EVENTS_JSON, 200)
+            mock_get_events.return_value = json_to_response(EVENTS_JSON, 200)
             with patch("lyyti.participants.get_participants") as mock_get_participants:
-                mock_get_participants.return_value = json_to_Response(
+                mock_get_participants.return_value = json_to_response(
                     PARTICIPANTS_JSON, 200
                 )
                 events = load_events()
@@ -194,7 +194,7 @@ class TestLoadEvents:
         """
 
         with patch("lyyti.events.get_events") as mock_get_events:
-            mock_get_events.return_value = json_to_Response(EVENTS_JSON, 400)
+            mock_get_events.return_value = json_to_response(EVENTS_JSON, 400)
             with pytest.raises(RuntimeError):
                 load_events()
 
@@ -206,9 +206,9 @@ class TestLoadEvents:
 
         with patch("lyyti.events.get_events") as mock_get_events:
             # this is the same as EVENTS_JSON but with past events
-            mock_get_events.return_value = json_to_Response(PAST_EVENTS_JSON, 200)
+            mock_get_events.return_value = json_to_response(PAST_EVENTS_JSON, 200)
             with patch("lyyti.participants.get_participants") as mock_get_participants:
-                mock_get_participants.return_value = json_to_Response(
+                mock_get_participants.return_value = json_to_response(
                     PARTICIPANTS_JSON, 200
                 )
                 events = load_events()

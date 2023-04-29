@@ -1,12 +1,13 @@
 """
-Utility and helper functions for googleservices package
+Utility and helper functions.
 """
-from typing import TypeVar
-from urllib.parse import parse_qs, urlparse
 
-import requests
 
-T = TypeVar("T")
+import contextlib
+import traceback
+from typing import Generator
+
+from botlog import botlog
 
 
 def extract_group_id(url: str) -> str:
@@ -49,47 +50,19 @@ def extract_group_id(url: str) -> str:
     return email
 
 
-def extract_calendar_id(calendar_url: str) -> str:
+@contextlib.contextmanager
+def tryexceptlog() -> Generator[None, None, None]:
     """
-    It takes a Google Calendar URL and returns the calendar ID.
+    A context manager that catches all exceptions and logs them.
+    The execution of the code continues after the with block if an exception was caught.
 
-    Args:
-        calendar_url (str): The URL of the calendar to embed.
-
-    Returns:
-        str: The calendar ID
+    The context manager is used as follows:
+    ```
+    with tryexceptlog():
+        # Code that may raise an exception
+    ```
     """
-    # Parse the URL to extract the query parameters
-    parsed_url = urlparse(calendar_url)
-    query_params = parse_qs(parsed_url.query)
-
-    # Extract the calendar ID from the 'src' parameter
-    src_param = query_params.get("src", [])
-
-    if not src_param:
-        return ""
-
-    calendar_id = src_param[0]
-    return calendar_id
-
-
-def json_to_Response(json_file: str, status_code: int) -> requests.Response:
-    """
-    Helper function to convert json file to a requests.Response object
-
-    This will be used to mock the response from the API
-
-    :param json_file: path to the json file
-    :param status_code: status code to give to the mock response
-
-    :return: mock response object made from the given json file and status code
-    """
-
-    with open(json_file, "rb") as file:
-        data = file.read()
-
-    mock_response = requests.Response()
-    mock_response._content = data
-    mock_response.status_code = status_code
-
-    return mock_response
+    try:
+        yield
+    except Exception as error:
+        botlog(error, traceback.format_exc(), sep="\n")

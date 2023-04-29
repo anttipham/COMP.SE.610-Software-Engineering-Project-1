@@ -4,12 +4,10 @@ Tests for function in lyyti.participants.py
 import json
 from dataclasses import FrozenInstanceError
 from unittest.mock import patch
-
 import pytest
 
-from lyyti.events import Event, load_events
+from testutils import json_to_response
 from lyyti.participants import *
-from utils import json_to_Response
 
 with open("test/res/participants-sample.json", "r") as file:
     PARTICIPANT_JSON = json.load(file)
@@ -42,7 +40,7 @@ class TestLoadParticipants:
 
         example_id = next(iter(PARTICIPANT_JSON["results"].keys()))
         with patch("lyyti.participants.get_participants") as mock_get_participants:
-            mock_get_participants.return_value = json_to_Response(
+            mock_get_participants.return_value = json_to_response(
                 "test/res/participants-sample.json", 200
             )
             participants = load_participants(example_id)
@@ -58,7 +56,7 @@ class TestLoadParticipants:
 
         example_id = next(iter(PARTICIPANT_JSON["results"].keys()))
         with patch("lyyti.participants.get_participants") as mock_get_participants:
-            mock_get_participants.return_value = json_to_Response(
+            mock_get_participants.return_value = json_to_response(
                 "test/res/participants-sample.json", 404
             )
             with pytest.raises(RuntimeError):

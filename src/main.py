@@ -1,11 +1,11 @@
 """
 Univincity-throw-in-bot
 """
-import traceback
 
 import lyyti
 import googleservices
 import utils
+from utils import tryexceptlog
 from lyyti import Event
 from botlog import botlog
 
@@ -40,7 +40,7 @@ def update_calendar_event_participants(lyyti_event: Event) -> None:
         ValueError: if the event doesn't contain google_calendar_id
     """
     lyyti_event_participants_email_list = get_participant_email_list(lyyti_event)
-    google_calendar_id = utils.extract_calendar_id(lyyti_event.google_calendar_link)
+    google_calendar_id = lyyti_event.google_calendar_id
 
     if not google_calendar_id:
         raise ValueError(f"Missing google_calendar_id from event '{lyyti_event}'")
@@ -96,12 +96,14 @@ def update_google_group_mebmers(lyyti_event: Event) -> None:
     botlog("Google group members after update:", google_group_members_after)
 
 
-def main():
+def main() -> None:
     """
     Main function
     """
     # Get all events from lyyti. And call update functions.
-    lyyti_event_list = lyyti.load_events()
+    with tryexceptlog():
+        lyyti_event_list = lyyti.load_events()
+
     for lyyti_event in lyyti_event_list:
         botlog(
             "Handling the following Lyyti event:",
@@ -109,24 +111,25 @@ def main():
             f"- Event name: {lyyti_event.name}",
             f"- Event start time: {lyyti_event.start_time}",
             f"- Event end time: {lyyti_event.end_time}",
-            f"- Event google calendar link: {lyyti_event.google_calendar_link}",
+            f"- Event google calendar id: {lyyti_event.google_calendar_id}",
             f"- Event google group link: {lyyti_event.google_group_link}",
             sep="\n",
         )
 
-        if lyyti_event.google_calendar_link:
-            try:
+        if lyyti_event.google_calendar_id:
+            with tryexceptlog():
                 update_calendar_event_participants(lyyti_event)
-            except Exception as error:
-                botlog(error, traceback.format_exc(), sep="\n")
 
         if lyyti_event.google_group_link:
             botlog("Updating google group members...")
-            try:
+            with tryexceptlog():
                 update_google_group_mebmers(lyyti_event)
-            except Exception as error:
-                botlog(error, traceback.format_exc(), sep="\n")
 
 
 if __name__ == "__main__":
+    # Set environment variables
+    import environ
+
+    environ.set_environ()
+
     main()

@@ -1,10 +1,12 @@
 """
 Tests for the functions in utils module.
 """
-import pytest
-import requests
+import contextlib
+import io
 
-from utils import extract_calendar_id, extract_group_id, json_to_Response
+import pytest
+
+from utils import extract_group_id, tryexceptlog
 
 
 class TestExtractGroupId:
@@ -37,38 +39,43 @@ class TestExtractGroupId:
             extract_group_id(url)
 
 
-class TestExtractCalendarId:
-    """Tests for the extract_calendar_id function."""
+class TestTryExceptLog:
+    """
+    Tests for the tryexceptlog function.
 
-    def test_extract_calendar_id(self):
-        """Test that the function returns the correct calendar ID."""
-        url = "https://calendar.google.com/calendar/embed?src=univincity.fi_12345%40group.calendar.google.com&ctz=Europe%2FHelsinki"
-        expected = "univincity.fi_12345@group.calendar.google.com"
-        actual = extract_calendar_id(url)
-        assert actual == expected
+    Redirects stdout to a StringIO object
+    to capture the output.
+    """
 
-    def test_extract_calendar_id_empty_url(self):
-        """Test that the function returns an empty string when the URL is empty."""
-        url = ""
-        expected = ""
-        actual = extract_calendar_id(url)
-        assert actual == expected
+    def test_tryexceptlog_no_exception(self):
+        """
+        Test that the function works
+        as expected with no exception.
+        """
 
-    def test_extract_calendar_id_no_src_param(self):
-        """Test that the function returns an empty string when the URL does not contain the 'src' parameter."""
-        url = "https://calendar.google.com/calendar/embed?ctz=Europe%2FHelsinki"
-        expected = ""
-        actual = extract_calendar_id(url)
-        assert actual == expected
+        def example_function():
+            print("Hello World!")
 
+        with io.StringIO() as buf, contextlib.redirect_stdout(buf):
+            with tryexceptlog():
+                example_function()
 
-class TestJsonToResponse:
-    """Tests for the json_to_Response function."""
+            output = buf.getvalue().strip()
+            assert output == "Hello World!"
 
-    def test_json_to_Response(self):
-        """Test that the function returns a Response object with the correct status code."""
-        json_file = "test/res/events-sample.json"
-        status_code = 200
-        response = json_to_Response(json_file, status_code)
-        assert isinstance(response, requests.Response)
-        assert response.status_code == status_code
+    def test_tryexceptlog_with_exception(self):
+        """
+        Test that the function works
+        as expected with an exception.
+        """
+
+        def example_function():
+            1 / 0
+
+        with io.StringIO() as buf, contextlib.redirect_stdout(buf):
+            with tryexceptlog():
+                example_function()
+
+            output = buf.getvalue().strip()
+            assert "ZeroDivisionError" in output
+            assert "Traceback (most recent call last):" in output

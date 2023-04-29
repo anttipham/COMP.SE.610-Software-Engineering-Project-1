@@ -5,14 +5,16 @@ Tests for the functions in src/lyytirequest.py
 import json
 from unittest.mock import patch
 
+from testutils import json_to_response
 from lyyti.lyytirequest import generate_headers, get_events, get_participants
-from utils import json_to_Response
+import environ
 
 """ Get the sample data from res """
 
 EVENTS_JSON = "test/res/events-sample.json"
 EMPTY_JSON = "test/res/empty-sample.json"
 PARTICIPANTS_JSON = "test/res/participants-sample.json"
+environ.set_environ()
 
 
 def test_generate_headers() -> None:
@@ -44,7 +46,7 @@ class TestGetEvents:
         Uses a mock response to avoid actual calls to the API
         """
 
-        mock_response = json_to_Response(EVENTS_JSON, 200)
+        mock_response = json_to_response(EVENTS_JSON, 200)
         with patch("lyyti.lyytirequest.requests.get") as mock_get:
             mock_get.return_value = mock_response
 
@@ -60,7 +62,7 @@ class TestGetEvents:
         """
 
         # This json file is just an empty dict
-        mock_response = json_to_Response(EMPTY_JSON, 400)
+        mock_response = json_to_response(EMPTY_JSON, 400)
         with patch("lyyti.lyytirequest.requests.get") as mock_get:
             mock_get.return_value = mock_response
 
@@ -79,7 +81,7 @@ class TestGetParticipants:
         Uses a mock response to avoid actual calls to the API
         """
 
-        mock_response = json_to_Response(PARTICIPANTS_JSON, 200)
+        mock_response = json_to_response(PARTICIPANTS_JSON, 200)
         with patch("lyyti.lyytirequest.requests.get") as mock_get:
             mock_get.return_value = mock_response
 
@@ -94,7 +96,7 @@ class TestGetParticipants:
         Uses a mock response to avoid actual calls to the API
         """
 
-        mock_response = json_to_Response(EMPTY_JSON, 400)
+        mock_response = json_to_response(EMPTY_JSON, 400)
         with patch("lyyti.lyytirequest.requests.get") as mock_get:
             mock_get.return_value = mock_response
 
