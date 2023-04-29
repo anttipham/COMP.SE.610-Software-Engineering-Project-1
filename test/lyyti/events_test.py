@@ -23,14 +23,16 @@ class TestCustom:
         example_custom = Custom(
             google_group_link="example_group_link",
             google_calendar_link="example_calendar_link",
+            slack_channel="slack_channel",
         )
         assert example_custom["google_group_link"] == "example_group_link"
         assert example_custom["google_calendar_link"] == "example_calendar_link"
+        assert example_custom["slack_channel"] == "slack_channel"
 
 
 class TestEvent:
     @pytest.fixture()
-    def example_event(self) -> None:
+    def example_event(self) -> Event:
         return Event(
             event_id="1234",
             name="Example event",
@@ -114,7 +116,7 @@ class TestParseCustomField:
 
     def test_parse_custom_field_empty(self) -> None:
         """Test that parse_custom_field works with empty data"""
-        example_field = {}
+        example_field = {}  # type: ignore
         assert parse_custom_field(example_field) == Custom(
             google_group_link="", google_calendar_link="", slack_channel=""
         )
@@ -122,7 +124,7 @@ class TestParseCustomField:
     def test_parse_custom_field_custom_field_not_dict(self) -> None:
         """Test that parse_custom_field works with empty data"""
         example_field = "not a dict"
-        assert parse_custom_field(example_field) == Custom(
+        assert parse_custom_field(example_field) == Custom(  # type: ignore
             google_group_link="", google_calendar_link="", slack_channel=""
         )
 
@@ -158,7 +160,7 @@ class TestGetFromLanguageField:
 
     def test_get_from_language_field_empty(self) -> None:
         """Test that get_from_language_field works with empty data"""
-        example_field = {}
+        example_field = {}  # type: ignore
         assert get_from_language_field(example_field) == ""
 
     def test_get_from_language_field_default(self) -> None:
@@ -206,7 +208,6 @@ class TestLoadEvents:
             # this is the same as EVENTS_JSON but with past events
             mock_get_events.return_value = json_to_Response(PAST_EVENTS_JSON, 200)
             with patch("lyyti.participants.get_participants") as mock_get_participants:
-
                 mock_get_participants.return_value = json_to_Response(
                     PARTICIPANTS_JSON, 200
                 )

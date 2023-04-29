@@ -1,8 +1,8 @@
 """
 Handles the authentication of Google API and the use of google-api-python-client.
 """
-import google.auth
-from googleapiclient.discovery import build, Resource
+import google.auth  # type: ignore
+from googleapiclient.discovery import build, Resource  # type: ignore
 
 
 def build_google_service(api_name: str, api_version: str) -> Resource:
@@ -21,7 +21,7 @@ def build_google_service(api_name: str, api_version: str) -> Resource:
         scopes=[
             "https://www.googleapis.com/auth/calendar",
             "https://www.googleapis.com/auth/calendar.events",
-            "https://www.googleapis.com/auth/admin.directory.group.member"
+            "https://www.googleapis.com/auth/admin.directory.group.member",
         ]
     )[0]
 

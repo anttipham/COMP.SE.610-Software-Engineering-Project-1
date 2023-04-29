@@ -83,7 +83,7 @@ class TestGetParticipants:
         with patch("lyyti.lyytirequest.requests.get") as mock_get:
             mock_get.return_value = mock_response
 
-            response = get_participants(1240375)
+            response = get_participants("1240375")
             assert response.ok
             assert response.status_code == 200
             assert response.json() == json.load(open(PARTICIPANTS_JSON, "r"))
@@ -98,7 +98,7 @@ class TestGetParticipants:
         with patch("lyyti.lyytirequest.requests.get") as mock_get:
             mock_get.return_value = mock_response
 
-            response = get_participants(1240375)
+            response = get_participants("1240375")
             assert response.ok == False
             assert response.status_code == 400
             assert response.json() == {}

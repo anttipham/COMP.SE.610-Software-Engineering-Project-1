@@ -30,7 +30,7 @@ class TestParticipant:
         """Test that dataclass Participant is immutable"""
         participant = Participant(email="example_email")
         with pytest.raises(FrozenInstanceError):
-            participant.email = "please raise an error, pretty please"
+            participant.email = "please raise an error, pretty please"  # type: ignore
 
 
 class TestLoadParticipants:
