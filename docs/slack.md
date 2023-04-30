@@ -13,53 +13,6 @@ Firstly, we need to have the OAuth & Permissions in the slack api so that we can
 
 ![User Token Scopes](/docs/images/UserAuth_Scope.png)
 
-## Get WorkSpace Users
-Here is the link from slack official docs on how to make the call and get the lists of people in the channel.
-[Get Users from WorkSpace official docs](https://api.slack.com/methods/users.lookupByEmail)
-
-Here are the steps to perform the action for getting the list of the users from workSpace:
- 1. We need to have this method to look for all the users list.
- 2. We need to get the above User OAuth Token for authenticating the call and for the arguments, we need to pass the list of email address.
- 3. To make this call, we need to make sure that we have admin.users:read user token Scopes
-
- ## Get Channel Users
- Here is the link from slack official docs on how to make the call and get the lists of people in the channel.
- [Get Users from Specific Channel official docs](https://api.slack.com/methods/conversations.members)
-
- Here are the steps to perform the action for getting the list of the users from workSpace:
- 1. We need to call this method for  getting all the userID list present in the channel.
- 2. We need to get the above User OAuth Token for authenticating the call and for the arguments, we need to pass the channel id.
- 3. To make this call, we need to make sure that we have channels:read, groups:read, mpim:read, im:read user token Scopes
-
- ## Invite Users
-Here is the link from slack official docs on how to make the call and add the people in the channel.
-[Invite Users](https://api.slack.com/methods/conversations.invite)
-
-Here are the steps to perform the action for the user invite in slack:
- 1. We need to have this method to invite users which method can be achieve from above official docs.
- 2. We need to get the above User OAuth Token for authenticating the call and for the arguments, we need to pass the channel_id and users list to add for the specific channel. Like this:
-    ![UserAuth Token](/docs/images/UserAuth.png)
- 3. Before hitting the above method, we need to make sure that we have following OAuth Scope in the user token scopes:
-    - Channels:write,
-    - Channels:read,
-    - groups:write,
-    - group:read,
-    - mpim:read,
-    - im:read,
-    - mpim:write,
-    - im:write,
-    - admin.users:read
- 4. Once we have that, we will be allowed to hit the above method and we can add the users in the channel. (Note: This is the reason that we are documenting this process as we are
-    not able to implement it as we do not have enterprise slack workspace with admin role. But one who has this access is able to perform this action.)
-
-## Remove Users
-Here is the link from slack official docs on how to make the call and remove the people in the channel.
-[Remove Users official docs](https://api.slack.com/methods/conversations.kick)
-
-Here are the steps to perform the action for the user invite in slack:
- 1. We need to have this method  which can be achieve from above official link.
- 2. Remaining steps are exactly similar, like inviting the users mentioned above.
-
 # Slack Sample Code
-Sample code is in [/src/slack/channel.py](../src/slackbot/channel.py)
+Sample code is in [/src/slack/channel.py](../src/slackbot/channel.py). The code uses Python Slack SDK ([https://slack.dev/python-slack-sdk/](https://slack.dev/python-slack-sdk/)).
 Note: This code is just a sample and it may not work as we can't test it as we do not have the admin role in Slack account and neither we have enterprise account to test it.
