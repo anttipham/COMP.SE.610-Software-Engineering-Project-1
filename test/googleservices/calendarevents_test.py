@@ -3,7 +3,7 @@
 from unittest import TestCase, mock
 
 import pytest
-from googleapiclient.errors import HttpError
+from googleapiclient.errors import HttpError  # type: ignore
 
 from googleservices.calendarevents import *
 
@@ -11,7 +11,7 @@ from googleservices.calendarevents import *
 class TestCalendarEvent:
     """Tests for the CalendarEvent dataclass."""
 
-    def test_calendar_event(self):
+    def test_calendar_event(self) -> None:
         """Test that dataclass CalendarEvent works as predicted."""
 
         example_event = CalendarEvent(
@@ -35,7 +35,9 @@ class TestGetCalendarEvents(TestCase):
     """
 
     @mock.patch("googleservices.calendarevents.build_google_service")
-    def test_get_calendar_events_successfull(self, mock_build_google_service):
+    def test_get_calendar_events_successfull(
+        self, mock_build_google_service: object
+    ) -> None:
         """Test that the get_calendar_events function works as predicted."""
 
         # Set up teh mock service
@@ -57,7 +59,7 @@ class TestGetCalendarEvents(TestCase):
         mock_exectue = mock.MagicMock(return_value=mock_events_result)
         mock_service = mock.MagicMock()
         mock_service.events().list().execute = mock_exectue
-        mock_build_google_service.return_value = mock_service
+        mock_build_google_service.return_value = mock_service  # type: ignore
 
         # Call the function being tested
         events = get_calendar_events("example_calendar_id")
@@ -74,7 +76,9 @@ class TestGetCalendarEvents(TestCase):
         self.assertEqual(events, expected_events)
 
     @mock.patch("googleservices.calendarevents.build_google_service")
-    def test_get_calendar_events_unsuccessfull(self, mock_build_google_service):
+    def test_get_calendar_events_unsuccessfull(
+        self, mock_build_google_service: object
+    ) -> None:
         """
         Test that the get_calendar_events function
         raises an exception if the API call fails.
@@ -86,7 +90,7 @@ class TestGetCalendarEvents(TestCase):
         mock_service.events().list().execute.side_effect = HttpError(
             resp=mock.MagicMock(status=404), content=b"Error"
         )
-        mock_build_google_service.return_value = mock_service
+        mock_build_google_service.return_value = mock_service  # type: ignore
 
         # Call the function being tested
         with pytest.raises(HttpError):
@@ -101,14 +105,17 @@ class TestUpdateCalendarEventParticipants(TestCase):
 
     @mock.patch("googleservices.calendarevents.build_google_service")
     def test_update_calendar_event_participants_successfull(
-        self, mock_build_google_service
-    ):
-        """Test that the update_calendar_event_participants function works as predicted."""
+        self, mock_build_google_service: object
+    ) -> None:
+        """
+        Test that the update_calendar_event_participants
+        function works as predicted.
+        """
         # Set up the mock service
         mock_exectue = mock.MagicMock()
         mock_service = mock.MagicMock()
         mock_service.events().mock.patch().execute = mock_exectue
-        mock_build_google_service.return_value = mock_service
+        mock_build_google_service.return_value = mock_service  # type: ignore
 
         # Call the function being tested
         update_calendar_event_participants(
@@ -133,8 +140,8 @@ class TestUpdateCalendarEventParticipants(TestCase):
 
     @mock.patch("googleservices.calendarevents.build_google_service")
     def test_update_calendar_event_participants_unsuccessfull(
-        self, mock_build_google_service
-    ):
+        self, mock_build_google_service: object
+    ) -> None:
         """
         Test that the update_calendar_event_participants
         function raises an exception if the API call fails.
@@ -146,7 +153,7 @@ class TestUpdateCalendarEventParticipants(TestCase):
         mock_service.events().patch().execute.side_effect = HttpError(
             resp=mock.MagicMock(status=404), content=b"Error"
         )
-        mock_build_google_service.return_value = mock_service
+        mock_build_google_service.return_value = mock_service  # type: ignore
 
         # Call the function being tested
         with pytest.raises(HttpError):

@@ -1,8 +1,8 @@
 """
 Contains functions that affect Google Groups
 """
-from .buildservice import build_google_service
 from typing import TypeVar
+from .buildservice import build_google_service
 
 T = TypeVar("T")
 
@@ -28,8 +28,8 @@ def add_emails_to_group(group_id: str, emails: list[str]) -> None:
 
 def remove_emails_from_group(group_id: str, emails: list[str]) -> None:
     """
-    This function takes a Google Group ID and a list of emails and removes the emails from
-    the group.
+    This function takes a Google Group ID and a list of emails and removes the emails
+    from the group.
 
     Args:
         group_id (str): The Google Group ID of the group to remove members from
