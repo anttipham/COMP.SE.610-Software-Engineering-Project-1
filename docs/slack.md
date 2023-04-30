@@ -40,14 +40,14 @@ Here are the steps to perform the action for the user invite in slack:
  2. We need to get the above User OAuth Token for authenticating the call and for the arguments, we need to pass the channel_id and users list to add for the specific channel. Like this:
     ![UserAuth Token](/docs/images/UserAuth.png)
  3. Before hitting the above method, we need to make sure that we have following OAuth Scope in the user token scopes:
-    - Channels:write, 
+    - Channels:write,
     - Channels:read,
     - groups:write,
     - group:read,
     - mpim:read,
     - im:read,
-    - mpim:write, 
-    - im:write, 
+    - mpim:write,
+    - im:write,
     - admin.users:read
  4. Once we have that, we will be allowed to hit the above method and we can add the users in the channel. (Note: This is the reason that we are documenting this process as we are
     not able to implement it as we do not have enterprise slack workspace with admin role. But one who has this access is able to perform this action.)
@@ -61,6 +61,5 @@ Here are the steps to perform the action for the user invite in slack:
  2. Remaining steps are exactly similar, like inviting the users mentioned above.
 
 # Slack Sample Code
-There is a file called:
-[slackBot.py](../src/slack/channel.py)
-Note: This code is just a sample and it may not work as we can not test it as we do not have the admin role in Slack account and neither we have enterprise account to test it.
+Sample code is in [/src/slack/channel.py](../src/slackbot/channel.py)
+Note: This code is just a sample and it may not work as we can't test it as we do not have the admin role in Slack account and neither we have enterprise account to test it.
