@@ -4,6 +4,7 @@ Sets variables to environment variables for testing purposes.
 import os
 import pathlib
 
+
 def set_environ() -> None:
     """
     Sets the environment variables for testing purposes.
@@ -16,10 +17,10 @@ def set_environ() -> None:
 
     if "GOOGLE_APPLICATION_CREDENTIALS" not in os.environ:
         project_root = pathlib.Path(__file__).parent.parent
-        service_account_credentials = project_root / "univincity-throw-in-bot-018d57429b27.json"
-        os.environ[
-            "GOOGLE_APPLICATION_CREDENTIALS"
-        ] = str(service_account_credentials)
+        service_account_credentials = (
+            project_root / "univincity-throw-in-bot-018d57429b27.json"
+        )
+        os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = str(service_account_credentials)
 
     if "TIMEOUT_DURATION" not in os.environ:
         os.environ["TIMEOUT_DURATION"] = "10"
