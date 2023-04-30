@@ -5,7 +5,11 @@ from unittest import TestCase, mock
 import pytest
 from googleapiclient.errors import HttpError  # type: ignore
 
-from googleservices.calendarevents import *  # pylint: disable=wildcard-import,unused-wildcard-import
+from googleservices.calendarevents import (
+    get_calendar_events,
+    update_calendar_event_participants,
+    CalendarEvent,
+)
 
 
 class TestCalendarEvent:  # pylint: disable=too-few-public-methods

@@ -5,7 +5,13 @@ from unittest import TestCase, mock
 import pytest
 from googleapiclient.errors import HttpError  # type: ignore
 
-from googleservices.groups import *  # pylint: disable=wildcard-import,unused-wildcard-import
+from googleservices.groups import (
+    add_emails_to_group,
+    remove_emails_from_group,
+    get_group_members,
+    list_differences,
+    update_group_members,
+)
 
 
 class TestAddEmailsToGroup:
