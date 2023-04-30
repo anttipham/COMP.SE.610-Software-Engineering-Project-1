@@ -73,7 +73,7 @@ class TestTryExceptLog:
         """
 
         def example_function() -> None:
-            1 / 0  # pylint: disable=pointless-statement
+            print(1 / 0)
 
         with io.StringIO() as buf, contextlib.redirect_stdout(buf):
             with tryexceptlog():
