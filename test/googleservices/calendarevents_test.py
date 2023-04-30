@@ -8,7 +8,7 @@ from googleapiclient.errors import HttpError  # type: ignore
 from googleservices.calendarevents import *  # pylint: disable=wildcard-import,unused-wildcard-import
 
 
-class TestCalendarEvent:  # pylint: disable=too-few-public-methods
+class TestCalendarEvent:
     """Tests for the CalendarEvent dataclass."""
 
     def test_calendar_event(self) -> None:

@@ -4,7 +4,7 @@ from googleservices import buildservice
 from environ import set_environ
 
 
-class TestBuildGoogleService:  # pylint: disable=too-few-public-methods
+class TestBuildGoogleService:
     """Tests for build_google_service function."""
 
     set_environ()

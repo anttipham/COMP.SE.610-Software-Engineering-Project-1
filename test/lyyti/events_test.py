@@ -17,7 +17,7 @@ PAST_EVENTS_JSON = "test/res/past-events-sample.json"
 PARTICIPANTS_JSON = "test/res/participants-sample.json"
 
 
-class TestCustom:  # pylint: disable=too-few-public-methods
+class TestCustom:
     """For testing custom class"""
 
     def test_custom(self) -> None:
@@ -161,7 +161,7 @@ class TestParseCustomField:
         )
 
 
-class TestIsInThePast:  # pylint: disable=too-few-public-methods
+class TestIsInThePast:
     """For testing is events are in past"""
 
     def test_is_in_the_past(self) -> None:
@@ -174,7 +174,7 @@ class TestIsInThePast:  # pylint: disable=too-few-public-methods
         )  # this is the timestamp for 04/04/3000
 
 
-class TestConvertUnixtimeToDatetimestring:  # pylint: disable=too-few-public-methods
+class TestConvertUnixtimeToDatetimestring:
     """For testing time converter"""
 
     def test_convert_unixtime_to_datetimestring(self) -> None:
