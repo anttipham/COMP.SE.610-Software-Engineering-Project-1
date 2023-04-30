@@ -2,6 +2,9 @@
 Handles the authentication of Slack API and the use it for inviting and removing of the
 participants.
 
+The code presume that the slack bot is already created and the token is stored in the
+environment variable USER_TOKEN.
+
 To communicate with the slack api and add or remove the participants from specific
 channel, we need to have following user token scope in the slack bot:
 1. channels:read
