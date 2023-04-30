@@ -23,7 +23,7 @@ class Custom(TypedDict):
 
 
 @dataclass(frozen=True)
-class Event:
+class Event:  # pylint: disable=too-many-instance-attributes
     """
     Contains the information of an event.
 

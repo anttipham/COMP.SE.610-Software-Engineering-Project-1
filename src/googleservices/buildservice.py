@@ -2,7 +2,7 @@
 Handles the authentication of Google API and the use of google-api-python-client.
 """
 import google.auth  # type: ignore
-from googleapiclient.discovery import build, Resource  # type: ignore
+from googleapiclient.discovery import build, Resource
 
 
 def build_google_service(api_name: str, api_version: str) -> Resource:

@@ -5,7 +5,7 @@ from unittest import TestCase, mock
 import pytest
 from googleapiclient.errors import HttpError  # type: ignore
 
-from googleservices.groups import *
+from googleservices.groups import *  # pylint: disable=wildcard-import,unused-wildcard-import
 
 
 class TestAddEmailsToGroup:
@@ -16,13 +16,13 @@ class TestAddEmailsToGroup:
     """
 
     @mock.patch("googleservices.groups.build_google_service")
-    def test_add_emails_to_group_successfull(self, build_mock: object) -> None:
+    def test_add_emails_to_group_successfull(self, build_mock: mock.MagicMock) -> None:
         """Test that add_emails_to_group() adds emails to group"""
 
         mock_service = mock.MagicMock()
         mock_response = mock.MagicMock()
         mock_service.members().insert().execute.return_value = mock_response
-        build_mock.return_value = mock_service  # type: ignore
+        build_mock.return_value = mock_service
 
         group_id = "test_group_id"
         emails = ["test_email1@test.com", "test_email2@test.com"]
@@ -47,14 +47,16 @@ class TestAddEmailsToGroup:
         mock_service.members().insert.assert_has_calls(expected_calls)
 
     @mock.patch("googleservices.groups.build_google_service")
-    def test_add_emails_to_group_unsuccessfull(self, build_mock: object) -> None:
+    def test_add_emails_to_group_unsuccessfull(
+        self, build_mock: mock.MagicMock
+    ) -> None:
         """Test that add_emails_to_group() raises exception"""
 
         mock_service = mock.MagicMock()
         mock_service.members().insert().execute.side_effect = HttpError(
             resp=mock.MagicMock(status=404), content=b"Error"
         )
-        build_mock.return_value = mock_service  # type: ignore
+        build_mock.return_value = mock_service
 
         group_id = "test_group_id"
         emails = ["test_email1@test.com", "test_email2@test.com"]
@@ -71,13 +73,15 @@ class TestRemoveEmailsFromGroup:
     """
 
     @mock.patch("googleservices.groups.build_google_service")
-    def test_remove_emails_from_group_successfull(self, build_mock: object) -> None:
+    def test_remove_emails_from_group_successfull(
+        self, build_mock: mock.MagicMock
+    ) -> None:
         """Test that remove_emails_from_group() removes emails from group"""
 
         mock_service = mock.MagicMock()
         mock_response = mock.MagicMock()
         mock_service.members().delete().execute.return_value = mock_response
-        build_mock.return_value = mock_service  # type: ignore
+        build_mock.return_value = mock_service
 
         group_id = "test_group_id"
         emails = [
@@ -104,7 +108,9 @@ class TestRemoveEmailsFromGroup:
         mock_service.members().delete.assert_has_calls(expected_calls)
 
     @mock.patch("googleservices.groups.build_google_service")
-    def test_remove_emails_from_group_unsuccessfull(self, build_mock: object) -> None:
+    def test_remove_emails_from_group_unsuccessfull(
+        self, build_mock: mock.MagicMock
+    ) -> None:
         """Test that remove_emails_from_group() raises exception"""
 
         mock_service = mock.MagicMock()
@@ -112,7 +118,7 @@ class TestRemoveEmailsFromGroup:
             resp=mock.MagicMock(status=404), content=b"Error"
         )
 
-        build_mock.return_value = mock_service  # type: ignore
+        build_mock.return_value = mock_service
 
         group_id = "test_group_id"
         emails_to_remove = ["test_email1@test.com", "test_email3@test.com"]
@@ -129,7 +135,7 @@ class TestGetGroupMembers(TestCase):
     """
 
     @mock.patch("googleservices.groups.build_google_service")
-    def test_get_group_members_successfull(self, build_mock: object) -> None:
+    def test_get_group_members_successfull(self, build_mock: mock.MagicMock) -> None:
         """Test that get_group_members() returns the group members"""
 
         mock_service = mock.MagicMock()
@@ -146,24 +152,24 @@ class TestGetGroupMembers(TestCase):
         mock_service.members().list.return_value = mock_execute
         mock_service.members().list_next.return_value = None
 
-        build_mock.return_value = mock_service  # type: ignore
+        build_mock.return_value = mock_service
 
         result = get_group_members("test_group_id")
         self.assertEqual(result, ["test_email1@test.com", "test_email2@test.com"])
 
-        build_mock.assert_called_once_with("admin", "directory_v1")  # type: ignore
+        build_mock.assert_called_once_with("admin", "directory_v1")
         mock_service.members().list.assert_called_once_with(groupKey="test_group_id")
         mock_execute.execute.assert_called_once()
 
     @mock.patch("googleservices.groups.build_google_service")
-    def test_get_group_members_unsuccessfull(self, build_mock: object) -> None:
+    def test_get_group_members_unsuccessfull(self, build_mock: mock.MagicMock) -> None:
         """Test that get_group_members() raises exception"""
 
         mock_service = mock.MagicMock()
         mock_service.members().list().execute.side_effect = HttpError(
             resp=mock.MagicMock(status=404), content=b"Error"
         )
-        build_mock.return_value = mock_service  # type: ignore
+        build_mock.return_value = mock_service
 
         with self.assertRaises(HttpError):
             get_group_members("test_group_id")
@@ -226,7 +232,10 @@ class TestUpdateGroupMembers(TestCase):
     @mock.patch("googleservices.groups.add_emails_to_group")
     @mock.patch("googleservices.groups.remove_emails_from_group")
     def test_update_group_members_successfull(
-        self, remove_mock: object, add_mock: object, get_mock: object
+        self,
+        remove_mock: mock.MagicMock,
+        add_mock: mock.MagicMock,
+        get_mock: mock.MagicMock,
     ) -> None:
         """Test that update_group_members() returns the group members"""
 
@@ -235,20 +244,22 @@ class TestUpdateGroupMembers(TestCase):
         new = ["test_email2@test.com", "test_email3@test.com"]
 
         # mock the get_group_members() function
-        get_mock.return_value = old  # type: ignore
+        get_mock.return_value = old
 
         # Call the function being tested
         update_group_members(group_id, new)
 
         # Assert that the correct functions were called
-        add_mock.assert_called_once_with(group_id, ["test_email3@test.com"])  # type: ignore
-        remove_mock.assert_called_once_with(group_id, ["test_email1@test.com"])  # type: ignore
+        add_mock.assert_called_once_with(group_id, ["test_email3@test.com"])
+        remove_mock.assert_called_once_with(group_id, ["test_email1@test.com"])
 
     @mock.patch("googleservices.groups.update_group_members")
-    def test_update_group_members_unsuccessfull(self, update_mock: object) -> None:
+    def test_update_group_members_unsuccessfull(
+        self, update_mock: mock.MagicMock
+    ) -> None:
         """Test that update_group_members() raises exception"""
 
-        update_mock.side_effect = HttpError(  # type: ignore
+        update_mock.side_effect = HttpError(
             resp=mock.MagicMock(status=404), content=b"Error"
         )
 

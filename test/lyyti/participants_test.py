@@ -7,14 +7,18 @@ from unittest.mock import patch
 import pytest
 
 from testutils import json_to_response
-from lyyti.participants import *
+from lyyti.participants import *  # pylint: disable=wildcard-import,unused-wildcard-import
 
-with open("test/res/participants-sample.json", "r") as file:
+with open("test/res/participants-sample.json", "r", encoding="utf-8") as file:
     PARTICIPANT_JSON = json.load(file)
 
 
 class TestParticipant:
-    def test_Participant(self) -> None:
+    """
+    For testing participants
+    """
+
+    def test_participant(self) -> None:
         """Test that dataclass Participant works as predicted"""
 
         example_participant = Participant(
@@ -32,6 +36,10 @@ class TestParticipant:
 
 
 class TestLoadParticipants:
+    """
+    For testing loading participants
+    """
+
     def test_load_participants(self) -> None:
         """
         Test that load_participants works with example data
@@ -60,4 +68,4 @@ class TestLoadParticipants:
                 "test/res/participants-sample.json", 404
             )
             with pytest.raises(RuntimeError):
-                participants = load_participants(example_id)
+                load_participants(example_id)

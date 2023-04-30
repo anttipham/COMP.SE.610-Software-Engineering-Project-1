@@ -21,7 +21,7 @@ class CalendarEvent:
     """
 
     name: str
-    id: str
+    id: str  # pylint: disable=invalid-name
     start_time: str
     end_time: str
 
@@ -40,7 +40,9 @@ def get_calendar_events(calendar_id: str) -> list[CalendarEvent]:
     service = build_google_service("calendar", "v3")
 
     events_result = (
-        service.events().list(calendarId=calendar_id, singleEvents=False).execute()
+        service.events()  # pylint: disable=no-member
+        .list(calendarId=calendar_id, singleEvents=False)
+        .execute()
     )
     event_items = events_result.get("items", [])
     events: list[CalendarEvent] = []
@@ -76,7 +78,7 @@ def update_calendar_event_participants(
     participants_body = [{"email": email} for email in participants]
 
     service = build_google_service("calendar", "v3")
-    service.events().patch(
+    service.events().patch(  # pylint: disable=no-member
         calendarId=calendar_id,
         eventId=event_id,
         body={"attendees": participants_body},

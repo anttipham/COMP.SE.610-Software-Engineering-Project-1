@@ -7,7 +7,7 @@ Read this: https://docs.pytest.org/en/7.1.x/getting-started.html
 import pytest
 
 
-def increment(x: int) -> int:
+def increment(x: int) -> int:  # pylint: disable=invalid-name
     """Increments a number by 1."""
     return x + 1
 
