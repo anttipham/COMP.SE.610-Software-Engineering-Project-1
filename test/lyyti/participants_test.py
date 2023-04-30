@@ -7,7 +7,7 @@ from unittest.mock import patch
 import pytest
 
 from testutils import json_to_response
-from lyyti.participants import *  # pylint: disable=wildcard-import,unused-wildcard-import
+from lyyti.participants import Participant, load_participants, Sequence
 
 with open("test/res/participants-sample.json", "r", encoding="utf-8") as file:
     PARTICIPANT_JSON = json.load(file)

@@ -8,7 +8,15 @@ from unittest.mock import patch
 import pytest
 from testutils import json_to_response
 
-from lyyti.events import *  # pylint: disable=wildcard-import,unused-wildcard-import
+from lyyti.events import (
+    Custom,
+    Event,
+    parse_custom_field,
+    is_in_the_past,
+    convert_unixtime_to_datetimestring,
+    get_from_language_field,
+    load_events,
+)
 from lyyti.participants import Participant
 
 EVENTS_JSON = "test/res/events-sample.json"
@@ -134,7 +142,7 @@ class TestParseCustomField:
     def test_parse_custom_field(self) -> None:
         """Test that parse_custom_field works with example data"""
         # get example data from the res/events-sample.json custom field
-        with open(EVENTS_JSON, "r",encoding="utf-8") as file:
+        with open(EVENTS_JSON, "r", encoding="utf-8") as file:
             data = json.load(file)
             event_id = next(iter(data["results"].keys()))
             example_field = data["results"][event_id]["custom"]

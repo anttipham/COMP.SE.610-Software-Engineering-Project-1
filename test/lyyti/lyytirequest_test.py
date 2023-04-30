@@ -51,13 +51,8 @@ class TestGetEvents:
             response = get_events()
             assert response.ok
             assert response.status_code == 200
-            assert response.json() == json.load(
-                open(  # pylint: disable=consider-using-with
-                    EVENTS_JSON,
-                    "r",
-                    encoding="utf-8",
-                )
-            )
+            with open(EVENTS_JSON, "r", encoding="utf-8") as response_mock:
+                assert response.json() == json.load(response_mock)
 
     def test_get_events_fails(self) -> None:
         """
@@ -92,13 +87,8 @@ class TestGetParticipants:
             response = get_participants("1240375")
             assert response.ok
             assert response.status_code == 200
-            assert response.json() == json.load(
-                open(  # pylint: disable=consider-using-with
-                    PARTICIPANTS_JSON,
-                    "r",
-                    encoding="utf-8",
-                )
-            )
+            with open(PARTICIPANTS_JSON, "r", encoding="utf-8") as response_mock:
+                assert response.json() == json.load(response_mock)
 
     def test_get_participants_fails(self) -> None:
         """
