@@ -1,17 +1,9 @@
 """
-Handles the authentication of Slack API and the use it for inviting and removing of the participants.
-"""
-import slack
+Handles the authentication of Slack API and the use it for inviting and removing of the
+participants.
 
-import os
-
-from pathlib import Path
-
-from dotenv import load_dotenv
-
-"""
-To communicate with the slack api and add or remove the participants from specific channel,
-we need to have following user token scope in the slackBot:
+To communicate with the slack api and add or remove the participants from specific
+channel, we need to have following user token scope in the slack bot:
 1. channels:read
 2. groups:read
 3. groups:write
@@ -19,12 +11,13 @@ we need to have following user token scope in the slackBot:
 5. users:read.email
 6. admin.conversations:write
 """
-# Get credentials.
-env_path = Path(".") / ".env"
-load_dotenv(dotenv_path=env_path)
+import os
+import slack
+
 client = slack.WebClient(token=os.environ["USER_TOKEN"])
 
-def get_all_user_IDs(emails: list[str]) -> set[str]:
+
+def get_all_user_ids(emails: list[str]) -> set[str]:
     """
     Get all the user Ids from the Workspace
     that match the email addresses in the input list.
@@ -41,6 +34,7 @@ def get_all_user_IDs(emails: list[str]) -> set[str]:
         id_set.add(response["user"]["id"])
     return id_set
 
+
 def get_user_ids_from_channel(channel_id: str) -> set[str]:
     """
     Get all the user IDs from a specific channel.
@@ -55,6 +49,7 @@ def get_user_ids_from_channel(channel_id: str) -> set[str]:
     member_ids = response["members"]
     return set(member_ids)
 
+
 def invite_members(emails: list[str], channel_id: str):
     """
     Invite all the users with their email addresses to a specific channel.
@@ -65,7 +60,7 @@ def invite_members(emails: list[str], channel_id: str):
     Returns:
         list[str]:  Return lists of user Ids that are already invited to the channel
     """
-    all_id_set = get_all_user_IDs(emails)
+    all_id_set = get_all_user_ids(emails)
     members_in_channel_set = get_user_ids_from_channel(channel_id)
 
     new_members_set = all_id_set - members_in_channel_set
@@ -77,7 +72,6 @@ def invite_members(emails: list[str], channel_id: str):
     for member in kicked_members_set:
         client.conversations_kick(channel=channel_id, user=member)
 
+
 if __name__ == "__main__":
-    emails = ["email1@example.com", "email2@example.com"]
-    channel_id = "ABC123"
-    invite_members(emails, channel_id)
+    invite_members(["email1@example.com", "email2@example.com"], "ABC123")
