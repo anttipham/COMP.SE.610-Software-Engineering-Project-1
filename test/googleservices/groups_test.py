@@ -3,9 +3,15 @@
 from unittest import TestCase, mock
 
 import pytest
-from googleapiclient.errors import HttpError
+from googleapiclient.errors import HttpError  # type: ignore
 
-from googleservices.groups import *
+from googleservices.groups import (
+    add_emails_to_group,
+    remove_emails_from_group,
+    get_group_members,
+    list_differences,
+    update_group_members,
+)
 
 
 class TestAddEmailsToGroup:
@@ -16,7 +22,7 @@ class TestAddEmailsToGroup:
     """
 
     @mock.patch("googleservices.groups.build_google_service")
-    def test_add_emails_to_group_successfull(self, build_mock):
+    def test_add_emails_to_group_successfull(self, build_mock: mock.MagicMock) -> None:
         """Test that add_emails_to_group() adds emails to group"""
 
         mock_service = mock.MagicMock()
@@ -47,7 +53,9 @@ class TestAddEmailsToGroup:
         mock_service.members().insert.assert_has_calls(expected_calls)
 
     @mock.patch("googleservices.groups.build_google_service")
-    def test_add_emails_to_group_unsuccessfull(self, build_mock):
+    def test_add_emails_to_group_unsuccessfull(
+        self, build_mock: mock.MagicMock
+    ) -> None:
         """Test that add_emails_to_group() raises exception"""
 
         mock_service = mock.MagicMock()
@@ -71,7 +79,9 @@ class TestRemoveEmailsFromGroup:
     """
 
     @mock.patch("googleservices.groups.build_google_service")
-    def test_remove_emails_from_group_successfull(self, build_mock):
+    def test_remove_emails_from_group_successfull(
+        self, build_mock: mock.MagicMock
+    ) -> None:
         """Test that remove_emails_from_group() removes emails from group"""
 
         mock_service = mock.MagicMock()
@@ -104,7 +114,9 @@ class TestRemoveEmailsFromGroup:
         mock_service.members().delete.assert_has_calls(expected_calls)
 
     @mock.patch("googleservices.groups.build_google_service")
-    def test_remove_emails_from_group_unsuccessfull(self, build_mock):
+    def test_remove_emails_from_group_unsuccessfull(
+        self, build_mock: mock.MagicMock
+    ) -> None:
         """Test that remove_emails_from_group() raises exception"""
 
         mock_service = mock.MagicMock()
@@ -115,11 +127,6 @@ class TestRemoveEmailsFromGroup:
         build_mock.return_value = mock_service
 
         group_id = "test_group_id"
-        emails = [
-            "test_email1@test.com",
-            "test_email2@test.com",
-            "test_email3@test.com",
-        ]
         emails_to_remove = ["test_email1@test.com", "test_email3@test.com"]
 
         with pytest.raises(HttpError):
@@ -134,7 +141,7 @@ class TestGetGroupMembers(TestCase):
     """
 
     @mock.patch("googleservices.groups.build_google_service")
-    def test_get_group_members_successfull(self, build_mock):
+    def test_get_group_members_successfull(self, build_mock: mock.MagicMock) -> None:
         """Test that get_group_members() returns the group members"""
 
         mock_service = mock.MagicMock()
@@ -161,7 +168,7 @@ class TestGetGroupMembers(TestCase):
         mock_execute.execute.assert_called_once()
 
     @mock.patch("googleservices.groups.build_google_service")
-    def test_get_group_members_unsuccessfull(self, build_mock):
+    def test_get_group_members_unsuccessfull(self, build_mock: mock.MagicMock) -> None:
         """Test that get_group_members() raises exception"""
 
         mock_service = mock.MagicMock()
@@ -177,7 +184,7 @@ class TestGetGroupMembers(TestCase):
 class TestListDifferences:
     """Tests for list_differences()"""
 
-    def test_list_differences_successfull(self):
+    def test_list_differences_successfull(self) -> None:
         """Test that list_differences() returns the correct lists"""
 
         test_list1 = ["test_member1", "test_member2", "test_member3"]
@@ -187,31 +194,31 @@ class TestListDifferences:
         assert set(to_be_added) == set(["test_member4"])
         assert set(to_be_removed) == set(["test_member3"])
 
-    def test_list_differences_empty_lists(self):
+    def test_list_differences_empty_lists(self) -> None:
         """Test that list_differences() returns empty lists"""
 
-        test_list1 = []
-        test_list2 = []
+        test_list1 = []  # type: ignore
+        test_list2 = []  # type: ignore
 
         to_be_added, to_be_removed = list_differences(test_list1, test_list2)
         assert set(to_be_added) == set([])
         assert set(to_be_removed) == set([])
 
-    def test_list_differences_empty_list1(self):
+    def test_list_differences_empty_list1(self) -> None:
         """Test that list_differences() returns empty lists"""
 
-        test_list1 = []
+        test_list1 = []  # type: ignore
         test_list2 = ["test_member1", "test_member2", "test_member4"]
 
         to_be_added, to_be_removed = list_differences(test_list1, test_list2)
         assert set(to_be_added) == set(["test_member1", "test_member2", "test_member4"])
         assert set(to_be_removed) == set([])
 
-    def test_list_differences_empty_list2(self):
+    def test_list_differences_empty_list2(self) -> None:
         """Test that list_differences() returns empty lists"""
 
         test_list1 = ["test_member1", "test_member2", "test_member3"]
-        test_list2 = []
+        test_list2 = []  # type: ignore
 
         to_be_added, to_be_removed = list_differences(test_list1, test_list2)
         assert set(to_be_added) == set([])
@@ -230,7 +237,12 @@ class TestUpdateGroupMembers(TestCase):
     @mock.patch("googleservices.groups.get_group_members")
     @mock.patch("googleservices.groups.add_emails_to_group")
     @mock.patch("googleservices.groups.remove_emails_from_group")
-    def test_update_group_members_successfull(self, remove_mock, add_mock, get_mock):
+    def test_update_group_members_successfull(
+        self,
+        remove_mock: mock.MagicMock,
+        add_mock: mock.MagicMock,
+        get_mock: mock.MagicMock,
+    ) -> None:
         """Test that update_group_members() returns the group members"""
 
         group_id = "test_group_id"
@@ -248,7 +260,9 @@ class TestUpdateGroupMembers(TestCase):
         remove_mock.assert_called_once_with(group_id, ["test_email1@test.com"])
 
     @mock.patch("googleservices.groups.update_group_members")
-    def test_update_group_members_unsuccessfull(self, update_mock):
+    def test_update_group_members_unsuccessfull(
+        self, update_mock: mock.MagicMock
+    ) -> None:
         """Test that update_group_members() raises exception"""
 
         update_mock.side_effect = HttpError(

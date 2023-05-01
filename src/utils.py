@@ -18,9 +18,14 @@ def extract_group_id(url: str) -> str:
     a Google Workspace group.
 
     Example:
-        >>> extract_group_id("https://groups.google.com/a/oispahuone.com/g/univincity-throw-in-bot-test-group")
+        >>> extract_group_id(
+            "https://groups.google.com/a/oispahuone.com/g
+            /univincity-throw-in-bot-test-group"
+            )
         "univincity-throw-in-bot-test-group@oispahuone.com"
-        >>> extract_group_id("https://groups.google.com/g/univincity-throw-in-bot-test-group")
+        >>> extract_group_id(
+            "https://groups.google.com/g/univincity-throw-in-bot-test-group"
+            )
         "univincity-throw-in-bot-test-group"
 
     Args:
@@ -64,5 +69,5 @@ def tryexceptlog() -> Generator[None, None, None]:
     """
     try:
         yield
-    except Exception as error:
+    except Exception as error:  # pylint: disable=broad-exception-caught
         botlog(error, traceback.format_exc(), sep="\n")

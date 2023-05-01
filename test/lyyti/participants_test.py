@@ -7,14 +7,18 @@ from unittest.mock import patch
 import pytest
 
 from testutils import json_to_response
-from lyyti.participants import *
+from lyyti.participants import Participant, load_participants
 
-with open("test/res/participants-sample.json", "r") as file:
+with open("test/res/participants-sample.json", "r", encoding="utf-8") as file:
     PARTICIPANT_JSON = json.load(file)
 
 
 class TestParticipant:
-    def test_Participant(self) -> None:
+    """
+    For testing participants
+    """
+
+    def test_participant(self) -> None:
         """Test that dataclass Participant works as predicted"""
 
         example_participant = Participant(
@@ -28,10 +32,14 @@ class TestParticipant:
         """Test that dataclass Participant is immutable"""
         participant = Participant(email="example_email")
         with pytest.raises(FrozenInstanceError):
-            participant.email = "please raise an error, pretty please"
+            participant.email = "please raise an error, pretty please"  # type: ignore
 
 
 class TestLoadParticipants:
+    """
+    For testing loading participants
+    """
+
     def test_load_participants(self) -> None:
         """
         Test that load_participants works with example data
@@ -45,7 +53,7 @@ class TestLoadParticipants:
             )
             participants = load_participants(example_id)
 
-            assert isinstance(participants, Sequence)
+            assert isinstance(participants, tuple)
             assert isinstance(participants[0], Participant)
 
     def test_load_participants_bad_response(self) -> None:
@@ -60,4 +68,4 @@ class TestLoadParticipants:
                 "test/res/participants-sample.json", 404
             )
             with pytest.raises(RuntimeError):
-                participants = load_participants(example_id)
+                load_participants(example_id)

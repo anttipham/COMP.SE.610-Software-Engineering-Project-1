@@ -1,8 +1,8 @@
 """
 Contains functions that affect Google Groups
 """
-from .buildservice import build_google_service
 from typing import TypeVar
+from .buildservice import build_google_service
 
 T = TypeVar("T")
 
@@ -23,13 +23,15 @@ def add_emails_to_group(group_id: str, emails: list[str]) -> None:
     service = build_google_service("admin", "directory_v1")
     for email in emails:
         member = {"email": email, "role": "MEMBER"}
-        service.members().insert(groupKey=group_id, body=member).execute()
+        service.members().insert(  # pylint: disable=no-member
+            groupKey=group_id, body=member
+        ).execute()
 
 
 def remove_emails_from_group(group_id: str, emails: list[str]) -> None:
     """
-    This function takes a Google Group ID and a list of emails and removes the emails from
-    the group.
+    This function takes a Google Group ID and a list of emails and removes the emails
+    from the group.
 
     Args:
         group_id (str): The Google Group ID of the group to remove members from
@@ -41,7 +43,9 @@ def remove_emails_from_group(group_id: str, emails: list[str]) -> None:
     service = build_google_service("admin", "directory_v1")
 
     for email in emails:
-        service.members().delete(groupKey=group_id, memberKey=email).execute()
+        service.members().delete(  # pylint: disable=no-member
+            groupKey=group_id, memberKey=email
+        ).execute()
 
 
 def get_group_members(group_id: str) -> list[str]:
@@ -60,13 +64,15 @@ def get_group_members(group_id: str) -> list[str]:
     emails = []
     service = build_google_service("admin", "directory_v1")
 
-    request = service.members().list(groupKey=group_id)
+    request = service.members().list(groupKey=group_id)  # pylint: disable=no-member
 
     # Google forces pagination, so fetch members as long as there are members
     while request:
         response = request.execute()
         emails += [member["email"] for member in response["members"]]
-        request = service.members().list_next(request, response)
+        request = service.members().list_next(  # pylint: disable=no-member
+            request, response
+        )
     return emails
 
 

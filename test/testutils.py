@@ -21,7 +21,7 @@ def json_to_response(json_file: str, status_code: int) -> requests.Response:
         data = file.read()
 
     mock_response = requests.Response()
-    mock_response._content = data
+    mock_response._content = data  # pylint: disable=protected-access
     mock_response.status_code = status_code
 
     return mock_response

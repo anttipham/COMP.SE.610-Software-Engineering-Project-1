@@ -1,6 +1,6 @@
 """ Tests for google buildservice in googleservices. """
 
-import googleservices.buildservice as buildservice
+from googleservices import buildservice
 from environ import set_environ
 
 
@@ -9,7 +9,7 @@ class TestBuildGoogleService:
 
     set_environ()
 
-    def test_build_google_service(self):
+    def test_build_google_service(self) -> None:
         """Test that build_google_service returns a Resource object."""
         service = buildservice.build_google_service("calendar", "v3")
         assert service is not None

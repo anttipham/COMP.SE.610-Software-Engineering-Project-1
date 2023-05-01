@@ -1,2 +1,5 @@
 [FORMAT]
 max-line-length=88
+
+[MESSAGES CONTROL]
+disable=too-many-instance-attributes,too-few-public-methods

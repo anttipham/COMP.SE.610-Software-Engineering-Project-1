@@ -9,8 +9,6 @@ from testutils import json_to_response
 from lyyti.lyytirequest import generate_headers, get_events, get_participants
 import environ
 
-""" Get the sample data from res """
-
 EVENTS_JSON = "test/res/events-sample.json"
 EMPTY_JSON = "test/res/empty-sample.json"
 PARTICIPANTS_JSON = "test/res/participants-sample.json"
@@ -53,7 +51,8 @@ class TestGetEvents:
             response = get_events()
             assert response.ok
             assert response.status_code == 200
-            assert response.json() == json.load(open(EVENTS_JSON, "r"))
+            with open(EVENTS_JSON, "r", encoding="utf-8") as response_mock:
+                assert response.json() == json.load(response_mock)
 
     def test_get_events_fails(self) -> None:
         """
@@ -67,7 +66,7 @@ class TestGetEvents:
             mock_get.return_value = mock_response
 
             response = get_events()
-            assert response.ok == False
+            assert response.ok is False
             assert response.status_code == 400
             assert response.json() == {}
 
@@ -85,10 +84,11 @@ class TestGetParticipants:
         with patch("lyyti.lyytirequest.requests.get") as mock_get:
             mock_get.return_value = mock_response
 
-            response = get_participants(1240375)
+            response = get_participants("1240375")
             assert response.ok
             assert response.status_code == 200
-            assert response.json() == json.load(open(PARTICIPANTS_JSON, "r"))
+            with open(PARTICIPANTS_JSON, "r", encoding="utf-8") as response_mock:
+                assert response.json() == json.load(response_mock)
 
     def test_get_participants_fails(self) -> None:
         """
@@ -100,7 +100,7 @@ class TestGetParticipants:
         with patch("lyyti.lyytirequest.requests.get") as mock_get:
             mock_get.return_value = mock_response
 
-            response = get_participants(1240375)
-            assert response.ok == False
+            response = get_participants("1240375")
+            assert response.ok is False
             assert response.status_code == 400
             assert response.json() == {}
