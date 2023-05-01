@@ -2,7 +2,6 @@
 Handles the participants of the Lyyti API.
 """
 from dataclasses import dataclass
-from typing import Sequence
 
 from .lyytirequest import get_participants
 
@@ -18,7 +17,7 @@ class Participant:
     email: str
 
 
-def load_participants(event_id: str) -> Sequence[Participant]:
+def load_participants(event_id: str) -> tuple[Participant, ...]:
     """
     Returns event participants' data from Lyyti API.
 

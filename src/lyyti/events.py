@@ -4,7 +4,7 @@ Handles the events of the Lyyti API.
 
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Sequence, TypedDict
+from typing import TypedDict
 
 from .lyytirequest import get_events
 from .participants import Participant, load_participants
@@ -31,7 +31,7 @@ class Event:
     - name (str): The name of the event. By default in English.
     - start_time (str): The start time of the event.
     - end_time (str): The end time of the event.
-    - participant (Sequence[Participant]): Tuple of the participants of the
+    - participant (tuple[Participant, ...]): Tuple of the participants of the
     event
     - google_group_link (str): The google group link or empty string
     - google_calendar_id (str): The google calendar id or empty string
@@ -44,7 +44,7 @@ class Event:
     name: str
     start_time: str
     end_time: str
-    participants: Sequence[Participant]
+    participants: tuple[Participant, ...]
     google_group_link: str
     google_calendar_id: str
     slack_channel: str

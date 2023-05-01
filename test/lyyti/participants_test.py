@@ -53,7 +53,7 @@ class TestLoadParticipants:
             )
             participants = load_participants(example_id)
 
-            assert isinstance(participants, Sequence)
+            assert isinstance(participants, tuple)
             assert isinstance(participants[0], Participant)
 
     def test_load_participants_bad_response(self) -> None:
