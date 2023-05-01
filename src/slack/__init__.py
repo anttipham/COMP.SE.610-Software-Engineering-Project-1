@@ -1,3 +1,0 @@
-"""
-Handles Slack SDK
-"""

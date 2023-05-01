@@ -33,6 +33,9 @@ To see coverage of tests use the following command:
 pytest --cov-report term-missing --cov
 ```
 
+## Slack Documentation
+Visit this [Slack.md](./src/slack/Slack.md) file to view documentation
+
 ## Running in Cloud Run Locally
 
 This instructions apply for visual studio code.
@@ -72,6 +75,11 @@ This instructions apply for visual studio code.
     ```
 
 3. Generate requirements.txt file using following command.
+```bash
+pip freeze > requirements.txt
+```
+4. From visual studio code navbar select view -> Command Palette or press Ctrl+Shift+P.
+5. Type "Cloud Code: Run on Cloud Run Emulator"
 
     ```bash
     pip freeze > requirements.txt
