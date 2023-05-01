@@ -8,7 +8,15 @@ from unittest.mock import patch
 import pytest
 from testutils import json_to_response
 
-from lyyti.events import *
+from lyyti.events import (
+    Custom,
+    Event,
+    parse_custom_field,
+    is_in_the_past,
+    convert_unixtime_to_datetimestring,
+    get_from_language_field,
+    load_events,
+)
 from lyyti.participants import Participant
 
 EVENTS_JSON = "test/res/events-sample.json"
@@ -18,7 +26,9 @@ PARTICIPANTS_JSON = "test/res/participants-sample.json"
 
 
 class TestCustom:
-    def test_Custom(self) -> None:
+    """For testing custom class"""
+
+    def test_custom(self) -> None:
         """Test that class Custom works as predicted"""
         example_custom = Custom(
             google_group_link="example_group_link",
@@ -31,8 +41,11 @@ class TestCustom:
 
 
 class TestEvent:
+    """For testing Event class"""
+
     @pytest.fixture()
     def example_event(self) -> Event:
+        """Returns example event"""
         return Event(
             event_id="1234",
             name="Example event",
@@ -44,7 +57,7 @@ class TestEvent:
             slack_channel="example_slack_channel",
         )
 
-    def test_Event(self, example_event) -> None:
+    def test_event(self, example_event: Event) -> None:
         """Test that dataclass Event works as predicted"""
 
         assert isinstance(example_event, Event)
@@ -61,62 +74,89 @@ class TestEvent:
         # check that end time is later than start time
         assert example_event.end_time > example_event.start_time
 
-    def test_immutable_event_id(self, example_event) -> None:
+    def test_immutable_event_id(self, example_event: Event) -> None:
         """Test that dataclass Event ID is immutable"""
         with pytest.raises(FrozenInstanceError):
-            example_event.event_id = "please raise an error, pretty please"
+            example_event.event_id = (  # type: ignore
+                "please raise an error, pretty please"
+            )
 
-    def test_immutable_event_name(self, example_event) -> None:
+    def test_immutable_event_name(self, example_event: Event) -> None:
+        """Test that dataclass Event name is immutable"""
         with pytest.raises(FrozenInstanceError):
-            example_event.name = "please raise an error, pretty please"
+            example_event.name = "please raise an error, pretty please"  # type: ignore
 
-    def test_immutable_event_start_time(self, example_event) -> None:
+    def test_immutable_event_start_time(self, example_event: Event) -> None:
+        """Test that dataclass Event start_time is immutable"""
         with pytest.raises(FrozenInstanceError):
-            example_event.start_time = "please raise an error, pretty please"
+            example_event.start_time = (  # type: ignore
+                "please raise an error, pretty please"
+            )
 
-    def test_immutable_event_end_time(self, example_event) -> None:
+    def test_immutable_event_end_time(self, example_event: Event) -> None:
+        """Test that dataclass Event end_time is immutable"""
         with pytest.raises(FrozenInstanceError):
-            example_event.end_time = "please raise an error, pretty please"
+            example_event.end_time = (  # type: ignore
+                "please raise an error, pretty please"
+            )
 
-    def test_immutable_event_participants(self, example_event) -> None:
+    def test_immutable_event_participants(self, example_event: Event) -> None:
+        """Test that dataclass Event participants is immutable"""
         with pytest.raises(FrozenInstanceError):
-            example_event.participants = ("please raise an error, pretty please",)
+            example_event.participants = (  # type: ignore
+                "please raise an error, pretty please",
+            )
 
-    def test_immutable_event_participants_name(self, example_event) -> None:
+    def test_immutable_event_participants_name(self, example_event: Event) -> None:
+        """Test that dataclass Event participants_name is immutable"""
         with pytest.raises(TypeError):
-            example_event.participants[0] = "please raise an error, pretty please"
+            example_event.participants[  # type: ignore
+                0
+            ] = "please raise an error, pretty please"
 
-    def test_immutable_event_google_group_link(self, example_event) -> None:
+    def test_immutable_event_google_group_link(self, example_event: Event) -> None:
+        """Test that dataclass Event group_link is immutable"""
         with pytest.raises(FrozenInstanceError):
-            example_event.google_group_link = ["please raise an error, pretty please"]
+            example_event.google_group_link = [  # type: ignore
+                "please raise an error, pretty please"
+            ]
 
-    def test_immutable_event_google_calendar_id(self, example_event) -> None:
+    def test_immutable_event_google_calendar_id(self, example_event: Event) -> None:
+        """Test that dataclass Event calendar_id is immutable"""
         with pytest.raises(FrozenInstanceError):
-            example_event.google_calendar_id = "please raise an error, pretty please"
+            example_event.google_calendar_id = (  # type: ignore
+                "please raise an error, pretty please"
+            )
 
-    def test_immutable_event_slack_channel(self, example_event) -> None:
+    def test_immutable_event_slack_channel(self, example_event: Event) -> None:
+        """Test that dataclass Event slack_channel is immutable"""
         with pytest.raises(FrozenInstanceError):
-            example_event.slack_channel = "please raise an error, pretty please"
+            example_event.slack_channel = (  # type: ignore
+                "please raise an error, pretty please"
+            )
 
 
 class TestParseCustomField:
+    """For parse_custom_field"""
+
     def test_parse_custom_field(self) -> None:
         """Test that parse_custom_field works with example data"""
         # get example data from the res/events-sample.json custom field
-        with open(EVENTS_JSON, "r") as file:
+        with open(EVENTS_JSON, "r", encoding="utf-8") as file:
             data = json.load(file)
             event_id = next(iter(data["results"].keys()))
             example_field = data["results"][event_id]["custom"]
 
         assert parse_custom_field(example_field) == Custom(
-            google_group_link="https://groups.google.com/a/vincit.fi/g/testiryhma-lyytikayttoon/",
+            google_group_link="https://groups.google.com/a"
+            "/vincit.fi/g/testiryhma-lyytikayttoon/",
             google_calendar_id="https://calendar.google.com/calendar_example/",
             slack_channel="testchannel",
         )
 
     def test_parse_custom_field_empty(self) -> None:
         """Test that parse_custom_field works with empty data"""
-        example_field = {}
+        example_field = {}  # type: ignore
         assert parse_custom_field(example_field) == Custom(
             google_group_link="", google_calendar_id="", slack_channel=""
         )
@@ -124,12 +164,14 @@ class TestParseCustomField:
     def test_parse_custom_field_custom_field_not_dict(self) -> None:
         """Test that parse_custom_field works with empty data"""
         example_field = "not a dict"
-        assert parse_custom_field(example_field) == Custom(
+        assert parse_custom_field(example_field) == Custom(  # type: ignore
             google_group_link="", google_calendar_id="", slack_channel=""
         )
 
 
 class TestIsInThePast:
+    """For testing is events are in past"""
+
     def test_is_in_the_past(self) -> None:
         """Test that is_in_the_past works as predicted"""
         assert (
@@ -141,6 +183,8 @@ class TestIsInThePast:
 
 
 class TestConvertUnixtimeToDatetimestring:
+    """For testing time converter"""
+
     def test_convert_unixtime_to_datetimestring(self) -> None:
         """Test that convert_unixtime_to_datetimestring works as predicted"""
         assert convert_unixtime_to_datetimestring(1235851100) == "2009-02-28 21:58:20"
@@ -148,10 +192,12 @@ class TestConvertUnixtimeToDatetimestring:
 
 
 class TestGetFromLanguageField:
+    """For testing getting language field"""
+
     def test_get_from_language_field(self) -> None:
         """Test that get_from_language_field works as predicted"""
         # get example data from the res/events-sample.json language field
-        with open(EVENTS_JSON, "r") as file:
+        with open(EVENTS_JSON, "r", encoding="utf-8") as file:
             data = json.load(file)
             event_id = next(iter(data["results"].keys()))
             example_field = data["results"][event_id]["name"]
@@ -160,16 +206,21 @@ class TestGetFromLanguageField:
 
     def test_get_from_language_field_empty(self) -> None:
         """Test that get_from_language_field works with empty data"""
-        example_field = {}
+        example_field = {}  # type: ignore
         assert get_from_language_field(example_field) == ""
 
     def test_get_from_language_field_default(self) -> None:
-        """Test that get_from_language_field returns the default value from ["en"] if it exists"""
+        """
+        Test that get_from_language_field returns the
+        default value from ["en"] if it exists
+        """
         example_field = {"fi": "testi", "en": "test"}
         assert get_from_language_field(example_field) == "test"
 
 
 class TestLoadEvents:
+    """For testing loading events."""
+
     def test_load_events(self) -> None:
         """
         Test that load_events function works as predicted
